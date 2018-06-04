@@ -1,13 +1,20 @@
 CXX=g++
 CXX_FLAGS=-O2 -std=c++14
 
-binaries=\
-	build/std_unordered_map \
-	build/std_map \
-	build/null_map
+maps=\
+	std_unordered_map \
+	std_map \
+	null_map \
+	skarupke_flat_hash_map
+
+
 
 all: $(binaries)
-	
+
+
+fetch/:
+	$(MAKE) -C src/maps/skarupke_flat_hash_map
+
 clean: 
 	rm -f $(binaries)
 

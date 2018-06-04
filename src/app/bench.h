@@ -47,11 +47,11 @@ public:
         return mRng;
     }
 
-    void beginMeasure() {
+    inline void beginMeasure() {
         mTimePoint = std::chrono::high_resolution_clock::now();
     }
 
-    void endMeasure() {
+    inline void endMeasure() {
         std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> diff = now - mTimePoint;
         mRuntimeSec = diff.count();
@@ -94,13 +94,16 @@ class BenchRegister {
 public:
     using NameToFn = std::map<std::string, std::function<void(Bench&)>>;
 
-    BenchRegister(std::function<void(Bench&)> fn) {
-        Bench bench;
-        bench.throwAfterTitle();
-        try {
-            fn(bench);
-        } catch (const BenchTitleException&) {
-            nameToFn().emplace(bench.title(), fn);
+    template<class... Fn>
+    BenchRegister(Fn&&... fns) {
+        for (auto& fn : {fns...}) {
+            Bench bench;
+            bench.throwAfterTitle();
+            try {
+                fn(bench);
+            } catch (const BenchTitleException&) {
+                nameToFn().emplace(bench.title(), fn);
+            }
         }
     }
 

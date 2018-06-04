@@ -11,6 +11,8 @@ int main(int, char**) {
             std::cout << "\t" << bench.str() << std::endl;
         }
         std::sort(times.begin(), times.end());
+
+        // TODO write nice JSON data
         for (auto const& t : times) {
             std::cout << "\t\t" << t << std::endl;
         }
