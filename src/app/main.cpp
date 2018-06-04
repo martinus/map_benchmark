@@ -1,32 +1,20 @@
-#include "map_defines.h"
-
-#include <XoRoShiRo128Plus.h>
-#include <MapHash.h>
-
-#include <iostream>
-#include <iomanip>
-#include <chrono>
+#include "bench.h"
 
 int main(int, char**) {
-    Map<int, int> m;
-
-    XoRoShiRo128Plus rng(123);
-
-    auto start = std::chrono::high_resolution_clock::now();
-    const size_t iters = 10'000'000;
-    for (size_t i=0; i<iters; ++i) {
-        m[rng(10'000)] = i;
-        m.erase(rng(10'000));
+    for (auto& nameFn : BenchRegister::nameToFn()) {
+        std::cout << nameFn.first << std::endl;
+        std::vector<double> times;
+        for (size_t i=0; i<5; ++i) {
+            Bench bench;
+            nameFn.second(bench);
+            times.push_back(bench.runtimeSeconds());
+            std::cout << "\t" << bench.str() << std::endl;
+        }
+        std::sort(times.begin(), times.end());
+        for (auto const& t : times) {
+            std::cout << "\t\t" << t << std::endl;
+        }
     }
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> diff = end - start;
-
-    size_t const h = mapHash(m);
-
-    std::cout 
-        << std::setw(10) << std::right << (diff.count() * 1e9 / iters) << "ns " 
-        << m.size() << " " 
-        << std::hex << "0x" << rng() << " " 
-        << std::hex << "0x" << h << " " 
-        << MapName << std::endl;
 }
+
+

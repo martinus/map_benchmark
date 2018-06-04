@@ -11,6 +11,7 @@ all: $(binaries)
 clean: 
 	rm -f $(binaries)
 
+BENCH_SRC_FILES := $(wildcard src/bench/*.cpp)
 build/%: src/maps/$(@F)
 	$(CXX) $(CXX_FLAGS) -Isrc/maps/$(@F) -Isrc/app -lm -o build/$(@F) src/app/main.cpp
 

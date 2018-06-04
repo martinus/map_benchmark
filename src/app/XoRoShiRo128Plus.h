@@ -57,18 +57,18 @@ public:
         //return operator()() * 5.4210108624275221703311375920553e-20;
     }
 
-    /// Random float value between min and max.
+    // Random float value between min and max.
     double operator()(double min_val, double max_val) {
         return (max_val - min_val) * rand01() + min_val;
     }
 
-    // Generates using the given range. This has a modulo bias.
-    // see https://github.com/imneme/pcg-c-basic/blob/master/pcg_basic.c#L79
+    // Generates using the given range. This might have slight bias.
     uint64_t operator()(uint64_t bound) {
 #ifdef __SIZEOF_INT128__
         // this is slightly biased, but about 4 times faster!
         return (static_cast<unsigned __int128>(bound) * static_cast<unsigned __int128>(operator()())) >> 64;
 #else
+        // see https://github.com/imneme/pcg-c-basic/blob/master/pcg_basic.c#L79
         const uint64_t threshold = (0 - bound) % bound;
 
         for (;;) {
