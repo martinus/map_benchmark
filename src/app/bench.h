@@ -71,7 +71,7 @@ public:
 
         std::stringstream ss;
         ss << std::setw(10) << std::right << mRuntimeSec << "s " 
-            << std::hex << "0x" << s << " " << MapName;
+            << std::hex << "0x" << s << " " << title();
 
         return ss.str();
     }
