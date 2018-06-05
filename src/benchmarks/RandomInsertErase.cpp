@@ -7,13 +7,14 @@ static void RandomInsertErase(Bench& bench) {
 
     // setup
     Map<int, int> map;
-    const size_t iters = 10'000'000;
 
     // time measured part
     bench.beginMeasure();
-    for (size_t i=0; i<iters; ++i) {
-        map[bench.rng()(10'000)] = i;
-        map.erase(bench.rng()(10'000));
+    for (size_t n=10000; n<20000; ++n) {
+        for (size_t i=0; i<10000; ++i) {
+            map[bench.rng()(n)] = i;
+            map.erase(bench.rng()(n));
+        }
     }
     bench.endMeasure();
 
@@ -26,17 +27,18 @@ static void RandomInsertEraseStrings(Bench& bench) {
     
     // setup
     Map<std::string, int> map;
-    const size_t iters = 1'000'000;
 
     std::string str(100, 'x');
 
     // time measured part
     bench.beginMeasure();
-    for (size_t i=0; i<iters; ++i) {
-        *reinterpret_cast<uint64_t*>(&str[20]) = bench.rng()(10000);
-        map[str] = i;
-        *reinterpret_cast<uint64_t*>(&str[20]) = bench.rng()(10000);        
-        map.erase(str);
+    for (size_t n=10000; n<20000; ++n) {
+        for (size_t i=0; i<10000; ++i) {
+            *reinterpret_cast<uint64_t*>(&str[20]) = bench.rng()(n);
+            map[str] = i;
+            *reinterpret_cast<uint64_t*>(&str[20]) = bench.rng()(n);        
+            map.erase(str);
+        }
     }
     bench.endMeasure();
 

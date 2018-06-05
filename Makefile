@@ -7,13 +7,14 @@ maps=\
 	null_map \
 	skarupke_flat_hash_map
 
-
+binaries=$(patsubst %,build/%,$(maps))
 
 all: $(binaries)
 
+all_fetch: $(patsubst %,fetch/%,$(maps))
 
-fetch/:
-	$(MAKE) -C src/maps/skarupke_flat_hash_map
+fetch/%: src/maps/$(@F)
+	$(MAKE) -C src/maps/$(@F)
 
 clean: 
 	rm -f $(binaries)
