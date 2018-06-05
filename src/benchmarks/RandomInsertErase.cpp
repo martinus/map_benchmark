@@ -47,4 +47,4 @@ static void RandomInsertEraseStrings(Bench& bench) {
     bench.result(mapHash(map));
 }
 
-BenchRegister reg(RandomInsertErase, RandomInsertEraseStrings);
+static BenchRegister reg(RandomInsertErase, RandomInsertEraseStrings);
