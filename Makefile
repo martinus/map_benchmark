@@ -1,4 +1,4 @@
-CXX=g++
+CXX=ccache g++
 CXX_FLAGS=-O2 -std=c++14
 
 maps=\

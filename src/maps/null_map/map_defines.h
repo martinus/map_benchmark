@@ -4,7 +4,7 @@
 #include <utility>
 
 // dummy map that does nothing, for overhead estimation
-const char* MapName = "dummy map";
+static const char* MapName = "dummy map";
 
 template <class Key, class Val>
 class Map {
@@ -25,6 +25,8 @@ public:
     constexpr value_type const* end() const {
         return (value_type*)0;
     }
+
+    constexpr void clear() { }
 
 private:
     Val val;

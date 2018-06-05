@@ -3,7 +3,8 @@
 #include "bench.h"
 
 static void RandomInsertErase(Bench& bench) {
-    bench.title("RandomInsertErase: 10'000'000 random [] and erase of 10000 different values");
+    bench.title("RandomInsertErase");
+    bench.description("randomly inserts and erases int values");
 
     // setup
     Map<int, int> map;
@@ -12,8 +13,8 @@ static void RandomInsertErase(Bench& bench) {
     bench.beginMeasure();
     for (size_t n=10000; n<20000; ++n) {
         for (size_t i=0; i<10000; ++i) {
-            map[bench.rng()(n)] = i;
-            map.erase(bench.rng()(n));
+            map[bench.rng(n)] = i;
+            map.erase(bench.rng(n));
         }
     }
     bench.endMeasure();
@@ -34,9 +35,9 @@ static void RandomInsertEraseStrings(Bench& bench) {
     bench.beginMeasure();
     for (size_t n=10000; n<20000; ++n) {
         for (size_t i=0; i<10000; ++i) {
-            *reinterpret_cast<uint64_t*>(&str[20]) = bench.rng()(n);
+            *reinterpret_cast<uint64_t*>(&str[20]) = bench.rng(n);
             map[str] = i;
-            *reinterpret_cast<uint64_t*>(&str[20]) = bench.rng()(n);        
+            *reinterpret_cast<uint64_t*>(&str[20]) = bench.rng(n);        
             map.erase(str);
         }
     }

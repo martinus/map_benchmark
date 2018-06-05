@@ -38,13 +38,23 @@ public:
         return mTitle;
     }
 
+    Bench& description(const std::string& txt) {
+        mDescription = txt;
+        return *this;
+    }
+
+    const std::string& description() const {
+        return mDescription;
+    }
+
     Bench& result(uint64_t r) {
         mResult = r;
         return *this;
     }
 
-    XoRoShiRo128Plus& rng() {
-        return mRng;
+    template<class... Args>
+    auto rng(Args&&... args) {
+        return mRng(std::forward<Args>(args)...);
     }
 
     inline void beginMeasure() {
@@ -86,6 +96,7 @@ private:
     uint64_t mResult;
     bool mThrowAfterTitle;
     double mRuntimeSec;
+    std::string mDescription;
 };
 
 #include <map>
@@ -102,7 +113,10 @@ public:
             try {
                 fn(bench);
             } catch (const BenchTitleException&) {
-                nameToFn().emplace(bench.title(), fn);
+                if (!nameToFn().emplace(bench.title(), fn).second) {
+                    std::cerr << "benchmark with title '" << bench.title() << "' already exists!" << std::endl;
+                    throw std::exception();
+                }
             }
         }
     }
