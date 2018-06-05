@@ -53,7 +53,7 @@ public:
         Stats s;
         s.timestamp = std::chrono::high_resolution_clock::now();
         s.memPrivateUsage = getMem();
-        mEvents.push_back(std::pair<Stats, std::string>(s, title));
+        mEvents.emplace_back(std::move(s), title);
     }
 
     void plotly(std::vector<std::string> &linePositionsX,
