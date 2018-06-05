@@ -1,5 +1,5 @@
 #include "bench.h"
-#include "profiler.h"
+#include "PeriodicMemoryStats.h"
 
 #include <regex>
 
@@ -43,8 +43,6 @@ void help(std::vector<std::string> const& args) {
 
 int main(int cargi, char** cargv) {
     std::vector<std::string> args(cargv + 1, cargv + cargi);
-
-    std::cout << Profiler::get_mem() << std::endl;
 
     // default to running all benchmarks
     if (args.empty()) {
