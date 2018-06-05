@@ -1,32 +1,26 @@
 #pragma once
 
-#include <XoRoShiRo128Plus.h>
 #include <MapHash.h>
+#include <XoRoShiRo128Plus.h>
 
-#include <iostream>
-#include <iomanip>
-#include <chrono>
-#include <vector>
-#include <sstream>
 #include <algorithm>
+#include <chrono>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <vector>
 
 struct BenchTitleException {};
 
 class Bench {
 public:
     Bench(size_t numTrials = 5, uint64_t seed = 123)
-        : mSeed(seed)
-        , mNumTrials(numTrials)
-        , mCurrentTrial(0)
-        , mResult(0)
-        , mThrowAfterTitle(false)
-    { }
+        : mSeed(seed), mNumTrials(numTrials), mCurrentTrial(0), mResult(0),
+          mThrowAfterTitle(false) {}
 
-    void throwAfterTitle() {
-        mThrowAfterTitle = true;        
-    }
+    void throwAfterTitle() { mThrowAfterTitle = true; }
 
-    Bench& title(const std::string& txt) {
+    Bench &title(const std::string &txt) {
         mTitle = txt;
         if (mThrowAfterTitle) {
             throw BenchTitleException{};
@@ -34,26 +28,21 @@ public:
         return *this;
     }
 
-    std::string const& title() const {
-        return mTitle;
-    }
+    std::string const &title() const { return mTitle; }
 
-    Bench& description(const std::string& txt) {
+    Bench &description(const std::string &txt) {
         mDescription = txt;
         return *this;
     }
 
-    const std::string& description() const {
-        return mDescription;
-    }
+    const std::string &description() const { return mDescription; }
 
-    Bench& result(uint64_t r) {
+    Bench &result(uint64_t r) {
         mResult = r;
         return *this;
     }
 
-    template<class... Args>
-    auto rng(Args&&... args) {
+    template <class... Args> auto rng(Args &&... args) {
         return mRng(std::forward<Args>(args)...);
     }
 
@@ -62,26 +51,25 @@ public:
     }
 
     inline void endMeasure() {
-        std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+        std::chrono::high_resolution_clock::time_point now =
+            std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> diff = now - mTimePoint;
         mRuntimeSec = diff.count();
     }
 
-    double runtimeSeconds() const {
-        return mRuntimeSec;
-    }
+    double runtimeSeconds() const { return mRuntimeSec; }
 
     std::string str() const {
-        auto const& state = mRng.state();
+        auto const &state = mRng.state();
 
         size_t s = 0;
         hash_combine(s, state.first);
-        hash_combine(s, state.second);        
+        hash_combine(s, state.second);
         hash_combine(s, mResult);
 
         std::stringstream ss;
-        ss << std::setw(10) << std::right << mRuntimeSec << "s " 
-            << std::hex << "0x" << s << " " << title();
+        ss << std::setw(10) << std::right << mRuntimeSec << "s " << std::hex
+           << "0x" << s << " " << title();
 
         return ss.str();
     }
@@ -103,18 +91,18 @@ private:
 
 class BenchRegister {
 public:
-    using NameToFn = std::map<std::string, std::function<void(Bench&)>>;
+    using NameToFn = std::map<std::string, std::function<void(Bench &)>>;
 
-    template<class... Fn>
-    BenchRegister(Fn&&... fns) {
-        for (auto& fn : {fns...}) {
+    template <class... Fn> BenchRegister(Fn &&... fns) {
+        for (auto &fn : {fns...}) {
             Bench bench;
             bench.throwAfterTitle();
             try {
                 fn(bench);
-            } catch (const BenchTitleException&) {
+            } catch (const BenchTitleException &) {
                 if (!nameToFn().emplace(bench.title(), fn).second) {
-                    std::cerr << "benchmark with title '" << bench.title() << "' already exists!" << std::endl;
+                    std::cerr << "benchmark with title '" << bench.title()
+                              << "' already exists!" << std::endl;
                     throw std::exception();
                 }
             }
@@ -122,12 +110,12 @@ public:
     }
 
     static void list() {
-        for (auto const& nameFn : nameToFn()) {
+        for (auto const &nameFn : nameToFn()) {
             std::cout << nameFn.first << std::endl;
         }
     }
 
-    static NameToFn& nameToFn() {
+    static NameToFn &nameToFn() {
         static NameToFn sNameToFn;
         return sNameToFn;
     }

@@ -1,6 +1,6 @@
 #include "bench.h"
 
-static void InternalGetMem(Bench& bench) {
+static void InternalGetMem(Bench &bench) {
     /*
     bench.title("InternalGetMem");
 
@@ -15,6 +15,5 @@ static void InternalGetMem(Bench& bench) {
     bench.result(r);
     */
 }
-
 
 static BenchRegister reg(InternalGetMem);

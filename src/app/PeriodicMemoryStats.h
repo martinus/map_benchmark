@@ -1,13 +1,13 @@
 #pragma once
 
-#include <thread>
-#include <chrono>
-#include <vector>
 #include <algorithm>
-#include <string>
+#include <chrono>
+#include <fstream>
 #include <iostream>
 #include <sstream>
-#include <fstream>
+#include <string>
+#include <thread>
+#include <vector>
 
 #ifdef _WIN32
 #include "Windows.h"
@@ -16,123 +16,120 @@
 
 class PeriodicMemoryStats {
 public:
-	struct Stats {
-		std::chrono::time_point<std::chrono::high_resolution_clock> timestamp;
-		size_t memPrivateUsage;
+    struct Stats {
+        std::chrono::time_point<std::chrono::high_resolution_clock> timestamp;
+        size_t memPrivateUsage;
 
-		bool operator<(const Stats& o) const {
-			if (timestamp < o.timestamp) {
-				return true;
-			} else if (o.timestamp < timestamp) {
-				return false;
-			} else {
-				return memPrivateUsage < o.memPrivateUsage;
-			}
-		}
-	};
+        bool operator<(const Stats &o) const {
+            if (timestamp < o.timestamp) {
+                return true;
+            } else if (o.timestamp < timestamp) {
+                return false;
+            } else {
+                return memPrivateUsage < o.memPrivateUsage;
+            }
+        }
+    };
 
-	PeriodicMemoryStats(double intervalSeconds)
-		: mIntervalMicros(static_cast<uint64_t>(intervalSeconds * 1000 * 1000))
-		, mDoContinue(true)
-		, mThread(&PeriodicMemoryStats::runner, this) {
-	}
-    
-	~PeriodicMemoryStats() {
-		stop();
-	}
+    PeriodicMemoryStats(double intervalSeconds)
+        : mIntervalMicros(static_cast<uint64_t>(intervalSeconds * 1000 * 1000)),
+          mDoContinue(true), mThread(&PeriodicMemoryStats::runner, this) {}
 
-	void stop() {
-		if (mDoContinue) {
-			mDoContinue = false;
-			mThread.join();
-		}
+    ~PeriodicMemoryStats() { stop(); }
 
-		for (const auto e : mEvents) {
-			mPeriodic.push_back(e.first);
-		}
-		std::sort(mPeriodic.begin(), mPeriodic.end());
-	}
+    void stop() {
+        if (mDoContinue) {
+            mDoContinue = false;
+            mThread.join();
+        }
 
-	void event(const char* title) {
-		Stats s;
-		s.timestamp = std::chrono::high_resolution_clock::now();
-		s.memPrivateUsage = getMem();
-		mEvents.push_back(std::pair<Stats, std::string>(s, title));
-	}
+        for (const auto e : mEvents) {
+            mPeriodic.push_back(e.first);
+        }
+        std::sort(mPeriodic.begin(), mPeriodic.end());
+    }
 
-	void plotly(
-		std::vector<std::string>& linePositionsX, 
-		std::vector<std::string>& linePositionsY,
-		std::vector<std::string>& markerPositionsX,
-		std::vector<std::string>& markerPositionsY,
-		std::vector<std::string>& markerText) const {
+    void event(const char *title) {
+        Stats s;
+        s.timestamp = std::chrono::high_resolution_clock::now();
+        s.memPrivateUsage = getMem();
+        mEvents.push_back(std::pair<Stats, std::string>(s, title));
+    }
 
-		auto begin = mPeriodic[0].timestamp;
-		if (!mEvents.empty()) {
-			begin = (std::min)(begin, mEvents[0].first.timestamp);
+    void plotly(std::vector<std::string> &linePositionsX,
+                std::vector<std::string> &linePositionsY,
+                std::vector<std::string> &markerPositionsX,
+                std::vector<std::string> &markerPositionsY,
+                std::vector<std::string> &markerText) const {
 
-			for (size_t i = 0; i < mEvents.size(); ++i) {
-				const PeriodicMemoryStats::Stats& s = mEvents[i].first;
-				std::chrono::duration<double> const diff = s.timestamp - begin;
-				markerPositionsX.push_back(std::to_string(diff.count()));
-				markerPositionsY.push_back(std::to_string((s.memPrivateUsage / (1024.0 * 1024))));
-				markerText.push_back(mEvents[i].second);
-			}
-		}
+        auto begin = mPeriodic[0].timestamp;
+        if (!mEvents.empty()) {
+            begin = (std::min)(begin, mEvents[0].first.timestamp);
 
-		for (size_t i = 0; i < mPeriodic.size(); ++i) {
-			const PeriodicMemoryStats::Stats& s = mPeriodic[i];
-			std::chrono::duration<double> const diff = s.timestamp - begin;
-			linePositionsX.push_back(std::to_string(diff.count()));
-			linePositionsY.push_back(std::to_string((s.memPrivateUsage / (1024.0 * 1024))));
-		}
-	}
+            for (size_t i = 0; i < mEvents.size(); ++i) {
+                const PeriodicMemoryStats::Stats &s = mEvents[i].first;
+                std::chrono::duration<double> const diff = s.timestamp - begin;
+                markerPositionsX.push_back(std::to_string(diff.count()));
+                markerPositionsY.push_back(
+                    std::to_string((s.memPrivateUsage / (1024.0 * 1024))));
+                markerText.push_back(mEvents[i].second);
+            }
+        }
 
-	double total() const {
-		std::chrono::duration<double> const diff = mEvents.back().first.timestamp - mPeriodic.begin()->timestamp;
-		return diff.count();
-	}
+        for (size_t i = 0; i < mPeriodic.size(); ++i) {
+            const PeriodicMemoryStats::Stats &s = mPeriodic[i];
+            std::chrono::duration<double> const diff = s.timestamp - begin;
+            linePositionsX.push_back(std::to_string(diff.count()));
+            linePositionsY.push_back(
+                std::to_string((s.memPrivateUsage / (1024.0 * 1024))));
+        }
+    }
 
-	const std::vector<std::pair<Stats, std::string> >& events() const {
-		return mEvents;
-	}
+    double total() const {
+        std::chrono::duration<double> const diff =
+            mEvents.back().first.timestamp - mPeriodic.begin()->timestamp;
+        return diff.count();
+    }
 
-	const std::vector<Stats>& periodics() const {
-		return mPeriodic;
-	}
+    const std::vector<std::pair<Stats, std::string>> &events() const {
+        return mEvents;
+    }
+
+    const std::vector<Stats> &periodics() const { return mPeriodic; }
 
 private:
-	void runner() {
-		auto nextStop = std::chrono::high_resolution_clock::now();
+    void runner() {
+        auto nextStop = std::chrono::high_resolution_clock::now();
 
-		Stats s;
-		while (mDoContinue) {
-			nextStop += std::chrono::microseconds(mIntervalMicros);
+        Stats s;
+        while (mDoContinue) {
+            nextStop += std::chrono::microseconds(mIntervalMicros);
 
-			s.timestamp = std::chrono::high_resolution_clock::now();
-			s.memPrivateUsage = getMem();
-			mPeriodic.push_back(s);
+            s.timestamp = std::chrono::high_resolution_clock::now();
+            s.memPrivateUsage = getMem();
+            mPeriodic.push_back(s);
 
-			if (nextStop < s.timestamp) {
-				// we can't keep up!
-				nextStop = s.timestamp;
-			}
-			std::this_thread::sleep_until(nextStop);
-		}
+            if (nextStop < s.timestamp) {
+                // we can't keep up!
+                nextStop = s.timestamp;
+            }
+            std::this_thread::sleep_until(nextStop);
+        }
 
-		// add one last measurement
-		s.timestamp = std::chrono::high_resolution_clock::now();
-		s.memPrivateUsage = getMem();
-		mPeriodic.push_back(s);
-	}
+        // add one last measurement
+        s.timestamp = std::chrono::high_resolution_clock::now();
+        s.memPrivateUsage = getMem();
+        mPeriodic.push_back(s);
+    }
 
-	size_t getMem() {
+    size_t getMem() {
 #ifdef _WIN32
-		PROCESS_MEMORY_COUNTERS_EX info;
-		info.cb = sizeof(info);
-		if (GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&info, info.cb)) {
-			return info.PrivateUsage;
-		}
+        PROCESS_MEMORY_COUNTERS_EX info;
+        info.cb = sizeof(info);
+        if (GetProcessMemoryInfo(GetCurrentProcess(),
+                                 (PROCESS_MEMORY_COUNTERS *)&info, info.cb)) {
+            return info.PrivateUsage;
+        }
 #else
         std::ifstream file("/proc/self/status");
         std::string const prefix = "VmSize:";
@@ -145,14 +142,14 @@ private:
             }
         }
 #endif
-		return 0;
-	}
+        return 0;
+    }
 
-	std::vector<Stats> mPeriodic;
-	std::vector<std::pair<Stats, std::string> > mEvents;
+    std::vector<Stats> mPeriodic;
+    std::vector<std::pair<Stats, std::string>> mEvents;
 
-	uint64_t mIntervalMicros;
-	bool mDoContinue;
+    uint64_t mIntervalMicros;
+    bool mDoContinue;
 
-	std::thread mThread;
+    std::thread mThread;
 };

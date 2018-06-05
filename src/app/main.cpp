@@ -1,13 +1,14 @@
-#include "bench.h"
 #include "PeriodicMemoryStats.h"
+#include "bench.h"
 
 #include <regex>
 
-std::vector<double> run(std::string const& name, std::function<void(Bench&)> fn) {
+std::vector<double> run(std::string const &name,
+                        std::function<void(Bench &)> fn) {
     std::cout << name << std::endl;
 
     std::vector<double> times;
-    for (size_t i=0; i<5; ++i) {
+    for (size_t i = 0; i < 5; ++i) {
         Bench bench;
         fn(bench);
         times.push_back(bench.runtimeSeconds());
@@ -18,17 +19,17 @@ std::vector<double> run(std::string const& name, std::function<void(Bench&)> fn)
     return times;
 }
 
-void list(std::vector<std::string> const& args) {
-    for (auto const& nameFn : BenchRegister::nameToFn()) {
+void list(std::vector<std::string> const &args) {
+    for (auto const &nameFn : BenchRegister::nameToFn()) {
         std::cout << nameFn.first << std::endl;
     }
 }
 
-void filter(std::vector<std::string> const& args) {
+void filter(std::vector<std::string> const &args) {
     std::regex reFilter(args.at(1));
     std::smatch baseMatch;
 
-    for (auto const& nameFn : BenchRegister::nameToFn()) {
+    for (auto const &nameFn : BenchRegister::nameToFn()) {
         if (!std::regex_match(nameFn.first, baseMatch, reFilter)) {
             continue;
         }
@@ -37,11 +38,11 @@ void filter(std::vector<std::string> const& args) {
     }
 }
 
-void help(std::vector<std::string> const& args) {
+void help(std::vector<std::string> const &args) {
     std::cout << "TODO this should print a help" << std::endl;
 }
 
-int main(int cargi, char** cargv) {
+int main(int cargi, char **cargv) {
     std::vector<std::string> args(cargv + 1, cargv + cargi);
 
     // default to running all benchmarks
@@ -64,5 +65,3 @@ int main(int cargi, char** cargv) {
         break;
     }
 }
-
-
