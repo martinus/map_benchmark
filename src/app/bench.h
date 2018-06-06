@@ -14,109 +14,119 @@ struct BenchTitleException {};
 
 class Bench {
 public:
-    Bench(size_t numTrials = 5, uint64_t seed = 123)
-        : mSeed(seed), mNumTrials(numTrials), mCurrentTrial(0), mResult(0),
-          mThrowAfterTitle(false) {}
+	Bench(size_t numTrials = 5, uint64_t seed = 123)
+		: mSeed(seed)
+		, mNumTrials(numTrials)
+		, mCurrentTrial(0)
+		, mResult(0)
+		, mThrowAfterTitle(false) {}
 
-    void throwAfterTitle() { mThrowAfterTitle = true; }
+	void throwAfterTitle() {
+		mThrowAfterTitle = true;
+	}
 
-    Bench &title(const std::string &txt) {
-        mTitle = txt;
-        if (mThrowAfterTitle) {
-            throw BenchTitleException{};
-        }
-        return *this;
-    }
+	Bench& title(const std::string& txt) {
+		mTitle = txt;
+		if (mThrowAfterTitle) {
+			throw BenchTitleException{};
+		}
+		return *this;
+	}
 
-    std::string const &title() const { return mTitle; }
+	std::string const& title() const {
+		return mTitle;
+	}
 
-    Bench &description(const std::string &txt) {
-        mDescription = txt;
-        return *this;
-    }
+	Bench& description(const std::string& txt) {
+		mDescription = txt;
+		return *this;
+	}
 
-    const std::string &description() const { return mDescription; }
+	const std::string& description() const {
+		return mDescription;
+	}
 
-    Bench &result(uint64_t r) {
-        mResult = r;
-        return *this;
-    }
+	Bench& result(uint64_t r) {
+		mResult = r;
+		return *this;
+	}
 
-    template <class... Args> auto rng(Args &&... args) {
-        return mRng(std::forward<Args>(args)...);
-    }
+	template <class... Args>
+	auto rng(Args&&... args) {
+		return mRng(std::forward<Args>(args)...);
+	}
 
-    inline void beginMeasure() {
-        mTimePoint = std::chrono::high_resolution_clock::now();
-    }
+	inline void beginMeasure() {
+		mTimePoint = std::chrono::high_resolution_clock::now();
+	}
 
-    inline void endMeasure() {
-        std::chrono::high_resolution_clock::time_point now =
-            std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> diff = now - mTimePoint;
-        mRuntimeSec = diff.count();
-    }
+	inline void endMeasure() {
+		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> diff = now - mTimePoint;
+		mRuntimeSec = diff.count();
+	}
 
-    double runtimeSeconds() const { return mRuntimeSec; }
+	double runtimeSeconds() const {
+		return mRuntimeSec;
+	}
 
-    std::string str() const {
-        auto const &state = mRng.state();
+	std::string str() const {
+		auto const& state = mRng.state();
 
-        size_t s = 0;
-        hash_combine(s, state.first);
-        hash_combine(s, state.second);
-        hash_combine(s, mResult);
+		size_t s = 0;
+		hash_combine(s, state.first);
+		hash_combine(s, state.second);
+		hash_combine(s, mResult);
 
-        std::stringstream ss;
-        ss << std::setw(10) << std::right << mRuntimeSec << "s " << std::hex
-           << "0x" << s << " " << title();
+		std::stringstream ss;
+		ss << std::setw(10) << std::right << mRuntimeSec << "s " << std::hex << "0x" << s << " " << title();
 
-        return ss.str();
-    }
+		return ss.str();
+	}
 
 private:
-    uint64_t const mSeed;
-    XoRoShiRo128Plus mRng;
-    std::string mTitle;
-    size_t const mNumTrials;
-    size_t mCurrentTrial;
-    std::chrono::high_resolution_clock::time_point mTimePoint;
-    uint64_t mResult;
-    bool mThrowAfterTitle;
-    double mRuntimeSec;
-    std::string mDescription;
+	uint64_t const mSeed;
+	XoRoShiRo128Plus mRng;
+	std::string mTitle;
+	size_t const mNumTrials;
+	size_t mCurrentTrial;
+	std::chrono::high_resolution_clock::time_point mTimePoint;
+	uint64_t mResult;
+	bool mThrowAfterTitle;
+	double mRuntimeSec;
+	std::string mDescription;
 };
 
 #include <map>
 
 class BenchRegister {
 public:
-    using NameToFn = std::map<std::string, std::function<void(Bench &)>>;
+	using NameToFn = std::map<std::string, std::function<void(Bench&)>>;
 
-    template <class... Fn> BenchRegister(Fn &&... fns) {
-        for (auto &fn : {fns...}) {
-            Bench bench;
-            bench.throwAfterTitle();
-            try {
-                fn(bench);
-            } catch (const BenchTitleException &) {
-                if (!nameToFn().emplace(bench.title(), fn).second) {
-                    std::cerr << "benchmark with title '" << bench.title()
-                              << "' already exists!" << std::endl;
-                    throw std::exception();
-                }
-            }
-        }
-    }
+	template <class... Fn>
+	BenchRegister(Fn&&... fns) {
+		for (auto& fn : {fns...}) {
+			Bench bench;
+			bench.throwAfterTitle();
+			try {
+				fn(bench);
+			} catch (const BenchTitleException&) {
+				if (!nameToFn().emplace(bench.title(), fn).second) {
+					std::cerr << "benchmark with title '" << bench.title() << "' already exists!" << std::endl;
+					throw std::exception();
+				}
+			}
+		}
+	}
 
-    static void list() {
-        for (auto const &nameFn : nameToFn()) {
-            std::cout << nameFn.first << std::endl;
-        }
-    }
+	static void list() {
+		for (auto const& nameFn : nameToFn()) {
+			std::cout << nameFn.first << std::endl;
+		}
+	}
 
-    static NameToFn &nameToFn() {
-        static NameToFn sNameToFn;
-        return sNameToFn;
-    }
+	static NameToFn& nameToFn() {
+		static NameToFn sNameToFn;
+		return sNameToFn;
+	}
 };
