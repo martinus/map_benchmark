@@ -31,6 +31,20 @@ public:
 		}
 	};
 
+	struct TimeBytes {
+		std::string time;
+		std::string bytes;
+	};
+	struct TimeBytesEvent {
+		std::string time;
+		std::string bytes;
+		std::string event;
+	};
+	struct Plotly {
+		std::vector<TimeBytes> periodics;
+		std::vector<TimeBytesEvent> events;
+	};
+
 	PeriodicMemoryStats(double intervalSeconds)
 		: mIntervalMicros(static_cast<uint64_t>(intervalSeconds * 1000 * 1000))
 		, mDoContinue(true)
@@ -59,8 +73,8 @@ public:
 		mEvents.emplace_back(std::move(s), title);
 	}
 
-	void plotly(std::vector<std::string>& linePositionsX, std::vector<std::string>& linePositionsY, std::vector<std::string>& markerPositionsX,
-				std::vector<std::string>& markerPositionsY, std::vector<std::string>& markerText) const {
+	Plotly plotly() const {
+		Plotly data;
 
 		auto begin = mPeriodic[0].timestamp;
 		if (!mEvents.empty()) {
@@ -69,18 +83,26 @@ public:
 			for (size_t i = 0; i < mEvents.size(); ++i) {
 				const PeriodicMemoryStats::Stats& s = mEvents[i].first;
 				std::chrono::duration<double> const diff = s.timestamp - begin;
-				markerPositionsX.push_back(std::to_string(diff.count()));
-				markerPositionsY.push_back(std::to_string((s.memPrivateUsage / (1024.0 * 1024))));
-				markerText.push_back(mEvents[i].second);
+
+				TimeBytesEvent tbe;
+				tbe.time = std::to_string(diff.count());
+				tbe.bytes = std::to_string((s.memPrivateUsage / (1024.0 * 1024)));
+				tbe.event = mEvents[i].second;
+				data.events.push_back(tbe);
 			}
 		}
 
 		for (size_t i = 0; i < mPeriodic.size(); ++i) {
 			const PeriodicMemoryStats::Stats& s = mPeriodic[i];
 			std::chrono::duration<double> const diff = s.timestamp - begin;
-			linePositionsX.push_back(std::to_string(diff.count()));
-			linePositionsY.push_back(std::to_string((s.memPrivateUsage / (1024.0 * 1024))));
+
+			TimeBytes tb;
+			tb.time = std::to_string(diff.count());
+			tb.bytes = std::to_string((s.memPrivateUsage / (1024.0 * 1024)));
+			data.periodics.push_back(tb);
 		}
+
+		return data;
 	}
 
 	double total() const {
@@ -94,6 +116,24 @@ public:
 
 	const std::vector<Stats>& periodics() const {
 		return mPeriodic;
+	}
+
+	static size_t getMem() {
+#ifdef _WIN32
+		PROCESS_MEMORY_COUNTERS_EX info;
+		info.cb = sizeof(info);
+		if (GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&info, info.cb)) {
+			return info.PrivateUsage;
+		}
+#else
+		std::ifstream file("/proc/self/statm");
+		std::string line;
+		std::getline(file, line);
+		// skip VmSize, read resident memory (second value, see man proc)
+		return std::atoll(line.data() + line.find(' ') + 1) * 1024;
+		// return std::atoll(line.data()) * 1024;
+#endif
+		return 0;
 	}
 
 private:
@@ -119,28 +159,6 @@ private:
 		s.timestamp = std::chrono::high_resolution_clock::now();
 		s.memPrivateUsage = getMem();
 		mPeriodic.push_back(s);
-	}
-
-	size_t getMem() {
-#ifdef _WIN32
-		PROCESS_MEMORY_COUNTERS_EX info;
-		info.cb = sizeof(info);
-		if (GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&info, info.cb)) {
-			return info.PrivateUsage;
-		}
-#else
-		std::ifstream file("/proc/self/status");
-		std::string const prefix = "VmSize:";
-
-		std::string line;
-		while (std::getline(file, line)) {
-			if (0 == line.compare(0, prefix.size(), prefix)) {
-				// size is in kB
-				return std::atoll(line.data() + prefix.size()) * 1024;
-			}
-		}
-#endif
-		return 0;
 	}
 
 	std::vector<Stats> mPeriodic;

@@ -1,12 +1,14 @@
 #pragma once
 
 #include <MapHash.h>
+#include <PeriodicMemoryStats.h>
 #include <XoRoShiRo128Plus.h>
 
 #include <algorithm>
 #include <chrono>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <vector>
 
@@ -51,17 +53,36 @@ public:
 		return *this;
 	}
 
+	Bench& event(const char* msg) {
+		if (mPeriodicMemoryStats) {
+			mPeriodicMemoryStats->event(msg);
+		}
+	}
+
 	template <class... Args>
 	auto rng(Args&&... args) {
 		return mRng(std::forward<Args>(args)...);
 	}
 
 	inline void beginMeasure() {
+		mPeriodicMemoryStats = std::make_unique<PeriodicMemoryStats>(0.05);
 		mTimePoint = std::chrono::high_resolution_clock::now();
 	}
 
 	inline void endMeasure() {
 		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+		if (mPeriodicMemoryStats) {
+			mPeriodicMemoryStats->stop();
+			auto p = mPeriodicMemoryStats->plotly();
+			for (auto const& tb : p.periodics) {
+				std::cout << tb.time << " " << tb.bytes << std::endl;
+			}
+
+			for (auto const& tbe : p.events) {
+				std::cout << tbe.time << " " << tbe.bytes << " " << tbe.event << std::endl;
+			}
+		}
+
 		std::chrono::duration<double> diff = now - mTimePoint;
 		mRuntimeSec = diff.count();
 	}
@@ -95,6 +116,7 @@ private:
 	bool mThrowAfterTitle;
 	double mRuntimeSec;
 	std::string mDescription;
+	std::unique_ptr<PeriodicMemoryStats> mPeriodicMemoryStats;
 };
 
 #include <map>
