@@ -20,6 +20,6 @@ clean:
 	rm -f $(binaries)
 
 build/%: src/maps/$(@F)
-	$(CXX) $(CXX_FLAGS) -Isrc/maps/$(@F) -Isrc/app -lm -o build/$(@F) src/app/main.cpp src/benchmarks/*.cpp -pthread
+	$(CXX) $(CXX_FLAGS) -Isrc/maps/$(@F) -Isrc/app -lm -o build/$(@F) src/app/*.cpp src/benchmarks/*.cpp -pthread -ldl
 
 .PHONY: clean all

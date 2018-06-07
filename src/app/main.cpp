@@ -1,3 +1,5 @@
+#include "MallocHook.h"
+
 #include "PeriodicMemoryStats.h"
 #include "bench.h"
 

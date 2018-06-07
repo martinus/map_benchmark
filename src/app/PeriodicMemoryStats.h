@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MallocHook.h"
+
 #include <algorithm>
 #include <chrono>
 #include <fstream>
@@ -19,6 +21,7 @@ public:
 	struct Stats {
 		std::chrono::time_point<std::chrono::high_resolution_clock> timestamp;
 		size_t memPrivateUsage;
+		size_t mallocBytes;
 
 		bool operator<(const Stats& o) const {
 			if (timestamp < o.timestamp) {
@@ -34,10 +37,12 @@ public:
 	struct TimeBytes {
 		std::string time;
 		std::string bytes;
+		std::string mallocBytes;
 	};
 	struct TimeBytesEvent {
 		std::string time;
 		std::string bytes;
+		std::string mallocBytes;
 		std::string event;
 	};
 	struct Plotly {
@@ -87,6 +92,7 @@ public:
 				TimeBytesEvent tbe;
 				tbe.time = std::to_string(diff.count());
 				tbe.bytes = std::to_string((s.memPrivateUsage / (1024.0 * 1024)));
+				tbe.mallocBytes = std::to_string(s.mallocBytes / (1024.0 * 1024));
 				tbe.event = mEvents[i].second;
 				data.events.push_back(tbe);
 			}
@@ -99,6 +105,7 @@ public:
 			TimeBytes tb;
 			tb.time = std::to_string(diff.count());
 			tb.bytes = std::to_string((s.memPrivateUsage / (1024.0 * 1024)));
+			tb.mallocBytes = std::to_string(s.mallocBytes / (1024.0 * 1024));
 			data.periodics.push_back(tb);
 		}
 
@@ -146,6 +153,7 @@ private:
 
 			s.timestamp = std::chrono::high_resolution_clock::now();
 			s.memPrivateUsage = getMem();
+			s.mallocBytes = sAllocatedMem.load();
 			mPeriodic.push_back(s);
 
 			if (nextStop < s.timestamp) {
@@ -158,6 +166,7 @@ private:
 		// add one last measurement
 		s.timestamp = std::chrono::high_resolution_clock::now();
 		s.memPrivateUsage = getMem();
+		s.mallocBytes = sAllocatedMem.load();
 		mPeriodic.push_back(s);
 	}
 
