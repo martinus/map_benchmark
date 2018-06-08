@@ -107,6 +107,14 @@ public:
 		return data;
 	}
 
+	size_t peak() {
+#ifdef _WIN32
+		// TODO
+#else
+		return malloc_count_peak();
+#endif
+	}
+
 	double total() const {
 		std::chrono::duration<double> const diff = mEvents.back().first.timestamp - mPeriodic.begin()->timestamp;
 		return diff.count();

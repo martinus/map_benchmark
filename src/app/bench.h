@@ -81,9 +81,12 @@ public:
 			for (auto const& tbe : p.events) {
 				std::cout << tbe.time << " " << tbe.bytes << " " << tbe.event << std::endl;
 			}
+
+			std::cout << (mPeriodicMemoryStats->peak() / (1024.0 * 1024)) << " MB peak memory" << std::endl;
 		}
 
 		std::chrono::duration<double> diff = now - mTimePoint;
+
 		mRuntimeSec = diff.count();
 	}
 

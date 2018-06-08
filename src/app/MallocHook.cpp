@@ -26,7 +26,7 @@
  * IN THE SOFTWARE.
  *****************************************************************************/
 
-#define NO_HOOK
+//#define NO_HOOK
 
 #ifdef NO_HOOK
 
@@ -63,9 +63,9 @@ typedef void* (*malloc_type)(size_t);
 typedef void (*free_type)(void*);
 typedef void* (*realloc_type)(void*, size_t);
 
-static malloc_type real_malloc = NULL;
-static free_type real_free = NULL;
-static realloc_type real_realloc = NULL;
+static malloc_type real_malloc = nullptr;
+static free_type real_free = nullptr;
+static realloc_type real_realloc = nullptr;
 
 /* a simple memory heap for allocations prior to dlsym loading */
 #define INIT_HEAP_SIZE 1024 * 1024
@@ -85,8 +85,8 @@ extern size_t malloc_count_peak(void) {
 	return sMemPeak;
 }
 
-static constexpr size_t Alignment = 16;
-static constexpr size_t Overhead = 8;
+static constexpr size_t Alignment = 2 * sizeof(void*);
+static constexpr size_t Overhead = sizeof(size_t);
 static constexpr size_t MinAlloc = 32;
 
 size_t estimateAllocBytes(size_t size) {
@@ -116,7 +116,11 @@ extern void* malloc(size_t size) {
 	size_t const estimatedBytes = estimateAllocBytes(size);
 
 	*(size_t*)ret = estimatedBytes;
-	sMemCurrent += estimatedBytes;
+	size_t possiblyNewPeak = sMemCurrent += estimatedBytes;
+
+	size_t prevPeak = sMemPeak;
+	while (prevPeak < possiblyNewPeak && !sMemPeak.compare_exchange_weak(prevPeak, possiblyNewPeak)) {
+	}
 
 	return (char*)ret + sizeof(size_t);
 }
@@ -151,7 +155,7 @@ extern void* calloc(size_t nmemb, size_t size) {
 	void* ret;
 	size *= nmemb;
 	if (!size)
-		return NULL;
+		return nullptr;
 	ret = malloc(size);
 	memset(ret, 0, size);
 	return ret;
