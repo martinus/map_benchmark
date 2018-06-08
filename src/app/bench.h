@@ -75,11 +75,11 @@ public:
 			mPeriodicMemoryStats->stop();
 			auto p = mPeriodicMemoryStats->plotly();
 			for (auto const& tb : p.periodics) {
-				std::cout << tb.time << " " << tb.bytes << " " << tb.mallocBytes << std::endl;
+				std::cout << tb.time << " " << tb.bytes << std::endl;
 			}
 
 			for (auto const& tbe : p.events) {
-				std::cout << tbe.time << " " << tbe.bytes << " " << tbe.mallocBytes << tbe.event << std::endl;
+				std::cout << tbe.time << " " << tbe.bytes << " " << tbe.event << std::endl;
 			}
 		}
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "MallocHook.h"
-
 #include <algorithm>
 #include <chrono>
 #include <fstream>
@@ -14,6 +12,8 @@
 #ifdef _WIN32
 #include "Windows.h"
 #include <psapi.h>
+#else
+#include "MallocHook.h"
 #endif
 
 class PeriodicMemoryStats {
@@ -21,7 +21,6 @@ public:
 	struct Stats {
 		std::chrono::time_point<std::chrono::high_resolution_clock> timestamp;
 		size_t memPrivateUsage;
-		size_t mallocBytes;
 
 		bool operator<(const Stats& o) const {
 			if (timestamp < o.timestamp) {
@@ -37,12 +36,10 @@ public:
 	struct TimeBytes {
 		std::string time;
 		std::string bytes;
-		std::string mallocBytes;
 	};
 	struct TimeBytesEvent {
 		std::string time;
 		std::string bytes;
-		std::string mallocBytes;
 		std::string event;
 	};
 	struct Plotly {
@@ -92,7 +89,6 @@ public:
 				TimeBytesEvent tbe;
 				tbe.time = std::to_string(diff.count());
 				tbe.bytes = std::to_string((s.memPrivateUsage / (1024.0 * 1024)));
-				tbe.mallocBytes = std::to_string(s.mallocBytes / (1024.0 * 1024));
 				tbe.event = mEvents[i].second;
 				data.events.push_back(tbe);
 			}
@@ -105,7 +101,6 @@ public:
 			TimeBytes tb;
 			tb.time = std::to_string(diff.count());
 			tb.bytes = std::to_string((s.memPrivateUsage / (1024.0 * 1024)));
-			tb.mallocBytes = std::to_string(s.mallocBytes / (1024.0 * 1024));
 			data.periodics.push_back(tb);
 		}
 
@@ -133,14 +128,9 @@ public:
 			return info.PrivateUsage;
 		}
 #else
-		std::ifstream file("/proc/self/statm");
-		std::string line;
-		std::getline(file, line);
-		// skip VmSize, read resident memory (second value, see man proc)
-		return std::atoll(line.data() + line.find(' ') + 1) * 1024;
-		// return std::atoll(line.data()) * 1024;
+		// can't use mallinfo() because it is extremely slow
+		return malloc_count_current();
 #endif
-		return 0;
 	}
 
 private:
@@ -153,7 +143,6 @@ private:
 
 			s.timestamp = std::chrono::high_resolution_clock::now();
 			s.memPrivateUsage = getMem();
-			s.mallocBytes = sAllocatedMem.load();
 			mPeriodic.push_back(s);
 
 			if (nextStop < s.timestamp) {
@@ -166,7 +155,6 @@ private:
 		// add one last measurement
 		s.timestamp = std::chrono::high_resolution_clock::now();
 		s.memPrivateUsage = getMem();
-		s.mallocBytes = sAllocatedMem.load();
 		mPeriodic.push_back(s);
 	}
 

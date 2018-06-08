@@ -9,7 +9,7 @@ static void InsertHugeInt(Bench& bench) {
 	bench.beginMeasure();
 	{
 		Map<int, int> map;
-		for (size_t n = 0; n < 100'000'000; ++n) {
+		for (size_t n = 0; n < 50'000'000; ++n) {
 			map[bench.rng()];
 		}
 		result += map.size();
@@ -17,7 +17,7 @@ static void InsertHugeInt(Bench& bench) {
 
 		map.clear();
 		bench.event("cleared");
-		for (size_t n = 0; n < 100'000'000; ++n) {
+		for (size_t n = 0; n < 50'000'000; ++n) {
 			map[bench.rng()];
 		}
 		result += map.size();
