@@ -28,20 +28,7 @@
 
 //#define NO_HOOK
 
-#ifdef NO_HOOK
-
-#include "MallocHook.h"
-#include <stdio.h>
-
-extern size_t malloc_count_current(void) {
-	return 0;
-}
-extern size_t malloc_count_peak(void) {
-	return 0;
-}
-extern void malloc_count_reset_peak(void) {}
-
-#else
+#ifdef ENABLE_MALLOC_HOOK
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
@@ -231,5 +218,18 @@ static __attribute__((constructor)) void init(void) {
 		exit(1);
 	}
 }
+
+#else
+
+#include "MallocHook.h"
+#include <stdio.h>
+
+extern size_t malloc_count_current(void) {
+	return 0;
+}
+extern size_t malloc_count_peak(void) {
+	return 0;
+}
+extern void malloc_count_reset_peak(void) {}
 
 #endif

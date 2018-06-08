@@ -65,7 +65,9 @@ public:
 	}
 
 	inline void beginMeasure() {
+#ifdef ENABLE_MALLOC_HOOK
 		mPeriodicMemoryStats = std::make_unique<PeriodicMemoryStats>(0.05);
+#endif
 		mTimePoint = std::chrono::high_resolution_clock::now();
 	}
 

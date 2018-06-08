@@ -1,15 +1,19 @@
 #include "MallocHook.h"
 
-#include "PeriodicMemoryStats.h"
 #include "bench.h"
 
 #include <regex>
 
 std::vector<double> run(std::string const& name, std::function<void(Bench&)> fn) {
 	std::cout << name << std::endl;
-
 	std::vector<double> times;
-	for (size_t i = 0; i < 5; ++i) {
+#ifdef ENABLE_MALLOC_HOOK
+	size_t const runs = 1;
+#else
+	size_t const runs = 10;
+#endif
+
+	for (size_t i = 0; i < runs; ++i) {
 		Bench bench;
 		fn(bench);
 		times.push_back(bench.runtimeSeconds());

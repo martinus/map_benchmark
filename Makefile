@@ -9,9 +9,10 @@ maps=\
 	null_map \
 	skarupke_flat_hash_map
 
-binaries=$(patsubst %,build/%,$(maps))
+memprofile_binaries=$(patsubst %,build/memprofile/%,$(maps))
+runtime_binaries=$(patsubst %,build/runtime/%,$(maps))
 
-all: $(binaries)
+all: $(memprofile_binaries) $(runtime_binaries)
 
 all_fetch: $(patsubst %,fetch/%,$(maps))
 
@@ -19,9 +20,12 @@ fetch/%: src/maps/$(@F)
 	$(MAKE) -C src/maps/$(@F)
 
 clean: 
-	rm -f $(binaries)
+	rm -f $(memprofile_binaries) $(runtime_binaries)
 
-build/%: src/maps/$(@F)
-	$(CXX) $(CXX_FLAGS) -Isrc/maps/$(@F) -Isrc/app -lm -o build/$(@F) src/app/*.cpp src/benchmarks/*.cpp -pthread -ldl
+build/memprofile/%: src/maps/$(@F)
+	$(CXX) $(CXX_FLAGS) -DENABLE_MALLOC_HOOK -Isrc/maps/$(@F) -Isrc/app -lm -o build/memprofile/$(@F) src/app/*.cpp src/benchmarks/*.cpp -pthread -ldl
+
+build/runtime/%: src/maps/$(@F)
+	$(CXX) $(CXX_FLAGS) -Isrc/maps/$(@F) -Isrc/app -lm -o build/runtime/$(@F) src/app/*.cpp src/benchmarks/*.cpp -pthread -ldl
 
 .PHONY: clean all
