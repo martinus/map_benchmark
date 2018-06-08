@@ -9,7 +9,7 @@ static void IterateIntegers(Bench& bench) {
 
 	int result = 0;
 	bench.beginMeasure();
-	for (size_t n = 0; n < 25000; ++n) {
+	for (size_t n = 0; n < 50000; ++n) {
 		map[bench.rng()] = n;
 		for (auto const& keyVal : map) {
 			result += keyVal.first;
@@ -37,7 +37,7 @@ static void IterateClearedWithSingleElement(Bench& bench) {
 
 	int result = 0;
 	bench.beginMeasure();
-	for (size_t n = 0; n < 25000; ++n) {
+	for (size_t n = 0; n < 30000; ++n) {
 		for (auto const& keyVal : map) {
 			result += keyVal.first;
 			result += keyVal.second;

@@ -30,6 +30,11 @@ public:
 
 	constexpr void clear() {}
 
+	template <class... Args>
+	constexpr value_type const* find(Args&&...) const {
+		return (value_type*)0;
+	}
+
 private:
 	Val val;
 };
