@@ -6,13 +6,12 @@ static void RandomInsertErase(Bench& bench) {
 	bench.title("RandomInsertErase");
 	bench.description("randomly inserts and erases int values");
 
-	// setup
 	Map<int, int> map;
 
 	// time measured part
 	bench.beginMeasure();
-	for (size_t n = 10000; n < 20000; ++n) {
-		for (size_t i = 0; i < 10000; ++i) {
+	for (size_t n = 1; n < 100'000; ++n) {
+		for (size_t i = 0; i < 10'000; ++i) {
 			map[bench.rng(n)] = i;
 			map.erase(bench.rng(n));
 		}

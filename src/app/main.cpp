@@ -4,6 +4,16 @@
 
 #include <regex>
 
+double median(std::vector<double> v) {
+	if (v.empty()) {
+		return 0;
+	}
+
+	std::sort(v.begin(), v.end());
+	size_t const s = v.size();
+	return (v[(s - 1) / 2] + v[s / 2]) / 2;
+}
+
 std::vector<double> run(std::string const& name, std::function<void(Bench&)> fn) {
 	std::cout << name << std::endl;
 	std::vector<double> times;
@@ -21,6 +31,8 @@ std::vector<double> run(std::string const& name, std::function<void(Bench&)> fn)
 	}
 
 	std::sort(times.begin(), times.end());
+	std::cout << '\t' << median(times) << " median" << std::endl;
+
 	return times;
 }
 
