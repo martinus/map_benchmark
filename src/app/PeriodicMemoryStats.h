@@ -50,7 +50,8 @@ public:
 	PeriodicMemoryStats(double intervalSeconds)
 		: mIntervalMicros(static_cast<uint64_t>(intervalSeconds * 1000 * 1000))
 		, mDoContinue(true)
-		, mThread(&PeriodicMemoryStats::runner, this) {}
+		, mThread(&PeriodicMemoryStats::runner, this)
+		, mPeakMemory(0) {}
 
 	~PeriodicMemoryStats() {
 		stop();
@@ -58,6 +59,7 @@ public:
 
 	void stop() {
 		if (mDoContinue) {
+			mPeakMemory = peak();
 			mDoContinue = false;
 			mThread.join();
 		}
@@ -73,6 +75,40 @@ public:
 		s.timestamp = std::chrono::high_resolution_clock::now();
 		s.memPrivateUsage = getMem();
 		mEvents.emplace_back(std::move(s), title);
+	}
+
+	struct DataPoint {
+		double timeSec;
+		size_t memByte;
+		std::string title;
+	};
+
+	struct Data {
+		std::vector<DataPoint> periodic;
+		std::vector<DataPoint> event;
+		size_t peakMem;
+	};
+
+	Data data() const {
+		Data data;
+		auto beginSec = mPeriodic[0].timestamp;
+		auto beginByte = mPeriodic[0].memPrivateUsage;
+		data.peakMem = beginByte > mPeakMemory ? 0 : mPeakMemory - beginByte;
+		for (auto const& p : mPeriodic) {
+			DataPoint dp;
+			dp.timeSec = std::chrono::duration<double>(p.timestamp - beginSec).count();
+			dp.memByte = beginByte > p.memPrivateUsage ? 0 : p.memPrivateUsage - beginByte;
+			data.periodic.push_back(dp);
+		}
+		for (auto const& e : mEvents) {
+			DataPoint dp;
+			dp.timeSec = std::chrono::duration<double>(e.first.timestamp - beginSec).count();
+			dp.memByte = beginByte > e.first.memPrivateUsage ? 0 : e.first.memPrivateUsage - beginByte;
+			dp.title = e.second;
+			data.event.push_back(dp);
+		}
+
+		return data;
 	}
 
 	Plotly plotly() const {
@@ -120,7 +156,7 @@ public:
 		return diff.count();
 	}
 
-	const std::vector<std::pair<Stats, std::string>>& events() const {
+	const std::vector<std::pair<Stats, const char*>>& events() const {
 		return mEvents;
 	}
 
@@ -144,7 +180,9 @@ public:
 private:
 	void runner() {
 		auto nextStop = std::chrono::high_resolution_clock::now();
-
+		// make sure we don't allocate
+		mPeriodic.reserve(10000);
+		mEvents.reserve(100);
 		Stats s;
 		while (mDoContinue) {
 			nextStop += std::chrono::microseconds(mIntervalMicros);
@@ -167,10 +205,11 @@ private:
 	}
 
 	std::vector<Stats> mPeriodic;
-	std::vector<std::pair<Stats, std::string>> mEvents;
+	std::vector<std::pair<Stats, const char*>> mEvents;
 
 	uint64_t mIntervalMicros;
 	bool mDoContinue;
 
 	std::thread mThread;
+	size_t mPeakMemory;
 };

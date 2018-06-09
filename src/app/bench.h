@@ -71,20 +71,14 @@ public:
 		mTimePoint = std::chrono::high_resolution_clock::now();
 	}
 
+	PeriodicMemoryStats* periodicMemoryStats() {
+		return mPeriodicMemoryStats.get();
+	}
+
 	inline void endMeasure() {
 		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
 		if (mPeriodicMemoryStats) {
 			mPeriodicMemoryStats->stop();
-			auto p = mPeriodicMemoryStats->plotly();
-			for (auto const& tb : p.periodics) {
-				std::cout << tb.time << " " << tb.bytes << std::endl;
-			}
-
-			for (auto const& tbe : p.events) {
-				std::cout << tbe.time << " " << tbe.bytes << " " << tbe.event << std::endl;
-			}
-
-			std::cout << mPeriodicMemoryStats->peak() << " byte peak memory" << std::endl;
 		}
 
 		std::chrono::duration<double> diff = now - mTimePoint;

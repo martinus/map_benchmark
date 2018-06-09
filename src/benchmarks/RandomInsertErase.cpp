@@ -6,20 +6,26 @@ static void RandomInsertErase(Bench& bench) {
 	bench.title("RandomInsertErase");
 	bench.description("randomly inserts and erases int values");
 
-	Map<int, int> map;
-
 	// time measured part
+	size_t verifier = 0;
 	bench.beginMeasure();
-	for (size_t n = 1; n < 100'000; ++n) {
-		for (size_t i = 0; i < 10'000; ++i) {
-			map[bench.rng(n)] = i;
-			map.erase(bench.rng(n));
+	{
+		Map<int, int> map;
+
+		for (size_t n = 1; n < 100'000; ++n) {
+			for (size_t i = 0; i < 10'000; ++i) {
+				map[bench.rng(n)] = i;
+				verifier += map.erase(bench.rng(n));
+			}
 		}
+		bench.event("destructing");
+		hash_combine(verifier, map.size());
 	}
+	bench.event("done");
 	bench.endMeasure();
 
 	// result map status
-	bench.result(mapHash(map));
+	bench.result(verifier);
 }
 
 static void RandomInsertEraseStrings(Bench& bench) {

@@ -42,22 +42,24 @@
 
 
         var mem_data = [
+            {% for mem in mem_data %}
             {
-                x: [{{mem_x}}],
-                y: [{{mem_y}}],
-                name: '{{mem_name}}',
-                legendgroup: '{{mem_name}}',
+                x: [{{mem.x|join(', ')}}],
+                y: [{{mem.y|join(', ')}}],
+                name: '{{mem.name}}',
+                legendgroup: '{{mem.name}}',
                 fill: 'tozeroy',
                 mode: 'lines'
             },
             {
-                x: [{{mem_events_x}}],
-                y: [{{mem_events_y}}],
-                text: [{{mem_events_names}}],
-                legendgroup: '{{mem_name}}',
+                x: [{{mem.events_x|join(', ')}}],
+                y: [{{mem.events_y|join(', ')}}],
+                text: ['{{mem.events_text|join('\', \'')}}'],
+                legendgroup: '{{mem.name}}',
                 mode: 'markers',
                 showlegend: false
             },
+            {% endfor %}
         ];
 
         var mem_colors = Plotly.d3.scale.category10().range();

@@ -1,7 +1,9 @@
 #include "MallocHook.h"
 
 #include "bench.h"
+#include "map_defines.h"
 
+#include <fstream>
 #include <regex>
 
 double median(std::vector<double> v) {
@@ -14,24 +16,61 @@ double median(std::vector<double> v) {
 	return (v[(s - 1) / 2] + v[s / 2]) / 2;
 }
 
-std::vector<double> run(std::string const& name, std::function<void(Bench&)> fn) {
+std::vector<double> run(std::string const& appname, std::string const& name, std::function<void(Bench&)> fn) {
 	std::cout << name << std::endl;
 	std::vector<double> times;
 #ifdef ENABLE_MALLOC_HOOK
-	size_t const runs = 1;
-#else
-	size_t const runs = 10;
-#endif
+	Bench bench;
+	fn(bench);
+	auto const& d = bench.periodicMemoryStats()->data();
 
-	for (size_t i = 0; i < runs; ++i) {
+	// write JSON results
+	std::ofstream fout(name + "_" + appname + ".json");
+	fout << "{\"name\": \"" << MapName << "\",\n\"x\": [";
+	const char* pre = "";
+	for (auto const& p : d.periodic) {
+		fout << pre << p.timeSec;
+		pre = ", ";
+	}
+	fout << "],\n\"y\": [";
+
+	pre = "";
+	for (auto const& p : d.periodic) {
+		fout << pre << p.memByte;
+		pre = ", ";
+	}
+	fout << "],\n";
+
+	fout << "\"events_x\": [";
+	pre = "";
+	for (auto const& e : d.event) {
+		fout << pre << e.timeSec;
+		pre = ", ";
+	}
+	fout << "],\n\"events_y\": [";
+	pre = "";
+	for (auto const& e : d.event) {
+		fout << pre << e.memByte;
+		pre = ", ";
+	}
+	fout << "],\n\"events_text\": [";
+	pre = "";
+	for (auto const& e : d.event) {
+		fout << pre << '"' << e.title << '"';
+		pre = ", ";
+	}
+	fout << "],\n\"peak\": " << d.peakMem << "\n}\n";
+
+	std::cout << bench.str();
+#else
+	for (size_t i = 0; i < 10; ++i) {
 		Bench bench;
 		fn(bench);
 		times.push_back(bench.runtimeSeconds());
 		std::cout << "\t" << bench.str() << std::endl;
 	}
-
 	std::sort(times.begin(), times.end());
-	std::cout << '\t' << median(times) << " median" << std::endl;
+#endif
 
 	return times;
 }
@@ -42,7 +81,7 @@ void list(std::vector<std::string> const& args) {
 	}
 }
 
-void filter(std::vector<std::string> const& args) {
+void filter(std::string const& appname, std::vector<std::string> const& args) {
 	std::regex reFilter(args.at(1));
 	std::smatch baseMatch;
 
@@ -51,7 +90,7 @@ void filter(std::vector<std::string> const& args) {
 			continue;
 		}
 
-		run(nameFn.first, nameFn.second);
+		run(appname, nameFn.first, nameFn.second);
 	}
 }
 
@@ -61,6 +100,10 @@ void help(std::vector<std::string> const& args) {
 
 int main(int cargi, char** cargv) {
 	std::vector<std::string> args(cargv + 1, cargv + cargi);
+
+	std::string appname = cargv[0];
+	auto const pos = appname.find_last_of('/');
+	appname = appname.substr(pos + 1);
 
 	// default to running all benchmarks
 	if (args.empty()) {
@@ -74,7 +117,7 @@ int main(int cargi, char** cargv) {
 		break;
 
 	case 'f':
-		filter(args);
+		filter(appname, args);
 		break;
 
 	default:

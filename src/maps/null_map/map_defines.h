@@ -18,7 +18,9 @@ public:
 	constexpr size_t size() {
 		return 0;
 	}
-	constexpr void erase(const Key&) {}
+	constexpr size_t erase(const Key&) {
+		return 0;
+	}
 
 	constexpr value_type const* begin() const {
 		return (value_type*)0;
