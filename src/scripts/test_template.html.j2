@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <h1>{{title}}</h1>
+    <div id="scatter_chart"></div>
+    <div id="mem_chart"></div>
+    <script>
+        var scatter_data = [
+            {
+                x: [{{scatter_x}}],
+                y: [{{scatter_y}}],
+                mode: 'markers+text',
+                type: 'scatter',
+                name: 'Team A',
+                text: [{{scatter_names}}],
+                textposition: 'top center',
+                marker: { size: 12 }
+            }
+        ];
+        var scatter_layout = {
+            xaxis: {
+                title: 'total runtime [sec]',
+                rangemode: 'tozero'
+            },
+            yaxis: {
+                title: 'memory usage [MB]',
+                rangemode: 'tozero'
+            },
+            showlegend: false,
+            //legend: {"orientation": "h"},
+            autosize: true,
+        };
+        Plotly.newPlot('scatter_chart', scatter_data, scatter_layout);
+
+
+
+        var mem_data = [
+            {
+                x: [{{mem_x}}],
+                y: [{{mem_y}}],
+                name: '{{mem_name}}',
+                legendgroup: '{{mem_name}}',
+                fill: 'tozeroy',
+                mode: 'lines'
+            },
+            {
+                x: [{{mem_events_x}}],
+                y: [{{mem_events_y}}],
+                text: [{{mem_events_names}}],
+                legendgroup: '{{mem_name}}',
+                mode: 'markers',
+                showlegend: false
+            },
+        ];
+
+        var mem_colors = Plotly.d3.scale.category10().range();
+        for (var i = 0; i < mem_data.length; i += 2) {
+            mem_data[i]['line'] = { color: mem_colors[i / 2 % mem_colors.length] };
+            mem_data[i + 1]["marker"] = { color: mem_colors[i / 2 % mem_colors.length], size: 8 }
+        }
+
+        var mem_layout = {
+            title: 'insert 1000M 10M int',
+            xaxis: {
+                title: 'total runtime [sec]',
+                rangemode: 'tozero'
+            },
+            yaxis: {
+                title: 'memory usage [MB]',
+                rangemode: 'tozero'
+            },
+            showlegend: true,
+            //legend: {"orientation": "h"},
+            autosize: true,
+            height: 1000
+        }
+        Plotly.d3.scale.category20();
+        Plotly.newPlot('mem_chart', mem_data, mem_layout);
+    </script>
+</body>
+
+</html>
