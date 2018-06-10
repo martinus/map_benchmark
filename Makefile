@@ -28,4 +28,12 @@ build/memprofile/%: src/maps/$(@F)
 build/runtime/%: src/maps/$(@F)
 	$(CXX) $(CXX_FLAGS) -Isrc/maps/$(@F) -Isrc/app -lm -o build/runtime/$(@F) src/app/*.cpp src/benchmarks/*.cpp -pthread -ldl
 
+run_memprofile:
+	$(eval TESTS=$(shell build/memprofile/std_unordered_map l))
+	for test in $(TESTS); do \
+		for bin in $(memprofile_binaries); do \
+			./$$bin f $$test; \
+		done \
+	done
+
 .PHONY: clean all

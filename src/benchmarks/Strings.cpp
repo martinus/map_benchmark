@@ -5,6 +5,8 @@
 #include <string>
 
 void strfindbench(Bench& bench, size_t len) {
+	auto& rng = bench.rng();
+
 	Map<std::string, int> map;
 
 	std::string query(len, 'x');
@@ -12,11 +14,11 @@ void strfindbench(Bench& bench, size_t len) {
 	size_t testHash = 0;
 	bench.beginMeasure();
 	for (size_t n = 0; n < 1'000'000; ++n) {
-		*reinterpret_cast<uint64_t*>(&query[0]) = bench.rng(1'000'000);
+		*reinterpret_cast<uint64_t*>(&query[0]) = rng(1'000'000);
 
-		map[query] = bench.rng();
+		map[query] = rng();
 		for (size_t q = 0; q < 100; ++q) {
-			*reinterpret_cast<uint64_t*>(&query[0]) = bench.rng(100'000);
+			*reinterpret_cast<uint64_t*>(&query[0]) = rng(100'000);
 			if (map.find(query) == map.end()) {
 				++testHash;
 			}

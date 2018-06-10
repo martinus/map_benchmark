@@ -2,52 +2,101 @@
 
 #include "bench.h"
 
-static const size_t NumEntriesStart = 100'000;
-static const size_t NumEntriesStop = 200'000;
+template <class Generator>
+void randomFindExisting(Bench& bench, Generator const& generator) {
+	auto& rng = bench.rng();
 
-template <int Offset>
-void randomFindBench(Bench& bench) {
-	Map<int, int> map;
-
-	int i;
-	while (i < NumEntriesStart) {
-		map[i + Offset] = i;
-		++i;
-	}
+	Map<uint32_t, uint32_t> map;
 
 	// time measured part
-	size_t found = 0;
 	bench.beginMeasure();
 
-	while (i < NumEntriesStop) {
-		for (int j = 0; j < 100; ++j) {
-			map[i + Offset] = i;
-			++i;
-		}
+	auto const begin_state = rng.state();
 
-		for (size_t n = 1; n < 100'000; ++n) {
-			if (map.find(bench.rng(i)) != map.end()) {
-				++found;
+	auto insertion_state = rng.state();
+	auto find_state = rng.state();
+
+	size_t found = 0;
+	size_t not_found = 0;
+
+	for (size_t iters = 0; iters < 20; ++iters) {
+		// recover rng state for insertion
+		rng.state(insertion_state);
+		for (int j = 0; j < 100'000; ++j) {
+			map[generator(rng)] = j;
+		}
+		bench.event("inserted 100.000");
+		insertion_state = rng.state();
+
+		rng.state(find_state);
+		for (size_t n = 1; n < 100'000'000; ++n) {
+			auto it = map.find(generator(rng));
+			if (it == map.end()) {
+				++not_found;
+				// element not found - set state back to begin so we look for only existing entries
+				rng.state(begin_state);
+			} else {
+				found += it->second;
 			}
 		}
+		bench.event("found 100.000.000");
+
+		// remember where we stopped searching
+		find_state = rng.state();
 	}
 	bench.endMeasure();
 
+	std::cout << found << " found, " << not_found << " not found" << std::endl;
+
 	hash_combine(found, mapHash(map));
+
 	bench.result(found);
 }
 
 static void RandomFindExisting(Bench& bench) {
 	bench.title("RandomFindExisting");
 	bench.description("randomly find existing values");
-	randomFindBench<0>(bench);
+
+	randomFindExisting(bench, [](XoRoShiRo128Plus& rng) { return rng(); });
 }
 
 static void RandomFindNonExisting(Bench& bench) {
 	bench.title("RandomFindNonExisting");
 	bench.description("randomly find existing values");
 
-	randomFindBench<(std::numeric_limits<int>::max)() / 2>(bench);
+	auto& rng = bench.rng();
+
+	Map<uint32_t, uint32_t> map;
+
+	size_t found = 0;
+	size_t not_found = 0;
+
+	bench.beginMeasure();
+	for (size_t iters = 0; iters < 20; ++iters) {
+		// recover rng state for insertion
+		for (int j = 0; j < 100'000; ++j) {
+			map[rng()] = j;
+		}
+		bench.event("inserted 100.000");
+
+		for (size_t n = 1; n < 100'000'000; ++n) {
+			auto it = map.find(rng());
+			if (it == map.end()) {
+				++not_found;
+			} else {
+				found += it->second;
+			}
+		}
+		bench.event("found 100.000.000");
+	}
+	bench.event("done");
+	bench.endMeasure();
+
+	std::cout << found << " found, " << not_found << " not found" << std::endl;
+
+	hash_combine(found, mapHash(map));
+
+	bench.result(found);
 }
 
 static BenchRegister reg(RandomFindExisting, RandomFindNonExisting);

@@ -5,6 +5,7 @@
 static void RandomInsertErase(Bench& bench) {
 	bench.title("RandomInsertErase");
 	bench.description("randomly inserts and erases int values");
+	auto& rng = bench.rng();
 
 	// time measured part
 	size_t verifier = 0;
@@ -14,8 +15,8 @@ static void RandomInsertErase(Bench& bench) {
 
 		for (size_t n = 1; n < 100'000; ++n) {
 			for (size_t i = 0; i < 10'000; ++i) {
-				map[bench.rng(n)] = i;
-				verifier += map.erase(bench.rng(n));
+				map[rng(n)] = i;
+				verifier += map.erase(rng(n));
 			}
 		}
 		bench.event("destructing");
@@ -30,6 +31,7 @@ static void RandomInsertErase(Bench& bench) {
 
 static void RandomInsertEraseStrings(Bench& bench) {
 	bench.title("RandomInsertEraseStrings: map with strings");
+	auto& rng = bench.rng();
 
 	// setup
 	Map<std::string, int> map;
@@ -40,9 +42,9 @@ static void RandomInsertEraseStrings(Bench& bench) {
 	bench.beginMeasure();
 	for (size_t n = 10000; n < 20000; ++n) {
 		for (size_t i = 0; i < 10000; ++i) {
-			*reinterpret_cast<uint64_t*>(&str[20]) = bench.rng(n);
+			*reinterpret_cast<uint64_t*>(&str[20]) = rng(n);
 			map[str] = i;
-			*reinterpret_cast<uint64_t*>(&str[20]) = bench.rng(n);
+			*reinterpret_cast<uint64_t*>(&str[20]) = rng(n);
 			map.erase(str);
 		}
 	}

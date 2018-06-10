@@ -4,13 +4,14 @@
 
 static void IterateIntegers(Bench& bench) {
 	bench.title("IterateIntegers");
+	auto& rng = bench.rng();
 
 	Map<int, int> map;
 
 	int result = 0;
 	bench.beginMeasure();
 	for (size_t n = 0; n < 50000; ++n) {
-		map[bench.rng()] = n;
+		map[rng()] = n;
 		for (auto const& keyVal : map) {
 			result += keyVal.first;
 			result += keyVal.second;
@@ -24,6 +25,7 @@ static void IterateIntegers(Bench& bench) {
 
 static void IterateClearedWithSingleElement(Bench& bench) {
 	bench.title("IterateClearedWithSingleElement");
+	auto& rng = bench.rng();
 
 	Map<size_t, int> map;
 	for (size_t i = 0; i < 100000; ++i) {
@@ -33,7 +35,7 @@ static void IterateClearedWithSingleElement(Bench& bench) {
 	map.clear();
 
 	// now there is just a single element in the map
-	map[bench.rng()] = bench.rng();
+	map[rng()] = rng();
 
 	int result = 0;
 	bench.beginMeasure();

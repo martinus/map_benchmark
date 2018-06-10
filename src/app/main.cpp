@@ -17,7 +17,6 @@ double median(std::vector<double> v) {
 }
 
 std::vector<double> run(std::string const& appname, std::string const& name, std::function<void(Bench&)> fn) {
-	std::cout << name << std::endl;
 	std::vector<double> times;
 #ifdef ENABLE_MALLOC_HOOK
 	Bench bench;
@@ -61,7 +60,7 @@ std::vector<double> run(std::string const& appname, std::string const& name, std
 	}
 	fout << "],\n\"peak\": " << d.peakMem << "\n}\n";
 
-	std::cout << bench.str();
+	std::cout << bench.str() << " " << MapName << std::endl;
 #else
 	for (size_t i = 0; i < 10; ++i) {
 		Bench bench;

@@ -33,3 +33,6 @@
 
 # ide
 .vscode
+
+# generated files
+*.json

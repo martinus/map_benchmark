@@ -9,7 +9,7 @@ static void CtorDtorEmptyMap(Bench& bench) {
 	bench.beginMeasure();
 	for (size_t n = 0; n < 1'000'000'000; ++n) {
 		Map<int, int> map;
-		result += sizeof(map);
+		result += map.size();
 	}
 	bench.endMeasure();
 

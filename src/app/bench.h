@@ -59,9 +59,8 @@ public:
 		}
 	}
 
-	template <class... Args>
-	auto rng(Args&&... args) {
-		return mRng(std::forward<Args>(args)...);
+	XoRoShiRo128Plus& rng() {
+		return mRng;
 	}
 
 	inline void beginMeasure() {
