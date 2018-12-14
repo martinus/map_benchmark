@@ -4,6 +4,7 @@ CXX_FLAGS=-g -O2 -std=c++14
 
 maps=\
 	robin_hood_map \
+	robin_hood_map2 \
 	std_unordered_map \
 	std_map \
 	null_map \
@@ -28,8 +29,10 @@ build/memprofile/%: src/maps/$(@F)
 build/runtime/%: src/maps/$(@F)
 	$(CXX) $(CXX_FLAGS) -Isrc/maps/$(@F) -Isrc/app -lm -o build/runtime/$(@F) src/app/*.cpp src/benchmarks/*.cpp -pthread -ldl
 
+# $(eval TESTS=$(shell build/memprofile/std_unordered_map l))
+TESTS := RandomFindExisting RandomFindNonExisting
+
 run_memprofile:
-	$(eval TESTS=$(shell build/memprofile/std_unordered_map l))
 	for test in $(TESTS); do \
 		for bin in $(memprofile_binaries); do \
 			./$$bin f $$test; \

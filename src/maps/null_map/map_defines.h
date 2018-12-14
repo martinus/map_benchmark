@@ -15,6 +15,9 @@ public:
 		return val;
 	}
 
+	template <class... Args>
+	constexpr void emplace(Args&&...) {}
+
 	constexpr size_t size() {
 		return 0;
 	}
