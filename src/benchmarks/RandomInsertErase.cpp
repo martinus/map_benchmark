@@ -30,7 +30,7 @@ static void RandomInsertErase(Bench& bench) {
 }
 
 static void RandomInsertEraseStrings(Bench& bench) {
-	bench.title("RandomInsertEraseStrings: map with strings");
+	bench.title("RandomInsertEraseStrings");
 	auto& rng = bench.rng();
 
 	// setup

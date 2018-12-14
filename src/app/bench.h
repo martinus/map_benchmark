@@ -2,7 +2,7 @@
 
 #include <MapHash.h>
 #include <PeriodicMemoryStats.h>
-#include <XoRoShiRo128Plus.h>
+#include <sfc64.h>
 
 #include <algorithm>
 #include <chrono>
@@ -59,7 +59,7 @@ public:
 		}
 	}
 
-	XoRoShiRo128Plus& rng() {
+	sfc64& rng() {
 		return mRng;
 	}
 
@@ -90,11 +90,10 @@ public:
 	}
 
 	std::string str() const {
-		auto const& state = mRng.state();
-
 		size_t s = 0;
-		hash_combine(s, state.first);
-		hash_combine(s, state.second);
+		for (auto const& x : mRng.state()) {
+			hash_combine(s, x);
+		}
 		hash_combine(s, mResult);
 
 		std::stringstream ss;
@@ -105,7 +104,7 @@ public:
 
 private:
 	uint64_t const mSeed;
-	XoRoShiRo128Plus mRng;
+	sfc64 mRng;
 	std::string mTitle;
 	size_t const mNumTrials;
 	size_t mCurrentTrial;

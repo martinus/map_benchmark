@@ -58,7 +58,7 @@ static void RandomFindExisting(Bench& bench) {
 	bench.title("RandomFindExisting");
 	bench.description("randomly find existing values");
 
-	run<uint32_t, uint32_t>(bench, [](XoRoShiRo128Plus& rng) { return rng(); });
+	run<uint32_t, uint32_t>(bench, [](auto& rng) { return rng(); });
 }
 
 struct Data {
@@ -78,7 +78,7 @@ uint64_t hash_value(Data const& data) {
 static void RandomFindExistingBig(Bench& bench) {
 	bench.title("RandomFindExistingBig");
 
-	run<uint32_t, Data>(bench, [](XoRoShiRo128Plus& rng) { return rng(); });
+	run<uint32_t, Data>(bench, [](auto& rng) { return rng(); });
 }
 
 static BenchRegister reg(RandomFindExisting, RandomFindExistingBig);
