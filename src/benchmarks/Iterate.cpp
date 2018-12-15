@@ -6,17 +6,22 @@ static void IterateIntegers(Bench& bench) {
 	bench.title("IterateIntegers");
 	auto& rng = bench.rng();
 
-	Map<int, int> map;
-
 	int result = 0;
-	bench.beginMeasure();
-	for (size_t n = 0; n < 50000; ++n) {
-		map[rng()] = n;
-		for (auto const& keyVal : map) {
-			result += keyVal.first;
-			result += keyVal.second;
+	{
+		Map<int, int> map;
+
+		bench.beginMeasure();
+		for (size_t n = 0; n < 50000; ++n) {
+			map[rng()] = n;
+			for (auto const& keyVal : map) {
+				result += keyVal.first;
+				result += keyVal.second;
+			}
 		}
+		bench.event("destructing");
 	}
+
+	bench.event("done");
 	bench.endMeasure();
 
 	// result map status

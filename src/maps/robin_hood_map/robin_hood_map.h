@@ -5,16 +5,14 @@
 #include <functional>
 #include <utility>
 
-/*  Macro to cut down on compiler warnings. */
-#if 1                                 /*  there should be no more any compilers needing the "#else" version */
-#define ROBIN_HOOD_UNUSED(identifier) /* identifier */
-#else                                 /*  stupid, broken compiler */
-#define ROBIN_HOOD_UNUSED(identifier) identifier
-#endif
+#include <iostream>
 
-#if UINTPTR_MAX == UINT32_MAX
+// mark unused members with this macro
+#define ROBIN_HOOD_UNUSED(identifier)
+
+#if SIZE_MAX == UINT32_MAX
 #define ROBIN_HOOD_BITNESS 32
-#elif UINTPTR_MAX == UINT64_MAX
+#elif SIZE_MAX == UINT64_MAX
 #define ROBIN_HOOD_BITNESS 64
 #else
 #error Unsupported bitness
@@ -40,179 +38,19 @@ namespace robin_hood {
 
 namespace detail {
 
+// make sure this is not inlined as it is slow and dramatically enlarges code, thus making other inlinings more difficult.
+// Throws are also generally the slow path.
 template <class E, class... Args>
-ROBIN_HOOD_NOINLINE void doThrow(Args&&... args) {
+static ROBIN_HOOD_NOINLINE void doThrow(Args&&... args) {
 	throw E(std::forward<Args>(args)...);
 }
 
 template <class E, class T, class... Args>
-inline T* assertNotNull(T* t, Args&&... args) {
+static T* assertNotNull(T* t, Args&&... args) {
 	if (nullptr == t) {
 		doThrow<E>(std::forward<Args>(args)...);
 	}
 	return t;
-}
-
-template <class E, class... Args>
-inline void assertTrue(bool x, Args&&... args) {
-	if (!x) {
-		doThrow<E>(std::forward<Args>(args)...);
-	}
-}
-
-template <class T>
-struct aliasing_value_wrapper {
-	typedef T ROBIN_HOOD_ATTRIBUTE_MAY_ALIAS T_a;
-	T_a value;
-} ROBIN_HOOD_ATTRIBUTE_MAY_ALIAS;
-
-template <class T>
-using load_address_arg_t = std::conditional_t<std::is_volatile<T>::value, void const volatile*, void const*>;
-
-template <class T>
-using store_address_arg_t = std::conditional_t<std::is_volatile<T>::value, void volatile*, void*>;
-
-#ifdef __IBMCPP__
-#pragma pack(1)
-#else
-#pragma pack(push, 1)
-#endif
-// having the structs packed forces the compiler to handle unaligned access
-template <class T>
-struct unaligned_value_wrapper {
-	typedef T ROBIN_HOOD_ATTRIBUTE_MAY_ALIAS T_a;
-	T_a value;
-	unsigned char dummy[(sizeof(T) & 1) ? 2 : 1]; // try to force odd size (force compiler to expect unaligned start address)
-} ROBIN_HOOD_ATTRIBUTE_MAY_ALIAS;
-#pragma pack(pop)
-
-template <typename T>
-inline T aliasing_load(detail::load_address_arg_t<T> addr) {
-	static_assert(std::is_integral<T>::value, "T must be integral");
-	return static_cast<detail::aliasing_value_wrapper<T> const*>(addr)->value;
-}
-
-template <typename T>
-inline void aliasing_store(detail::store_address_arg_t<T> addr, std::add_const_t<T> value) {
-	// We use `std::add_const_t` to suppress template parameter type deduction because it would be DANGEROUS here!
-	// (Adding const isn't necessary, but it also doesn't hurt here, and since there is no std::identity...)
-	static_assert(std::is_integral<T>::value, "T must be integral");
-	static_cast<detail::aliasing_value_wrapper<T>*>(addr)->value = value;
-}
-
-template <typename T>
-inline T unaligned_load(detail::load_address_arg_t<T> addr) {
-	static_assert(std::is_integral<T>::value, "T must be integral");
-	return static_cast<detail::unaligned_value_wrapper<T> const*>(addr)->value;
-}
-
-template <typename T>
-inline void unaligned_store(detail::store_address_arg_t<T> addr, std::add_const_t<T> value) {
-	// We use `std::add_const_t` to suppress template parameter type deduction because it would be DANGEROUS here!
-	// (Adding const isn't necessary, but it also doesn't hurt here, and since there is no std::identity...)
-	static_assert(std::is_integral<T>::value, "T must be integral");
-	static_cast<detail::unaligned_value_wrapper<T>*>(addr)->value = value;
-}
-
-// Traits class for aligned memory access - can be used to specialize algorithms
-struct AlignedMemoryAccessTraits {
-	template <class T>
-	static T load(detail::load_address_arg_t<T> addr) {
-		return aliasing_load<T>(addr);
-	}
-
-	template <class T>
-	static void store(detail::store_address_arg_t<T> addr, std::add_const_t<T> value) {
-		// We use `std::add_const_t` to suppress template parameter type deduction because it would be DANGEROUS here!
-		// (Adding const isn't necessary, but it also doesn't hurt here, and since there is no std::identity...)
-		return aliasing_store<T>(addr, value);
-	}
-};
-
-// Traits class for unaligned memory access - can be used to specialize algorithms
-struct UnalignedMemoryAccessTraits {
-	template <class T>
-	static T load(detail::load_address_arg_t<T> addr) {
-		return unaligned_load<T>(addr);
-	}
-
-	template <class T>
-	static void store(typename detail::store_address_arg_t<T>::type addr, std::add_const_t<T> value) {
-		// We use `std::add_const_t` to suppress template parameter type deduction because it would be DANGEROUS here!
-		// (Adding const isn't necessary, but it also doesn't hurt here, and since there is no std::identity...)
-		return unaligned_store<T>(addr, value);
-	}
-};
-
-template <typename T>
-inline uintptr_t pointer_to_offset(const T* const t) {
-	return static_cast<const char*>(t) - static_cast<const char*>(nullptr);
-}
-
-template <typename T>
-inline bool check_alignment(const void* const ptr) {
-	return pointer_to_offset(ptr) % std::alignment_of<T>::value == 0;
-}
-
-// does NOT perform native to little conversion!
-template <class AlignmentTraits>
-inline uint64_t murmur_hash_2_no_native_to_little_64A(void const* key, size_t len, uint64_t seed) {
-	static uint64_t const m = UINT64_C(0xc6a4a7935bd1e995);
-	static int const r = 47;
-
-	uint64_t h = seed ^ (len * m);
-
-	uint64_t const* data = reinterpret_cast<uint64_t const*>(key);
-	uint64_t const* end = data + (len / 8);
-
-	while (data != end) {
-		// uint64_t k = boost::endian::native_to_little(AlignmentTraits::template load<uint64_t>(data++));
-		uint64_t k = AlignmentTraits::template load<uint64_t>(data++);
-
-		k *= m;
-		k ^= k >> r;
-		k *= m;
-
-		h ^= k;
-		h *= m;
-	}
-
-	unsigned char const* data2 = reinterpret_cast<unsigned char const*>(data);
-
-	switch (len & 7) {
-	case 7:
-		h ^= static_cast<uint64_t>(data2[6]) << 48;
-		/* FALLTHRU */
-	case 6:
-		h ^= static_cast<uint64_t>(data2[5]) << 40;
-		/* FALLTHRU */
-	case 5:
-		h ^= static_cast<uint64_t>(data2[4]) << 32;
-		/* FALLTHRU */
-	case 4:
-		h ^= static_cast<uint64_t>(data2[3]) << 24;
-		/* FALLTHRU */
-	case 3:
-		h ^= static_cast<uint64_t>(data2[2]) << 16;
-		/* FALLTHRU */
-	case 2:
-		h ^= static_cast<uint64_t>(data2[1]) << 8;
-		/* FALLTHRU */
-	case 1:
-		h ^= static_cast<uint64_t>(data2[0]);
-		h *= m;
-	};
-
-	h ^= h >> r;
-	h *= m;
-	h ^= h >> r;
-
-	return h;
-}
-
-inline uint64_t murmur_hash_2_no_native_to_little_64A(void const* key, size_t len, uint64_t seed = 0xe17a1465) {
-	return check_alignment<uint64_t>(key) ? murmur_hash_2_no_native_to_little_64A<AlignedMemoryAccessTraits>(key, len, seed)
-										  : murmur_hash_2_no_native_to_little_64A<UnalignedMemoryAccessTraits>(key, len, seed);
 }
 
 // Allocates bulks of memory for objects of type T. This deallocates the memory in the destructor, and keeps a linked list of the allocated memory
@@ -255,7 +93,7 @@ public:
 	}
 
 	// Deallocates all allocated memory.
-	inline void reset() {
+	void reset() {
 		while (mListForFree) {
 			T* tmp = *mListForFree;
 			free(mListForFree);
@@ -267,7 +105,7 @@ public:
 	// allocates, but does NOT initialize. Use in-place new constructor, e.g.
 	//   T* obj = pool.allocate();
 	//   new (obj) T();
-	inline T* allocate() {
+	T* allocate() {
 		T* tmp = mHead;
 		if (!tmp) {
 			tmp = performAllocation();
@@ -281,14 +119,14 @@ public:
 	// make sure you have already called the destructor! e.g. with
 	//  obj->~T();
 	//  pool.deallocate(obj);
-	inline void deallocate(T* obj) {
+	void deallocate(T* obj) {
 		*reinterpret_cast<T**>(obj) = mHead;
 		mHead = obj;
 	}
 
 	// Adds an already allocated block of memory to the allocator. This allocator is from now on responsible for freeing the data (with free()). If
 	// the provided data is not large enough to make use of, it is immediately freed. Otherwise it is reused and freed in the destructor.
-	inline void addOrFree(void* ptr, const size_t numBytes) {
+	void addOrFree(void* ptr, const size_t numBytes) {
 		// calculate number of available elements in ptr
 		if (numBytes < ALIGNMENT + ALIGNED_SIZE) {
 			// not enough data for at least one element. Free and return.
@@ -298,16 +136,17 @@ public:
 		}
 	}
 
-	inline void swap(BulkPoolAllocator<T, MinNumAllocs, MaxNumAllocs>& other) {
-		std::swap(mHead, other.mHead);
-		std::swap(mListForFree, other.mListForFree);
+	void swap(BulkPoolAllocator<T, MinNumAllocs, MaxNumAllocs>& other) {
+		using std::swap;
+		swap(mHead, other.mHead);
+		swap(mListForFree, other.mListForFree);
 	}
 
 private:
 	// iterates the list of allocated memory to calculate how many to alloc next.
 	// Recalculating this each time saves us a size_t member.
 	// This ignores the fact that memory blocks might have been added manually with addOrFree. In practice, this should not matter much.
-	inline size_t calcNumElementsToAlloc() const {
+	size_t calcNumElementsToAlloc() const {
 		T** tmp = mListForFree;
 		size_t numAllocs = MinNumAllocs;
 
@@ -370,42 +209,6 @@ private:
 	T** mListForFree;
 };
 
-// fmix functions taken from MurmurHash3. See https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
-// Necessary when e.g. purepath uses two small 32bit values concatenated.
-static inline uint32_t fmix32(uint32_t h) {
-	h ^= h >> 16;
-	h *= 0x85ebca6b;
-	h ^= h >> 13;
-	h *= 0xc2b2ae35;
-	h ^= h >> 16;
-	return h;
-}
-
-static inline uint64_t fmix64(uint64_t k) {
-	k ^= k >> 33;
-	k *= 0xff51afd7ed558ccdULL;
-	k ^= k >> 33;
-	k *= 0xc4ceb9fe1a85ec53ULL;
-	k ^= k >> 33;
-	return k;
-}
-
-inline size_t calcMaxNumElementsAllowed128(size_t maxElements, uint8_t maxLoadFactor128) {
-	// make sure we can't get an overflow, use floatingpoint arithmetic if necessary.
-	return (maxElements > static_cast<size_t>(-1) / 128) ? static_cast<size_t>((static_cast<double>(maxElements) * maxLoadFactor128) / 128.0)
-														 : (maxElements * maxLoadFactor128) / 128;
-}
-
-inline uint8_t calcMaxLoadFactor128(float ml) {
-	// convert max load factor to multiple of it (factor 128) so we can perform fixed point operations.
-	// factor 128 should be precise enough.
-	return ml >= 1 ? 128 : static_cast<uint8_t>(128 * ml + 0.5f);
-}
-
-// All empty maps initial mInfo point to this infobyte. That way lookup in an empty map
-// always returns false, and this is a very hot byte.
-static uint8_t sDummyInfoByte = 0;
-
 template <class T, size_t MinSize, size_t MaxSize, bool IsDirect>
 struct NodeAllocator;
 
@@ -422,109 +225,18 @@ struct NodeAllocator<T, MinSize, MaxSize, true> {
 template <class T, size_t MinSize, size_t MaxSize>
 struct NodeAllocator<T, MinSize, MaxSize, false> : public BulkPoolAllocator<T, MinSize, MaxSize> {};
 
-} // namespace detail
-
-template <class T>
-struct EqualTo;
-
-template <class T>
-struct FastHash;
+// All empty maps initial mInfo point to this infobyte. That way lookup in an empty map
+// always returns false, and this is a very hot byte.
+//
+// we have to use data >1byte (at least 2 bytes), because initially we set mShift to 63 (has to be <63),
+// so initial index will be 0 or 1.
+static uint64_t sDummyInfoByte = 0;
 
 template <class First, class Second>
 struct Pair;
 
-template <class Key, class T, class Hash = FastHash<Key>, class KeyEqual = EqualTo<Key>,
-		  // Use direct map only when move does not throw, so swap and resize is possible without copying stuff.
-		  // also make sure data is not too large, then swap might be slow.
-		  bool IsDirect = sizeof(Key) + sizeof(T) <= sizeof(void*) * 3 &&
-						  std::is_nothrow_move_constructible<std::pair<Key, T>>::value&& std::is_nothrow_move_assignable<std::pair<Key, T>>::value>
-class map;
-
-struct is_transparent_tag {};
-
-// provide my own equal_to implementation because equal_to<> only exists since C++14
-// see http://en.cppreference.com/w/cpp/utility/functional/equal_to_void
-template <class T = void>
-struct EqualTo {
-	bool operator()(const T& lhs, const T& rhs) const {
-		return lhs == rhs;
-	}
-};
-
-template <>
-struct EqualTo<void> {
-	template <class T, class U>
-	bool operator()(const T& lhs, const U& rhs) const {
-		return lhs == rhs;
-	}
-};
-
-template <class T = void>
-struct FastHash {
-	size_t operator()(const T& t) const {
-		return std::hash<T>()(t);
-	}
-};
-
-template <>
-struct FastHash<void> {
-	template <class T>
-	size_t operator()(const T& t) const {
-		// forward to FastHash<T>, NOT std::hash<T> so we get our overloads
-		return FastHash<T>()(t);
-	}
-};
-
-template <>
-struct FastHash<std::string> {
-	size_t operator()(const std::string& t) const {
-		return detail::murmur_hash_2_no_native_to_little_64A(t.data(), t.size());
-	}
-};
-
-template <size_t N>
-struct FastHash<char[N]> {
-	size_t operator()(char const(str)[N]) const {
-		// -1 so we don't hash the trailing \0
-		return detail::murmur_hash_2_no_native_to_little_64A(str, N - 1);
-	}
-};
-
-template <>
-struct FastHash<uint32_t> {
-	size_t operator()(const uint32_t& t) const {
-#if ROBIN_HOOD_BITNESS == 64
-		return detail::fmix64(t);
-#elif ROBIN_HOOD_BITNESS == 32
-		return detail::fmix32(t);
-#endif
-	}
-};
-
-template <>
-struct FastHash<int32_t> {
-	size_t operator()(const uint32_t& t) const {
-		return FastHash<uint32_t>()(t);
-	}
-};
-
-template <>
-struct FastHash<uint64_t> {
-	size_t operator()(const uint64_t& t) const {
-		// always use fmix64 to make sure all bits of t are mixed
-		return detail::fmix64(t);
-	}
-};
-
-template <>
-struct FastHash<int64_t> {
-	size_t operator()(const int64_t& t) const {
-		return FastHash<uint64_t>()(t);
-	}
-};
-
-// Added a custom Pair implementation because std::pair is not is_trivially_copyable, which means it is not allowed to use it in std::memcpy. This
-// struct is copyable, which is also tested.
+// A custom Pair implementation is used in the map because std::pair is not is_trivially_copyable, which means it would  not be allowed to be used
+// in std::memcpy. This struct is copyable, which is also tested.
 template <class First, class Second>
 struct Pair {
 	// pair constructors are explicit so we don't accidentally call this ctor when we don't have to.
@@ -546,18 +258,22 @@ struct Pair {
 		, second(std::move(secondArg)) {}
 
 	template <class... Args1, class... Args2>
-	inline Pair(std::piecewise_construct_t, std::tuple<Args1...> firstArgs, std::tuple<Args2...> secondArgs)
+	Pair(std::piecewise_construct_t, std::tuple<Args1...> firstArgs, std::tuple<Args2...> secondArgs)
 		: Pair(firstArgs, secondArgs, std::index_sequence_for<Args1...>(), std::index_sequence_for<Args2...>()) {}
 
 	// constructor called from the std::piecewise_construct_t ctor
 	template <class Tuple1, class Tuple2, size_t... Indexes1, size_t... Indexes2>
-	inline Pair(Tuple1& val1, Tuple2& val2, std::index_sequence<Indexes1...>, std::index_sequence<Indexes2...>)
+	Pair(Tuple1& val1, Tuple2& val2, std::index_sequence<Indexes1...>, std::index_sequence<Indexes2...>)
 		: first(std::get<Indexes1>(std::move(val1))...)
 		, second(std::get<Indexes2>(std::move(val2))...) {}
 
 	First first;
 	Second second;
 };
+
+} // namespace detail
+
+struct is_transparent_tag {};
 
 /// A highly optimized hashmap implementation, using the Robin Hood algorithm.
 /// This implementation is based on https://github.com/martinus/robin-hood-hashing/
@@ -583,18 +299,24 @@ struct Pair {
 ///
 /// * infoSentinel: Sentinel byte set to 1, so that iterator's ++ can stop at end() without the need for a idx
 ///   variable.
-template <class Key, class T, class Hash, class KeyEqual, bool IsDirect>
-class map : Hash, KeyEqual, detail::NodeAllocator<Pair<Key, T>, 4, 16384, IsDirect> {
+template <class Key, class T, class Hash = std::hash<Key>, class KeyEqual = std::equal_to<Key>,
+		  // Use direct map only when move does not throw, so swap and resize is possible without copying stuff.
+		  // also make sure data is not too large, then swap might be slow.
+		  bool IsDirect = sizeof(Key) + sizeof(T) <= sizeof(void*) * 3 &&
+						  std::is_nothrow_move_constructible<std::pair<Key, T>>::value&& std::is_nothrow_move_assignable<std::pair<Key, T>>::value>
+
+class map : Hash, KeyEqual, detail::NodeAllocator<detail::Pair<Key, T>, 4, 16384, IsDirect> {
 	// configuration defaults
 	static constexpr uint8_t MaxLoadFactor128 = 102; // 1 byte
 	static constexpr size_t InitialNumElements = 4;
+	static constexpr uint8_t InitialShiftVal = sizeof(size_t) * 8 - 1;
 
-	using DataPool = detail::NodeAllocator<Pair<Key, T>, 4, 16384, IsDirect>;
+	using DataPool = detail::NodeAllocator<detail::Pair<Key, T>, 4, 16384, IsDirect>;
 
 public:
 	using key_type = Key;
 	using mapped_type = T;
-	using value_type = Pair<Key, T>;
+	using value_type = detail::Pair<Key, T>;
 	using size_type = size_t;
 	using hasher = Hash;
 	using key_equal = KeyEqual;
@@ -635,8 +357,9 @@ private:
 		}
 
 		void swap(DataNode<M, true>& o) {
-			std::swap(mData.first, o.mData.first);
-			std::swap(mData.second, o.mData.second);
+			using std::swap;
+			swap(mData.first, o.mData.first);
+			swap(mData.second, o.mData.second);
 		}
 
 	private:
@@ -680,14 +403,15 @@ private:
 		}
 
 		void swap(DataNode<M, false>& o) {
-			std::swap(mData, o.mData);
+			using std::swap;
+			swap(mData, o.mData);
 		}
 
 	private:
 		value_type* mData;
 	};
 
-	typedef DataNode<Self, IsDirect> Node;
+	using Node = DataNode<Self, IsDirect>;
 
 	size_t calcNumBytesInfo(size_t numElements) const {
 		const size_t s = sizeof(uint8_t) * (numElements + 1);
@@ -713,6 +437,56 @@ private:
 		return s;
 	}
 
+	// Protects against bad hash functions, and makes sure the numbers are reasonably well spread.
+	template <typename HashKey>
+	size_t keyToIdx(HashKey&& key) const {
+	// 1m 18s
+	/*
+	// https://lemire.me/blog/2018/08/15/fast-strongly-universal-64-bit-hashing-everywhere/
+	static constexpr const uint64_t a1 = UINT64_C(0x65d2'00ce'55b1'9ad7);
+	static constexpr const uint64_t b1 = UINT64_C(0x4f21'6292'6e40'c299);
+	static constexpr const uint64_t c1 = UINT64_C(0x162d'd799'0299'70f5);
+	static constexpr const uint64_t a2 = UINT64_C(0x8c75'f204'ed53'0735);
+	static constexpr const uint64_t b2 = UINT64_C(0xb6cf'cf9d'79b5'1db1);
+	static constexpr const uint64_t c2 = UINT64_C(0x7a2b'92ae'9128'98c3);
+	uint64_t x = Hash::operator()(key);
+	uint32_t low = x;
+	uint32_t high = x >> 32;
+	return (((a1 * low + b1 * high + c1) >> 32) | ((a2 * low + b2 * high + c2) & UINT64_C(0xFFFFFFFF00000000))) >> mShift;
+	*/
+
+	/*
+	// 1m 29s, murmurhash 1 mixer
+	auto h = Hash::operator()(key);
+	h ^= h >> 47;
+	h *= UINT64_C(0xc6a4a7935bd1e995);
+	h ^= h >> 47;
+	return h & mMask;
+	*/
+
+	// murmurhash3: 1m 41s
+	// murmurhash 3 (with avalanching constants from http://zimbry.blogspot.com/2011/09/better-bit-mixing-improving-on.html)
+	/*
+	auto h = Hash::operator()(key);
+	h ^= (h >> 31);
+	h *= 0x7fb5d329728ea185;
+	h ^= (h >> 27);
+	h *= 0x81dadef4bc2dd44d;
+	h ^= (h >> 33);
+	return h & mMask;
+	*/
+
+#if ROBIN_HOOD_BITNESS == 64
+		// fibonacci hashing constant is better for small numbers, but much worse good for leftshifted numbers.
+		//	https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/
+		// static size_t constexpr const factor = UINT64_C(11400714819323198485); // 1m 16.111s
+		static size_t constexpr const factor = UINT64_C(0x8c75f204ed530735); // 1m 9.661s
+#else
+		static size_t constexpr const factor = UINT32_C(0xed530735);
+#endif
+		return (factor * Hash::operator()(key)) >> mShift;
+	}
+
 	// forwards the index by one, wrapping around at the end
 	void next(int& info, size_t& idx) const {
 		idx = (idx + 1) & mMask;
@@ -728,9 +502,11 @@ private:
 
 	void bubbleDown(size_t& idx, size_t const& insertion_idx) {
 		while (idx != insertion_idx) {
+			using std::swap;
+
 			size_t const prev_idx = (idx - 1) & mMask;
 			mKeyVals[idx].swap(mKeyVals[prev_idx]);
-			std::swap(mInfo[idx], mInfo[prev_idx]);
+			swap(mInfo[idx], mInfo[prev_idx]);
 
 			// increase the shifted up element
 			if (0xFF == ++mInfo[idx]) {
@@ -743,7 +519,7 @@ private:
 	// copy of find(), except that it returns iterator instead of const_iterator.
 	template <class Other>
 	size_t findIdx(const Other& key) const {
-		size_t idx = Hash::operator()(key) & mMask;
+		size_t idx = keyToIdx(key);
 		int info = 1;
 		nextWhileLess(info, idx);
 
@@ -767,7 +543,9 @@ private:
 	struct Cloner<M, true> {
 		void operator()(M const& source, M& target) const {
 			// std::memcpy(target.mKeyVals, source.mKeyVals, target.calcNumBytesTotal(target.mMask + 1));
-			std::copy(source.mKeyVals, source.mKeyVals + target.calcNumBytesTotal(target.mMask + 1), target.mKeyVals);
+			auto src = reinterpret_cast<char const*>(source.mKeyVals);
+			auto tgt = reinterpret_cast<char*>(target.mKeyVals);
+			std::copy(src, src + target.calcNumBytesTotal(target.mMask + 1), tgt);
 		}
 	};
 
@@ -799,7 +577,7 @@ private:
 			throwOverflowError();
 		}
 
-		size_t idx = Hash::operator()(keyval->first) & mMask;
+		size_t idx = keyToIdx(keyval->first);
 
 		// skip forward. Use <= because we are certain that the element is not there.
 		int info = 1;
@@ -835,14 +613,14 @@ private:
 	template <bool IsConst>
 	class Iter {
 	private:
-		typedef typename std::conditional<IsConst, Node const*, Node*>::type NodePtr;
+		using NodePtr = typename std::conditional<IsConst, Node const*, Node*>::type;
 
 	public:
-		typedef std::ptrdiff_t difference_type;
-		typedef typename Self::value_type value_type;
-		typedef typename std::conditional<IsConst, value_type const&, value_type&>::type reference;
-		typedef typename std::conditional<IsConst, value_type const*, value_type*>::type pointer;
-		typedef std::forward_iterator_tag iterator_category;
+		using difference_type = std::ptrdiff_t;
+		using value_type = typename Self::value_type;
+		using reference = typename std::conditional<IsConst, value_type const&, value_type&>::type;
+		using pointer = typename std::conditional<IsConst, value_type const*, value_type*>::type;
+		using iterator_category = std::forward_iterator_tag;
 
 		// both const_iterator and iterator can be constructed from a non-const iterator
 		Iter(Iter<false> const& other)
@@ -887,8 +665,8 @@ private:
 	};
 
 public:
-	typedef Iter<false> iterator;
-	typedef Iter<true> const_iterator;
+	using iterator = Iter<false>;
+	using const_iterator = Iter<true>;
 
 	/// Creates an empty hash map. Nothing is allocated yet, this happens at the first insert.
 	/// This tremendously speeds up ctor & dtor of a map that never receives an element. The
@@ -921,7 +699,8 @@ public:
 		, mInfo(std::move(o.mInfo))
 		, mNumElements(std::move(o.mNumElements))
 		, mMask(std::move(o.mMask))
-		, mMaxNumElementsAllowed(std::move(o.mMaxNumElementsAllowed)) {
+		, mMaxNumElementsAllowed(std::move(o.mMaxNumElementsAllowed))
+		, mShift(std::move(o.mShift)) {
 		// set other's mask to 0 so its destructor won't do anything
 		o.mMask = 0;
 	}
@@ -935,6 +714,7 @@ public:
 			mNumElements = std::move(o.mNumElements);
 			mMask = std::move(o.mMask);
 			mMaxNumElementsAllowed = std::move(o.mMaxNumElementsAllowed);
+			mShift = std::move(o.mShift);
 			Hash::operator=(std::move(static_cast<Hash&>(o)));
 			KeyEqual::operator=(std::move(static_cast<KeyEqual&>(o)));
 			DataPool::operator=(std::move(static_cast<DataPool&>(o)));
@@ -959,6 +739,7 @@ public:
 			mNumElements = o.mNumElements;
 			mMask = o.mMask;
 			mMaxNumElementsAllowed = o.mMaxNumElementsAllowed;
+			mShift = o.mShift;
 			cloneData(o);
 		}
 	}
@@ -982,12 +763,13 @@ public:
 			// clear also resets mInfo to 0, that's sometimes not necessary.
 			destroy();
 			mKeyVals = reinterpret_cast<Node*>(&detail::sDummyInfoByte) - 1;
-			mInfo = &detail::sDummyInfoByte;
+			mInfo = reinterpret_cast<uint8_t*>(&detail::sDummyInfoByte);
 			Hash::operator=(static_cast<const Hash&>(o));
 			KeyEqual::operator=(static_cast<const KeyEqual&>(o));
 			mNumElements = 0;
 			mMask = 0;
 			mMaxNumElementsAllowed = 0;
+			mShift = InitialShiftVal;
 			return *this;
 		}
 
@@ -1003,7 +785,7 @@ public:
 
 			mKeyVals = reinterpret_cast<Node*>(detail::assertNotNull<std::bad_alloc>(malloc(calcNumBytesTotal(o.mMask + 1))));
 
-			// no need for calloc here because cloneData  performs a memcpy.
+			// no need for calloc here because cloneData performs a memcpy.
 			mInfo = reinterpret_cast<uint8_t*>(mKeyVals + o.mMask + 1);
 			// sentinel is set in cloneData
 		}
@@ -1012,6 +794,7 @@ public:
 		mNumElements = o.mNumElements;
 		mMask = o.mMask;
 		mMaxNumElementsAllowed = o.mMaxNumElementsAllowed;
+		mShift = o.mShift;
 		cloneData(o);
 
 		return *this;
@@ -1019,15 +802,17 @@ public:
 
 	// Swaps everything between the two maps.
 	void swap(map& o) {
-		std::swap(mKeyVals, o.mKeyVals);
-		std::swap(mInfo, o.mInfo);
-		std::swap(mNumElements, o.mNumElements);
-		std::swap(mMask, o.mMask);
-		std::swap(mMaxNumElementsAllowed, o.mMaxNumElementsAllowed);
-		std::swap(static_cast<Hash&>(*this), static_cast<Hash&>(o));
-		std::swap(static_cast<KeyEqual&>(*this), static_cast<KeyEqual&>(o));
+		using std::swap;
+		swap(mKeyVals, o.mKeyVals);
+		swap(mInfo, o.mInfo);
+		swap(mNumElements, o.mNumElements);
+		swap(mMask, o.mMask);
+		swap(mMaxNumElementsAllowed, o.mMaxNumElementsAllowed);
+		swap(mShift, o.mShift);
+		swap(static_cast<Hash&>(*this), static_cast<Hash&>(o));
+		swap(static_cast<KeyEqual&>(*this), static_cast<KeyEqual&>(o));
 		// no harm done in swapping datapool
-		std::swap(static_cast<DataPool&>(*this), static_cast<DataPool&>(o));
+		swap(static_cast<DataPool&>(*this), static_cast<DataPool&>(o));
 	}
 
 	// Clears all data, without resizing.
@@ -1187,7 +972,7 @@ public:
 	}
 
 	size_t erase(const key_type& key) {
-		size_t idx = Hash::operator()(key) & mMask;
+		size_t idx = keyToIdx(key);
 
 		int info = 1;
 		nextWhileLess(info, idx);
@@ -1235,13 +1020,6 @@ public:
 		return MaxLoadFactor128 / 128.0f;
 	}
 
-	/* not supported
-	void max_load_factor(float ml) {
-		mMaxLoadFactor128 = calcMaxLoadFactor128(ml);
-		mMaxNumElementsAllowed = calcMaxNumElementsAllowed128(mMask + 1, mMaxLoadFactor128);
-	}
-	*/
-
 	// Average number of elements per bucket. Since we allow only 1 per bucket
 	float load_factor() const {
 		return static_cast<float>(size()) / (mMask + 1);
@@ -1255,7 +1033,14 @@ private:
 	void init_data(size_t max_elements) {
 		mNumElements = 0;
 		mMask = max_elements - 1;
-		mMaxNumElementsAllowed = detail::calcMaxNumElementsAllowed128(max_elements, MaxLoadFactor128);
+		mMaxNumElementsAllowed = calcMaxNumElementsAllowed128(max_elements, MaxLoadFactor128);
+
+		auto m = mMask;
+		mShift = sizeof(size_t) * 8;
+		while (m) {
+			--mShift;
+			m >>= 1;
+		}
 
 		// calloc also zeroes everything
 		mKeyVals = reinterpret_cast<Node*>(detail::assertNotNull<std::bad_alloc>(calloc(1, calcNumBytesTotal(max_elements))));
@@ -1267,9 +1052,8 @@ private:
 
 	template <class Arg>
 	mapped_type& doCreateByKey(Arg&& key) {
-		size_t const hash = Hash::operator()(key);
 		while (true) {
-			size_t idx = hash & mMask;
+			size_t idx = keyToIdx(key);
 
 			int info = 1;
 			nextWhileLess(info, idx);
@@ -1319,9 +1103,8 @@ private:
 	// This is exactly the same code as operator[], except for the return values
 	template <class Arg>
 	std::pair<iterator, bool> doInsert(Arg&& keyval) {
-		size_t const hash = Hash::operator()(keyval.first);
 		while (true) {
-			size_t idx = hash & mMask;
+			size_t idx = keyToIdx(keyval.first);
 
 			int info = 1;
 			nextWhileLess(info, idx);
@@ -1366,6 +1149,12 @@ private:
 		}
 	}
 
+	size_t calcMaxNumElementsAllowed128(size_t maxElements, uint8_t maxLoadFactor128) {
+		// make sure we can't get an overflow, use floatingpoint arithmetic if necessary.
+		return (maxElements > static_cast<size_t>(-1) / 128) ? static_cast<size_t>((static_cast<double>(maxElements) * maxLoadFactor128) / 128.0)
+															 : (maxElements * maxLoadFactor128) / 128;
+	}
+
 	void increase_size() {
 		// nothing allocated yet? just allocate 4 elements
 		if (0 == mMask) {
@@ -1374,7 +1163,7 @@ private:
 		}
 
 		// it seems we have a really bad hash function! don't try to resize again
-		if (mNumElements * 2 < detail::calcMaxNumElementsAllowed128(mMask + 1, MaxLoadFactor128)) {
+		if (mNumElements * 2 < calcMaxNumElementsAllowed128(mMask + 1, MaxLoadFactor128)) {
 			throwOverflowError();
 		}
 
@@ -1446,17 +1235,17 @@ private:
 
 	// members are sorted so no padding occurs
 	Node* mKeyVals = reinterpret_cast<Node*>(&detail::sDummyInfoByte - sizeof(Node)); // 8 byte
-	// Node* mKeyVals = reinterpret_cast<Node*>(&sDummyInfoByte) - 1; // 8 byte
-	uint8_t* mInfo = &detail::sDummyInfoByte; // 8 byte
-	size_t mNumElements = 0;                  // 8 byte
-	size_t mMask = 0;                         // 8 byte
-	size_t mMaxNumElementsAllowed = 0;        // 8 byte
+	uint8_t* mInfo = reinterpret_cast<uint8_t*>(&detail::sDummyInfoByte);             // 8 byte
+	size_t mNumElements = 0;                                                          // 8 byte
+	size_t mMask = 0;                                                                 // 8 byte
+	size_t mMaxNumElementsAllowed = 0;                                                // 8 byte
+	uint8_t mShift = InitialShiftVal;                                                 // 1 byte :-/
 };
 
-template <class Key, class T, class Hash = FastHash<Key>, class KeyEqual = EqualTo<Key>>
+template <class Key, class T, class Hash = std::hash<Key>, class KeyEqual = std::equal_to<Key>>
 using direct_map = map<Key, T, Hash, KeyEqual, true>;
 
-template <class Key, class T, class Hash = FastHash<Key>, class KeyEqual = EqualTo<Key>>
+template <class Key, class T, class Hash = std::hash<Key>, class KeyEqual = std::equal_to<Key>>
 using indirect_map = map<Key, T, Hash, KeyEqual, false>;
 
 } // namespace robin_hood

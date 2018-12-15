@@ -4,7 +4,6 @@ CXX_FLAGS=-g -O2 -std=c++14
 
 maps=\
 	robin_hood_map \
-	robin_hood_map2 \
 	std_unordered_map \
 	std_map \
 	null_map \

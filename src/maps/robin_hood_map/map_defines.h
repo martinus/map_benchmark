@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RobinHoodMap.h"
+#include "robin_hood_map.h"
 
-static const char* MapName = "rh::Map";
+static const char* MapName = "robin_hood::map";
 
 template <class Key, class Val>
-using Map = rh::Map<Key, Val>;
+using Map = robin_hood::map<Key, Val, std::hash<Key>>;

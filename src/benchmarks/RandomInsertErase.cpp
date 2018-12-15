@@ -2,9 +2,8 @@
 
 #include "bench.h"
 
-static void RandomInsertErase(Bench& bench) {
-	bench.title("RandomInsertErase");
-	bench.description("randomly inserts and erases int values");
+template <int RngShift>
+void run(Bench& bench) {
 	auto& rng = bench.rng();
 
 	// time measured part
@@ -15,8 +14,8 @@ static void RandomInsertErase(Bench& bench) {
 
 		for (size_t n = 1; n < 100'000; ++n) {
 			for (size_t i = 0; i < 10'000; ++i) {
-				map[rng(n)] = i;
-				verifier += map.erase(rng(n));
+				map[rng(n) << RngShift] = i;
+				verifier += map.erase(rng(n) << RngShift);
 			}
 		}
 		bench.event("destructing");
@@ -27,6 +26,18 @@ static void RandomInsertErase(Bench& bench) {
 
 	// result map status
 	bench.result(verifier);
+}
+
+static void RandomInsertErase(Bench& bench) {
+	bench.title("RandomInsertErase");
+	bench.description("randomly inserts and erases int values");
+	run<0>(bench);
+}
+static void RandomInsertEraseShifted(Bench& bench) {
+	bench.title("RandomInsertEraseShifted");
+	bench.description(
+		"randomly inserts and erases int values, but these values are leftshifted 16 bit, thus testing the behavior with a bad hash function.");
+	run<4>(bench);
 }
 
 static void RandomInsertEraseStrings(Bench& bench) {
@@ -54,4 +65,4 @@ static void RandomInsertEraseStrings(Bench& bench) {
 	bench.result(mapHash(map));
 }
 
-static BenchRegister reg(RandomInsertErase, RandomInsertEraseStrings);
+static BenchRegister reg(RandomInsertErase, RandomInsertEraseShifted, RandomInsertEraseStrings);

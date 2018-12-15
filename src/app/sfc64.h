@@ -48,8 +48,10 @@ public:
 
 	// this is a bit biased, but for our use case that's not important.
 	uint64_t operator()(uint64_t boundExcluded) noexcept {
+#ifdef __SIZEOF_INT128__
 		using u128 = unsigned __int128;
 		return (u128(operator()()) * u128(boundExcluded)) >> 64;
+#endif
 	}
 
 	std::array<uint64_t, 4> state() const {
