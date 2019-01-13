@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <limits>
+#include <random>
 #include <utility>
 
 // this is probably the fastest high quality 64bit random number generator that exists.
@@ -38,6 +39,10 @@ public:
 		}
 	}
 
+	void seed() {
+		*this = sfc64{std::random_device{}()};
+	}
+
 	uint64_t operator()() noexcept {
 		auto const tmp = m_a + m_b + m_counter++;
 		m_a = m_b ^ (m_b >> right_shift);
@@ -49,8 +54,7 @@ public:
 	// this is a bit biased, but for our use case that's not important.
 	uint64_t operator()(uint64_t boundExcluded) noexcept {
 #ifdef __SIZEOF_INT128__
-		using u128 = unsigned __int128;
-		return (u128(operator()()) * u128(boundExcluded)) >> 64;
+		return static_cast<uint64_t>((static_cast<unsigned __int128>(operator()()) * static_cast<unsigned __int128>(boundExcluded)) >> 64u);
 #endif
 	}
 

@@ -10,12 +10,15 @@ void run(Bench& bench) {
 	size_t verifier = 0;
 	bench.beginMeasure();
 	{
-		Map<int, int> map;
+		Map<uint64_t, uint64_t> map;
 
-		for (size_t n = 1; n < 100'000; ++n) {
+		for (size_t n = 1; n < 10'000; ++n) {
+			if ((n % 200) == 0) {
+				bench.event("");
+			}
 			for (size_t i = 0; i < 10'000; ++i) {
-				map[rng(n) << RngShift] = i;
-				verifier += map.erase(rng(n) << RngShift);
+				map[rng(n)] = i;
+				verifier += map.erase(rng(n));
 			}
 		}
 		bench.event("destructing");

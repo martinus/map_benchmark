@@ -86,42 +86,44 @@ static void RandomFindExistingBig(Bench& bench) {
 	run<uint32_t, Data>(bench);
 }
 
-/*
 static void CollisionFinder(Bench& bench) {
 	bench.title("CollisionFinder");
 	bench.description("finds numbers with good collision properties for multiplication factor");
 
 	auto& rng = bench.rng();
+	rng.seed();
 
 	// make sure we get an odd number
 	size_t minCol = (std::numeric_limits<size_t>::max)();
+	static size_t const arraySizeShift = 12;
 
 	while (true) {
 		auto factor = rng() | 1;
 
 		size_t col = 0;
 
-		std::array<bool, 256> taken;
+		std::array<size_t, (1 << arraySizeShift)> taken = {};
 
-		int shift = 0;
-		for (size_t i = 0; i < taken.size(); ++i) {
-			auto num = i << shift;
-			auto idx = (factor * num) >> (64 - 8);
-			if (taken[idx]) {
-				++col;
+		for (int shift = 0; shift < 32; ++shift) {
+			for (size_t i = 0; i < taken.size(); ++i) {
+				auto num = i << shift;
+				auto idx = (factor * num) >> (64 - arraySizeShift);
+				if (++taken[idx] > col) {
+					col = taken[idx];
+					if (col >= minCol) {
+						i = taken.size();
+						shift = 32;
+						break;
+					}
+				}
 			}
-			taken[idx] = true;
 		}
-		if (col > minCol) {
-			break;
-		}
-	}
 
-	if (col <= minCol) {
-		minCol = col;
-		std::cout << col << " " << factor << std::endl;
+		if (col < minCol) {
+			minCol = col;
+			std::cout << col << " " << factor << std::endl;
+		}
 	}
 }
-*/
 
 static BenchRegister reg(RandomFindExisting, RandomFindExistingBig);

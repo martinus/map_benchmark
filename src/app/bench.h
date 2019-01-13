@@ -57,6 +57,7 @@ public:
 		if (mPeriodicMemoryStats) {
 			mPeriodicMemoryStats->event(msg);
 		}
+		return *this;
 	}
 
 	sfc64& rng() {
