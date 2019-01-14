@@ -3,7 +3,7 @@
 #include "bench.h"
 
 template <int RngShift>
-void run(Bench& bench) {
+size_t run(size_t max_n, Bench& bench) {
 	auto& rng = bench.rng();
 
 	// time measured part
@@ -12,11 +12,11 @@ void run(Bench& bench) {
 	{
 		Map<uint64_t, uint64_t> map;
 
-		for (size_t n = 1; n < 10'000; ++n) {
+		for (size_t n = 2; n < max_n; ++n) {
 			if ((n % 200) == 0) {
 				bench.event("");
 			}
-			for (size_t i = 0; i < 10'000; ++i) {
+			for (size_t i = 0; i < max_n; ++i) {
 				map[rng(n)] = i;
 				verifier += map.erase(rng(n));
 			}
@@ -26,21 +26,21 @@ void run(Bench& bench) {
 	}
 	bench.event("done");
 	bench.endMeasure();
-
-	// result map status
-	bench.result(verifier);
+	return verifier;
 }
 
 static void RandomInsertErase(Bench& bench) {
 	bench.title("RandomInsertErase");
 	bench.description("randomly inserts and erases int values");
-	run<0>(bench);
+	auto result = run<0>(21000, bench);
+	bench.result(0x658159d96eca6f73, result);
 }
 static void RandomInsertEraseShifted(Bench& bench) {
 	bench.title("RandomInsertEraseShifted");
 	bench.description(
 		"randomly inserts and erases int values, but these values are leftshifted 16 bit, thus testing the behavior with a bad hash function.");
-	run<4>(bench);
+	auto result = run<4>(21000, bench);
+	bench.result(0x658159d96eca6f73, result);
 }
 
 static void RandomInsertEraseStrings(Bench& bench) {
@@ -48,24 +48,29 @@ static void RandomInsertEraseStrings(Bench& bench) {
 	auto& rng = bench.rng();
 
 	// setup
-	Map<std::string, int> map;
+	{
+		Map<std::string, int> map;
 
-	std::string str(100, 'x');
+		std::string str(100, 'x');
 
-	// time measured part
-	bench.beginMeasure();
-	for (size_t n = 10000; n < 20000; ++n) {
-		for (size_t i = 0; i < 10000; ++i) {
-			*reinterpret_cast<uint64_t*>(&str[20]) = rng(n);
-			map[str] = i;
-			*reinterpret_cast<uint64_t*>(&str[20]) = rng(n);
-			map.erase(str);
+		// time measured part
+		bench.beginMeasure();
+		for (size_t n = 10000; n < 18000; ++n) {
+			for (size_t i = 0; i < 10000; ++i) {
+				*reinterpret_cast<uint64_t*>(&str[20]) = rng(n);
+				map[str] = i;
+				*reinterpret_cast<uint64_t*>(&str[20]) = rng(n);
+				map.erase(str);
+			}
 		}
+		bench.event("done");
+		bench.result(0x2a7686d5d25cc104, mapHash(map));
+		bench.event("map hashed");
 	}
+	bench.event("destructed");
 	bench.endMeasure();
 
 	// result map status
-	bench.result(mapHash(map));
 }
 
 static BenchRegister reg(RandomInsertErase, RandomInsertEraseShifted, RandomInsertEraseStrings);

@@ -21,6 +21,7 @@ public:
 		, mNumTrials(numTrials)
 		, mCurrentTrial(0)
 		, mResult(0)
+		, mExpected(0)
 		, mThrowAfterTitle(false) {}
 
 	void throwAfterTitle() {
@@ -48,8 +49,9 @@ public:
 		return mDescription;
 	}
 
-	Bench& result(uint64_t r) {
-		mResult = r;
+	Bench& result(uint64_t expected, uint64_t actualResult) {
+		mExpected = expected;
+		mResult = actualResult;
 		return *this;
 	}
 
@@ -66,7 +68,7 @@ public:
 
 	inline void beginMeasure() {
 #ifdef ENABLE_MALLOC_HOOK
-		mPeriodicMemoryStats = std::make_unique<PeriodicMemoryStats>(0.05);
+		mPeriodicMemoryStats = std::make_unique<PeriodicMemoryStats>(0.02);
 #endif
 		mTimePoint = std::chrono::high_resolution_clock::now();
 	}
@@ -97,6 +99,14 @@ public:
 		}
 		hash_combine(s, mResult);
 
+		if (mExpected != s) {
+			std::stringstream msg;
+			msg << "ERROR: expected "
+				<< "0x" << std::hex << mExpected << " but got 0x" << std::hex << s;
+			std::cerr << msg.str() << std::endl;
+			// throw std::runtime_error(msg.str());
+		}
+
 		std::stringstream ss;
 		ss << std::setw(10) << std::right << mRuntimeSec << "s " << std::hex << "0x" << s << " " << title();
 
@@ -111,6 +121,7 @@ private:
 	size_t mCurrentTrial;
 	std::chrono::high_resolution_clock::time_point mTimePoint;
 	uint64_t mResult;
+	uint64_t mExpected;
 	bool mThrowAfterTitle;
 	double mRuntimeSec;
 	std::string mDescription;

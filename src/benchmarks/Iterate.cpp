@@ -11,7 +11,7 @@ static void IterateIntegers(Bench& bench) {
 		Map<int, int> map;
 
 		bench.beginMeasure();
-		for (size_t n = 0; n < 50000; ++n) {
+		for (size_t n = 0; n < 65000; ++n) {
 			map[rng()] = n;
 			for (auto const& keyVal : map) {
 				result += keyVal.first;
@@ -25,7 +25,7 @@ static void IterateIntegers(Bench& bench) {
 	bench.endMeasure();
 
 	// result map status
-	bench.result(result);
+	bench.result(0x522cacb81dde2db6, result);
 }
 
 static void IterateClearedWithSingleElement(Bench& bench) {
@@ -53,7 +53,8 @@ static void IterateClearedWithSingleElement(Bench& bench) {
 	bench.endMeasure();
 
 	// result map status
-	bench.result(result);
+	bench.result(0, result);
 }
 
-static BenchRegister reg(IterateIntegers, IterateClearedWithSingleElement);
+// , IterateClearedWithSingleElement
+static BenchRegister reg(IterateIntegers);

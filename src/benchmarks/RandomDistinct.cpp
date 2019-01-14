@@ -9,9 +9,9 @@ static void RandomDistinct(Bench& bench) {
 	auto& rng = bench.rng();
 
 	size_t checksum = 0;
-	size_t const upper = 50'000'000;
+	size_t const upper = 70'000'000;
 	size_t const lower = 10'000'000;
-	size_t const num_steps = 5;
+	size_t const num_steps = 7;
 	size_t const step_width = (upper - lower) / num_steps;
 
 	bench.beginMeasure();
@@ -28,7 +28,7 @@ static void RandomDistinct(Bench& bench) {
 	}
 	bench.event("done");
 	bench.endMeasure();
-	bench.result(checksum);
+	bench.result(0xeb69f3ce52c0a705, checksum);
 }
 
 static BenchRegister reg(RandomDistinct);

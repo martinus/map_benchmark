@@ -3,7 +3,7 @@
 #include "bench.h"
 
 template <class Key, class Val>
-void run(Bench& bench) {
+size_t run(size_t num_iters, Bench& bench) {
 	auto& rng = bench.rng();
 
 	Map<Key, Val> map;
@@ -11,7 +11,7 @@ void run(Bench& bench) {
 	size_t found = 0;
 
 	bench.beginMeasure();
-	for (size_t iters = 0; iters < 20; ++iters) {
+	for (size_t iters = 0; iters < num_iters; ++iters) {
 		// recover rng state for insertion
 		for (int j = 0; j < 100'000; ++j) {
 			map.emplace(rng(), j);
@@ -30,12 +30,13 @@ void run(Bench& bench) {
 	bench.endMeasure();
 
 	hash_combine(found, mapHash(map));
-	bench.result(found);
+	return found;
 }
 
 static void RandomFindNonexisting(Bench& bench) {
 	bench.title("RandomFindNonexisting");
-	run<uint32_t, uint32_t>(bench);
+	auto result = run<uint32_t, uint32_t>(8, bench);
+	bench.result(0x881ae8dd442c712b, result);
 }
 
 static BenchRegister reg(RandomFindNonexisting);

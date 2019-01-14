@@ -10,7 +10,7 @@ static void InsertHugeInt(Bench& bench) {
 	bench.beginMeasure();
 	{
 		Map<int, int> map;
-		for (size_t n = 0; n < 50'000'000; ++n) {
+		for (size_t n = 0; n < 100'000'000; ++n) {
 			map[rng()];
 		}
 		result += map.size();
@@ -18,7 +18,7 @@ static void InsertHugeInt(Bench& bench) {
 
 		map.clear();
 		bench.event("cleared");
-		for (size_t n = 0; n < 50'000'000; ++n) {
+		for (size_t n = 0; n < 100'000'000; ++n) {
 			map[rng()];
 		}
 		result += map.size();
@@ -28,7 +28,7 @@ static void InsertHugeInt(Bench& bench) {
 	bench.endMeasure();
 
 	// result map status
-	bench.result(result);
+	bench.result(0x77ca8aa5816674af, result);
 }
 
 struct BigData {
@@ -47,7 +47,7 @@ static void InsertHugeBigData(Bench& bench) {
 	bench.beginMeasure();
 	{
 		Map<int, BigData> map;
-		for (size_t n = 0; n < 10'000'000; ++n) {
+		for (size_t n = 0; n < 4'000'000; ++n) {
 			map[rng()];
 		}
 		result += map.size();
@@ -55,7 +55,7 @@ static void InsertHugeBigData(Bench& bench) {
 
 		map.clear();
 		bench.event("cleared");
-		for (size_t n = 0; n < 10'000'000; ++n) {
+		for (size_t n = 0; n < 4'000'000; ++n) {
 			map[rng()];
 		}
 		result += map.size();
@@ -65,7 +65,8 @@ static void InsertHugeBigData(Bench& bench) {
 	bench.endMeasure();
 
 	// result map status
-	bench.result(result);
+
+	bench.result(0x6b7621434f3cefb6, result);
 }
 
 static BenchRegister reg(InsertHugeInt, InsertHugeBigData);

@@ -8,7 +8,7 @@
 #include <vector>
 
 template <class Key, class Val>
-void run(Bench& bench) {
+size_t run(size_t num_iters, Bench& bench) {
 	auto& rng = bench.rng();
 
 	// time measured part
@@ -23,7 +23,7 @@ void run(Bench& bench) {
 		auto insertion_state = rng.state();
 		auto find_state = rng.state();
 
-		for (size_t iters = 0; iters < 20; ++iters) {
+		for (size_t iters = 0; iters < num_iters; ++iters) {
 			// recover rng state for insertion
 			rng.state(insertion_state);
 			for (int j = 0; j < 100'000; ++j) {
@@ -52,15 +52,14 @@ void run(Bench& bench) {
 	}
 	bench.event("done");
 	bench.endMeasure();
-
-	bench.result(found);
+	return found;
 }
 
 static void RandomFindExisting(Bench& bench) {
 	bench.title("RandomFindExisting");
 	bench.description("randomly find existing values");
-
-	run<uint32_t, uint32_t>(bench);
+	auto result = run<uint32_t, uint32_t>(8, bench);
+	bench.result(0x8a01d73e63b75916, result);
 }
 
 struct Data {
@@ -82,8 +81,9 @@ uint64_t hash_value(Data const& data) {
 
 static void RandomFindExistingBig(Bench& bench) {
 	bench.title("RandomFindExistingBig");
-
-	run<uint32_t, Data>(bench);
+	bench.description("randomly find existing values");
+	auto result = run<uint32_t, Data>(5, bench);
+	bench.result(0x24dd9e7eafe6d413, result);
 }
 
 static void CollisionFinder(Bench& bench) {

@@ -14,7 +14,7 @@ static void CtorDtorEmptyMap(Bench& bench) {
 	bench.endMeasure();
 
 	// result map status
-	bench.result(result);
+	bench.result(0, result);
 }
 
 static void CtorDtorSingleEntryMap(Bench& bench) {
@@ -30,7 +30,8 @@ static void CtorDtorSingleEntryMap(Bench& bench) {
 	bench.endMeasure();
 
 	// result map status
-	bench.result(result);
+	bench.result(0, result);
 }
 
-static BenchRegister reg(CtorDtorEmptyMap, CtorDtorSingleEntryMap);
+// TODO disabling not useful benchmarks for now
+// static BenchRegister reg(CtorDtorEmptyMap, CtorDtorSingleEntryMap);

@@ -11,7 +11,8 @@ static void InternalGetMem(Bench& bench) {
 	bench.endMeasure();
 
 	// result map status
-	bench.result(r);
+	bench.result(0, r);
 }
 
-static BenchRegister reg(InternalGetMem);
+// TODO nothing to see here
+// static BenchRegister reg(InternalGetMem);
