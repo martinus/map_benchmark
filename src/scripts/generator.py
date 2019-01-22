@@ -13,7 +13,7 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def parse():
     data = defaultdict(list)
-    for file in glob.glob('../../build/memprofile/*.json'):
+    for file in sorted(glob.glob('../../build/memprofile/*.json')):
         testname = file[:file.find('_')]
 
         with open(file) as f:
