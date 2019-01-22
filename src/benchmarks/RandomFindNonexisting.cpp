@@ -14,12 +14,12 @@ size_t run(size_t num_iters, Bench& bench) {
 	for (size_t iters = 0; iters < num_iters; ++iters) {
 		// recover rng state for insertion
 		for (int j = 0; j < 100'000; ++j) {
-			map.emplace(rng(), j);
+			map.emplace(static_cast<Key>(rng()), static_cast<Val>(j));
 		}
 		bench.event("inserted 100.000");
 
 		for (size_t n = 0; n < 100'000'000; ++n) {
-			auto it = map.find(rng());
+			auto it = map.find(static_cast<Key>(rng()));
 			if (it != map.end()) {
 				++found;
 			}
