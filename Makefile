@@ -1,10 +1,11 @@
-CXX=ccache g++
+CXX=ccache g++-8
 CXX_FLAGS=-ggdb -O3 -std=c++14
 #CXX_FLAGS=-g -std=c++14
 
 maps=\
 	robin_hood_flat_map \
 	robin_hood_node_map \
+	robin_hood_unordered_map \
 	std_unordered_map \
 	skarupke_flat_hash_map \
 	absl_flat_hash_map \
