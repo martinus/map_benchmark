@@ -51,7 +51,9 @@ public:
 		: mIntervalMicros(static_cast<uint64_t>(intervalSeconds * 1000 * 1000))
 		, mDoContinue(true)
 		, mThread(&PeriodicMemoryStats::runner, this)
-		, mPeakMemory(0) {}
+		, mPeakMemory(0) {
+		malloc_count_reset_peak();
+	}
 
 	~PeriodicMemoryStats() {
 		stop();
@@ -174,6 +176,7 @@ public:
 #else
 		// can't use mallinfo() because it is extremely slow
 		return malloc_count_current();
+		// return malloc_count_peak();
 #endif
 	}
 
