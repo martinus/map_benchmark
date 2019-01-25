@@ -69,7 +69,7 @@ static void String25PercentDistinct20(Bench& bench) {
 
 static void String25PercentDistinct1000(Bench& bench) {
 	bench.title("String25PercentDistinct1000");
-	size_t const n = 20'000'000;
+	size_t const n = 25'000'000;
 	size_t const max_rng = n / 4;
 	size_t const string_len = 500;
 
@@ -90,7 +90,7 @@ static void String25PercentDistinct1000(Bench& bench) {
 	}
 	bench.event("dtor");
 	bench.endMeasure();
-	bench.result(0x6ce1e2c43532edc3, checksum);
+	bench.result(0xb96ead7ca2ab42c, checksum);
 }
 
 static BenchRegister reg(String25PercentDistinct20, String25PercentDistinct1000);
