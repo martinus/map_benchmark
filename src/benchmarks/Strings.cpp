@@ -41,8 +41,8 @@ static void StringFind8(Bench& bench) {
 	strfindbench(bench, 8);
 }
 
-static void String25PercentDistinct(Bench& bench) {
-	bench.title("String25PercentDistinct");
+static void String25PercentDistinct20(Bench& bench) {
+	bench.title("String25PercentDistinct20");
 	size_t const n = 50'000'000;
 	size_t const max_rng = n / 4;
 	size_t const string_len = 20;
@@ -67,4 +67,30 @@ static void String25PercentDistinct(Bench& bench) {
 	bench.result(0x6ce1e2c43532edc3, checksum);
 }
 
-static BenchRegister reg(String25PercentDistinct);
+static void String25PercentDistinct1000(Bench& bench) {
+	bench.title("String25PercentDistinct1000");
+	size_t const n = 20'000'000;
+	size_t const max_rng = n / 4;
+	size_t const string_len = 500;
+
+	auto& rng = bench.rng();
+
+	size_t checksum = 0;
+	bench.beginMeasure();
+	{
+		Map<std::string, size_t> map;
+		std::string query(string_len, 'x');
+
+		// modifying the last bytes
+		for (size_t i = 0; i < n; ++i) {
+			*reinterpret_cast<uint64_t*>(&query[string_len - 8]) = rng(max_rng);
+			checksum += ++map[query];
+		}
+		bench.event("25% distinct");
+	}
+	bench.event("dtor");
+	bench.endMeasure();
+	bench.result(0x6ce1e2c43532edc3, checksum);
+}
+
+static BenchRegister reg(String25PercentDistinct20, String25PercentDistinct1000);
