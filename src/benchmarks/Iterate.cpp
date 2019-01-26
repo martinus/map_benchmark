@@ -6,26 +6,37 @@ static void IterateIntegers(Bench& bench) {
 	bench.title("IterateIntegers");
 	auto& rng = bench.rng();
 
+	size_t const num_iters = 50000;
+
 	int result = 0;
 	{
 		Map<int, int> map;
 
+		auto const state = rng.state();
+
 		bench.beginMeasure();
-		for (size_t n = 0; n < 65000; ++n) {
+		for (size_t n = 0; n < num_iters; ++n) {
 			map[rng()] = n;
 			for (auto const& keyVal : map) {
 				result += keyVal.first;
-				result += keyVal.second;
 			}
 		}
-		bench.event("destructing");
-	}
+		bench.event("finished adding");
 
+		rng.state(state);
+		for (size_t n = 0; n < num_iters; ++n) {
+			map.erase(rng());
+			for (auto const& keyVal : map) {
+				result += keyVal.first;
+			}
+		}
+		bench.event("finished removing");
+	}
 	bench.event("done");
 	bench.endMeasure();
 
 	// result map status
-	bench.result(0x522cacb81dde2db6, result);
+	bench.result(0x71dabd0bfe8418f0, result);
 }
 
 static void IterateClearedWithSingleElement(Bench& bench) {
