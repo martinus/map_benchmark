@@ -74,7 +74,7 @@ extern size_t malloc_count_peak(void) {
 
 /* clear peak */
 extern void malloc_count_reset_peak(void) {
-	sMemPeak = 0;
+	sMemPeak = sMemCurrent;
 }
 
 static constexpr size_t Alignment = 2 * sizeof(void*);
