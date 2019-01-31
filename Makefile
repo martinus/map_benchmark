@@ -3,13 +3,13 @@ CXX_FLAGS=-ggdb -O3 -std=c++14
 #CXX_FLAGS=-g -std=c++14
 
 maps=\
-	robin_hood_flat_map \
-	robin_hood_node_map \
-	robin_hood_unordered_map \
-	std_unordered_map \
-	skarupke_flat_hash_map \
-	absl_flat_hash_map \
-	absl_node_hash_map
+	00_std_unordered_map \
+	01_robin_hood_node_map \
+	02_robin_hood_flat_map \
+	03_absl_node_hash_map \
+	04_absl_flat_hash_map \
+	05_skarupke_flat_hash_map \
+	robin_hood_unordered_map
 
 memprofile_binaries=$(patsubst %,build/memprofile/%,$(maps))
 runtime_binaries=$(patsubst %,build/runtime/%,$(maps))
