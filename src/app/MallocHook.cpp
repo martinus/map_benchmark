@@ -206,19 +206,19 @@ static __attribute__((constructor)) void init(void) {
 	dlerror();
 
 	real_malloc = (malloc_type)dlsym(RTLD_NEXT, "malloc");
-	if (error = dlerror()) {
+	if ((error = dlerror())) {
 		fprintf(stderr, "error %s\n", error);
 		exit(1);
 	}
 
 	real_realloc = (realloc_type)dlsym(RTLD_NEXT, "realloc");
-	if (error = dlerror()) {
+	if ((error = dlerror())) {
 		fprintf(stderr, "error %s\n", error);
 		exit(1);
 	}
 
 	real_free = (free_type)dlsym(RTLD_NEXT, "free");
-	if (error = dlerror()) {
+	if ((error = dlerror())) {
 		fprintf(stderr, "error %s\n", error);
 		exit(1);
 	}
