@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import cgi
+import html
 import os
 import json
 import glob
@@ -31,10 +31,10 @@ def print_html_doc(mem_data):
 
     for testname in mem_data:
         with open(testname + '.html', 'w') as out_file:
-            print 'writing "' + testname + '.html"'
+            print('writing "' + testname + '.html"')
             out_file.write(
                 tpl.render(
-                    title=cgi.escape(testname),
+                    title=html.escape(testname),
                     mem_data=mem_data[testname]))
 
 
