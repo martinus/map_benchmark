@@ -1,7 +1,11 @@
 CXX=g++-8
 CXX_FLAGS=-ggdb -O3 -march=native -std=c++14
 
-DEFAULTS=$(CXX) $(CXX_FLAGS) -DENABLE_MALLOC_HOOK -Isrc/app src/benchmarks/*.cpp src/app/*.cpp -lm -pthread -ldl
+CXX_FLAGS+=-DENABLE_MALLOC_HOOK -pthread
+SOURCES=src/benchmarks/*.cpp src/app/*.cpp 
+INCLUDES=-Isrc/app
+LIBS=-lm -ldl
+DEFAULTS=$(CXX) $(CXX_FLAGS) $(INCLUDES) $(SOURCES) $(LIBS)
 
 # standard compiliation is good enough
 DEFAULT_MAPS=\
@@ -16,18 +20,21 @@ DEFAULT_MAPS=\
 	tsl_robin_hash_robinhoodhash \
 
 # hand coded targets with special requirements
-SPECIAL_TARGETS=\
-	build/absl_flat_hash_map
+ABSL_TARGETS=\
+	build/absl_flat_hash_map_default \
+	build/absl_flat_hash_map_fnv1ahash \
+	build/absl_flat_hash_map_nullhash \
+	build/absl_flat_hash_map_robinhoodhash \
 
 DEFAULT_BINARIES=$(patsubst %,build/%,$(DEFAULT_MAPS))
 
-all: $(DEFAULT_BINARIES) $(SPECIAL_TARGETS)
+all: $(DEFAULT_BINARIES) $(ABSL_TARGETS)
 
 build/%:
 	$(DEFAULTS) -include src/maps/$(@F).h -o build/bench_$(@F)
 
-build/absl_flat_hash_map:
-	$(DEFAULTS) -include src/maps/absl_flat_hash_map.h $(SOURCES) -Isrc/maps/absl -pthread -ldl -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/hash -lhash -lcity -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/container -lraw_hash_set -o build/bench_absl_flat_hash_map
+build/absl_flat_hash_map%:
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) -Isrc/maps/absl -include src/maps/$(@F).h $(SOURCES) $(LIBS) -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/hash -lhash -lcity -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/container -lraw_hash_set -o build/bench_$(@F)
 
 clean:
 	rm -f build/bench*
