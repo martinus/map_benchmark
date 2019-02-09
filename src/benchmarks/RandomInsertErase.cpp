@@ -1,5 +1,3 @@
-#include "map_defines.h"
-
 #include "bench.h"
 
 template <int RngShift>
@@ -17,8 +15,8 @@ size_t run(size_t max_n, Bench& bench) {
 				bench.event("");
 			}
 			for (size_t i = 0; i < max_n; ++i) {
-				map[rng(n)] = i;
-				verifier += map.erase(rng(n));
+				map[rng(n) << RngShift] = i;
+				verifier += map.erase(rng(n) << RngShift);
 			}
 		}
 		bench.event("destructing");
@@ -43,6 +41,9 @@ static void RandomInsertEraseShifted(Bench& bench) {
 	bench.result(0x658159d96eca6f73, result);
 }
 
+static BenchRegister reg(RandomInsertErase, RandomInsertEraseShifted);
+
+#if 0
 static void RandomInsertEraseStrings(Bench& bench) {
 	bench.title("RandomInsertEraseStrings");
 	auto& rng = bench.rng();
@@ -72,5 +73,5 @@ static void RandomInsertEraseStrings(Bench& bench) {
 
 	// result map status
 }
-
 static BenchRegister reg(RandomInsertErase, RandomInsertEraseShifted, RandomInsertEraseStrings);
+#endif

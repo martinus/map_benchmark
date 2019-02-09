@@ -1,7 +1,6 @@
-#include "map_defines.h"
-
 #include "bench.h"
 
+#if 0
 #include <string>
 
 void strfindbench(Bench& bench, size_t len) {
@@ -94,3 +93,4 @@ static void String25PercentDistinct1000(Bench& bench) {
 }
 
 static BenchRegister reg(String25PercentDistinct20, String25PercentDistinct1000);
+#endif

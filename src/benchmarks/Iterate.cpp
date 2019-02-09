@@ -1,5 +1,3 @@
-#include "map_defines.h"
-
 #include "bench.h"
 
 static void IterateIntegers(Bench& bench) {

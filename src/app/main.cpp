@@ -1,7 +1,6 @@
 #include "MallocHook.h"
 
 #include "bench.h"
-#include "map_defines.h"
 
 #include <fstream>
 #include <regex>

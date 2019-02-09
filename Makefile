@@ -1,43 +1,35 @@
-CXX=ccache g++-8
-CXX_FLAGS=-ggdb -O3 -std=c++14
-#CXX_FLAGS=-g -std=c++14
+CXX=g++-8
+CXX_FLAGS=-ggdb -O3 -march=native -std=c++14
 
-maps=\
-	00_std_unordered_map \
-	01_robin_hood_node_map \
-	02_robin_hood_flat_map \
-	03_absl_node_hash_map \
-	04_absl_flat_hash_map \
-	05_skarupke_flat_hash_map \
-	robin_hood_unordered_map
+DEFAULTS=$(CXX) $(CXX_FLAGS) -DENABLE_MALLOC_HOOK -Isrc/app src/benchmarks/*.cpp src/app/*.cpp -lm -pthread -ldl
 
-memprofile_binaries=$(patsubst %,build/memprofile/%,$(maps))
-runtime_binaries=$(patsubst %,build/runtime/%,$(maps))
+# standard compiliation is good enough
+DEFAULT_MAPS=\
+	std_unordered_map_fnv1ahash \
+	std_unordered_map_nullhash \
+	std_unordered_map_robinhoodhash \
+	robin_hood_unordered_flat_map_fnv1ahash \
+	robin_hood_unordered_flat_map_nullhash \
+	robin_hood_unordered_flat_map_robinhoodhash \
+	tsl_robin_hash_fnv1ahash \
+	tsl_robin_hash_nullhash \
+	tsl_robin_hash_robinhoodhash \
 
-all: $(memprofile_binaries) $(runtime_binaries)
+# hand coded targets with special requirements
+SPECIAL_TARGETS=\
+	build/absl_flat_hash_map
 
-all_fetch: $(patsubst %,fetch/%,$(maps))
+DEFAULT_BINARIES=$(patsubst %,build/%,$(DEFAULT_MAPS))
 
-fetch/%: src/maps/$(@F)
-	$(MAKE) -C src/maps/$(@F)
+all: $(DEFAULT_BINARIES) $(SPECIAL_TARGETS)
 
-clean: 
-	rm -f $(memprofile_binaries) $(runtime_binaries)
+build/%:
+	$(DEFAULTS) -include src/maps/$(@F).h -o build/bench_$(@F)
 
-build/memprofile/%: src/maps/$(@F)
-	$(CXX) $(CXX_FLAGS) -DENABLE_MALLOC_HOOK -Isrc/maps/$(@F) -Isrc/app -lm -o build/memprofile/memprofile_$(@F) src/app/*.cpp src/benchmarks/*.cpp -pthread -ldl -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/hash -lhash -lcity -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/container -lraw_hash_set
+build/absl_flat_hash_map:
+	$(DEFAULTS) -include src/maps/absl_flat_hash_map.h $(SOURCES) -Isrc/maps/absl -pthread -ldl -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/hash -lhash -lcity -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/container -lraw_hash_set -o build/bench_absl_flat_hash_map
 
-build/runtime/%: src/maps/$(@F)
-	$(CXX) $(CXX_FLAGS) -Isrc/maps/$(@F) -Isrc/app -lm -o build/runtime/$(@F) src/app/*.cpp src/benchmarks/*.cpp -pthread -ldl  -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/hash -lhash -lcity -L/home/martinus/dev/abseil-cpp/bazel-bin/absl/container -lraw_hash_set
+clean:
+	rm -f build/bench*
 
-# $(eval TESTS=$(shell build/memprofile/std_unordered_map l))
-TESTS := RandomFindExisting RandomFindNonExisting
-
-run_memprofile:
-	for test in $(TESTS); do \
-		for bin in $(memprofile_binaries); do \
-			./$$bin f $$test; \
-		done \
-	done
-
-.PHONY: clean all
+.PHONY: all clean

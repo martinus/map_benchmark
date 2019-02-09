@@ -1,5 +1,3 @@
-#include "map_defines.h"
-
 #include "bench.h"
 
 static void RandomDistinct2(Bench& bench) {

@@ -1,5 +1,3 @@
-#include "map_defines.h"
-
 #include "bench.h"
 
 static void InsertHugeInt(Bench& bench) {
@@ -31,15 +29,22 @@ static void InsertHugeInt(Bench& bench) {
 	bench.result(0x77ca8aa5816674af, result);
 }
 
+//#if 1
+// static BenchRegister reg(InsertHugeInt);
+//#else
 struct BigData {
+	/*
 	std::shared_ptr<int> a;
 	std::map<int, int> b;
 	std::vector<double> c;
 	std::unique_ptr<int> d;
+	*/
 	std::fstream f;
 };
 
 static void InsertHugeBigData(Bench& bench) {
+	Map<int, std::fstream> map;
+	/*
 	bench.title("InsertHugeBigData");
 	auto& rng = bench.rng();
 
@@ -67,6 +72,8 @@ static void InsertHugeBigData(Bench& bench) {
 	// result map status
 
 	bench.result(0x6b7621434f3cefb6, result);
+	*/
 }
 
 static BenchRegister reg(InsertHugeInt, InsertHugeBigData);
+//#endif

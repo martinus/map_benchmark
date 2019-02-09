@@ -1,5 +1,3 @@
-#include "map_defines.h"
-
 #include "RandomBool.h"
 #include "bench.h"
 
