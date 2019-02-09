@@ -22,9 +22,7 @@ DEFAULT_MAPS=\
 # hand coded targets with special requirements
 ABSL_TARGETS=\
 	build/absl_flat_hash_map_default \
-	build/absl_flat_hash_map_fnv1ahash \
-	build/absl_flat_hash_map_nullhash \
-	build/absl_flat_hash_map_robinhoodhash \
+	build/absl_flat_hash_map_fnv1ahash
 
 DEFAULT_BINARIES=$(patsubst %,build/%,$(DEFAULT_MAPS))
 
