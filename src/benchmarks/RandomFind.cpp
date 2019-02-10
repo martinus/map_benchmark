@@ -8,8 +8,6 @@ static void RandomFind(Bench& bench) {
 	size_t constexpr NumTotal = 4;
 	size_t constexpr NumSequential = NumTotal - NumRandom;
 
-	size_t constexpr SpreadFactor = 55967; // a random prime
-
 	size_t constexpr NumInserts = 1000000;
 	size_t constexpr NumFindsPerIter = 1000 * NumTotal;
 
@@ -21,24 +19,29 @@ static void RandomFind(Bench& bench) {
 
 	size_t num_found = 0;
 
+	std::array<bool, NumTotal> insertRandom = {false};
+	for (size_t i = 0; i < NumRandom; ++i) {
+		insertRandom[i] = true;
+	}
+
 	bench.beginMeasure();
 	{
 		Map<size_t, size_t> map;
 		size_t i = 0;
 		do {
-			for (size_t j = 0; j < std::max(NumSequential, NumRandom); ++j) {
-				if (j < NumSequential) {
+			// insert NumTotal entries: some random, some sequential.
+			std::shuffle(insertRandom.begin(), insertRandom.end(), rng);
+			for (bool isRandomToInsert : insertRandom) {
+				if (isRandomToInsert) {
+					map.emplace(static_cast<size_t>(rng()), i);
+				} else {
 					map.emplace(i, i);
-					++i;
 				}
-				if (j < NumRandom) {
-					map.emplace(static_cast<size_t>(rng.uniform<size_t>()), i);
-					++i;
-				}
+				++i;
 			}
 
 			for (size_t j = 0; j < NumFindsPerIter; ++j) {
-				num_found += map.count(static_cast<size_t>(rng.uniform<size_t>(i)));
+				num_found += map.count(static_cast<size_t>(rng(i)));
 			}
 		} while (i < NumInserts);
 		bench.event("done");
@@ -47,7 +50,7 @@ static void RandomFind(Bench& bench) {
 	bench.endMeasure();
 
 	// 0%, 25%, 50%, 75%, 100%
-	uint64_t results[] = {0x2d54a7bfc54082e7, 0x3b59d87352fd7294, 0x254acfc7749b7405, 0xd10322020f5c0ceb, 0xf9835cc734661c2b};
+	uint64_t results[] = {0x3163e88fd0795ae3, 0xca19937be09d1cba, 0xcacf1231545863ed, 0x290e087fc88f135a, 0xa520660353372c76};
 
 	bench.result(results[NumSequential], num_found);
 }
