@@ -29,6 +29,9 @@ static void InsertHugeInt(Bench& bench) {
 	bench.result(0x77ca8aa5816674af, result);
 }
 
+static BenchRegister reg(InsertHugeInt);
+
+#if 0
 //#if 1
 // static BenchRegister reg(InsertHugeInt);
 //#else
@@ -77,3 +80,4 @@ static void InsertHugeBigData(Bench& bench) {
 
 static BenchRegister reg(InsertHugeInt, InsertHugeBigData);
 //#endif
+#endif
