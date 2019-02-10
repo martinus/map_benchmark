@@ -16,11 +16,20 @@ static void InsertHugeInt(Bench& bench) {
 
 		map.clear();
 		bench.event("cleared");
+
+		// remember the rng's state so we can remove like we've added
+		auto const state = rng.state();
 		for (size_t n = 0; n < 100'000'000; ++n) {
 			map[rng()];
 		}
 		result += map.size();
 		bench.event("inserted");
+
+		rng.state(state);
+		for (size_t n = 0; n < 100'000'000; ++n) {
+			map.erase(rng());
+		}
+		bench.event("removed");
 	}
 	bench.event("destructed");
 	bench.endMeasure();
