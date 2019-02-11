@@ -11,6 +11,9 @@ static void RandomFind(Bench& bench) {
 	size_t constexpr NumInserts = 1000000;
 	size_t constexpr NumFindsPerIter = 1000 * NumTotal;
 
+	// just multiply numbers with a small factor so we don't just sequentially insert numbers
+	size_t constexpr NotSequentialFactor = 31;
+
 	std::stringstream ss;
 	ss << "RandomFind " << std::setw(3) << (NumSequential * 100 / NumTotal) << "% find success";
 	bench.title(ss.str());
@@ -33,15 +36,17 @@ static void RandomFind(Bench& bench) {
 			std::shuffle(insertRandom.begin(), insertRandom.end(), rng);
 			for (bool isRandomToInsert : insertRandom) {
 				if (isRandomToInsert) {
-					map.emplace(static_cast<size_t>(rng()), i);
+					// [1..30], [32..61], ...
+					map.emplace(NotSequentialFactor * i + rng(NotSequentialFactor - 2) + 1, i);
 				} else {
-					map.emplace(i, i);
+					// 0, 31, 62, ...
+					map.emplace(NotSequentialFactor * i, i);
 				}
 				++i;
 			}
 
 			for (size_t j = 0; j < NumFindsPerIter; ++j) {
-				num_found += map.count(static_cast<size_t>(rng(i)));
+				num_found += map.count(static_cast<size_t>(NotSequentialFactor * rng(i)));
 			}
 		} while (i < NumInserts);
 		bench.event("done");
