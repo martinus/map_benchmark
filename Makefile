@@ -1,7 +1,7 @@
 CXX=g++-8
 CXX_FLAGS=-ggdb -O3 -march=native -std=c++14
 
-CXX_FLAGS+=-DENABLE_MALLOC_HOOK -pthread
+#CXX_FLAGS+=-DENABLE_MALLOC_HOOK -pthread
 SOURCES=src/benchmarks/*.cpp src/app/*.cpp 
 INCLUDES=-Isrc/app
 LIBS=-lm -ldl
@@ -15,6 +15,7 @@ DEFAULT_MAPS=\
 	robin_hood_unordered_flat_map_fnv1ahash \
 	robin_hood_unordered_flat_map_nullhash \
 	robin_hood_unordered_flat_map_robinhoodhash \
+	robin_hood_unordered_flat_map_cityhash \
 	tsl_robin_fnv1ahash \
 	tsl_robin_nullhash \
 	tsl_robin_robinhoodhash \
@@ -24,7 +25,9 @@ DEFAULT_MAPS=\
 	tsl_sparse_fnv1ahash \
 	tsl_sparse_nullhash \
 	tsl_sparse_robinhoodhash \
-
+	ska_bytell_hash_map_fnv1ahash \
+	ska_bytell_hash_map_nullhash \
+	ska_bytell_hash_map_robinhoodhash \
 #	tsl_bhopscotch_fnv1ahash \
 	tsl_bhopscotch_nullhash \
 	tsl_bhopscotch_robinhoodhash \
