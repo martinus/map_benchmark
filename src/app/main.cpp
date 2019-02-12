@@ -59,13 +59,13 @@ std::vector<double> run(std::string const& appname, std::string const& name, std
 	}
 	fout << "],\n\"peak\": " << d.peakMem << "\n}\n";
 
-	std::cout << bench.str() << " " << MapName << std::endl;
+	std::cout << bench.str() << "; \"" << MapName << "\"" << std::endl;
 #else
 	for (size_t i = 0; i < 10; ++i) {
 		Bench bench;
 		fn(bench);
 		times.push_back(bench.runtimeSeconds());
-		std::cout << "\t" << bench.str() << std::endl;
+		std::cout << "\t" << bench.str() << "; \"" << MapName << "\"" << std::endl;
 	}
 	std::sort(times.begin(), times.end());
 #endif
