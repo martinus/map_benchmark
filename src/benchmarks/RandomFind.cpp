@@ -18,7 +18,6 @@ static void RandomFind(Bench& bench) {
 	ss << "RandomFind " << std::setw(3) << (NumSequential * 100 / NumTotal) << "% find success";
 	bench.title(ss.str());
 	auto& rng = bench.rng();
-	RandomBool rbool;
 
 	size_t num_found = 0;
 
@@ -27,26 +26,34 @@ static void RandomFind(Bench& bench) {
 		insertRandom[i] = true;
 	}
 
+	sfc64 anotherUnrelatedRng(987654321);
+	auto const anotherUnrelatedRngInitialState = anotherUnrelatedRng.state();
+	sfc64 findRng(anotherUnrelatedRngInitialState);
+
 	bench.beginMeasure();
 	{
 		Map<size_t, size_t> map;
 		size_t i = 0;
+		size_t findCount = 0;
 		do {
 			// insert NumTotal entries: some random, some sequential.
 			std::shuffle(insertRandom.begin(), insertRandom.end(), rng);
 			for (bool isRandomToInsert : insertRandom) {
+				auto val = anotherUnrelatedRng();
 				if (isRandomToInsert) {
-					// [1..30], [32..61], ...
-					map.emplace(NotSequentialFactor * i + rng(NotSequentialFactor - 1) + 1, i);
+					map.emplace(rng() >> 32, i);
 				} else {
-					// 0, 31, 62, ...
-					map.emplace(NotSequentialFactor * i, i);
+					map.emplace(val >> 32, i);
 				}
 				++i;
 			}
 
 			for (size_t j = 0; j < NumFindsPerIter; ++j) {
-				num_found += map.count(static_cast<size_t>(NotSequentialFactor * rng(i)));
+				if (++findCount > i) {
+					findCount = 0;
+					findRng.state(anotherUnrelatedRngInitialState);
+				}
+				num_found += map.count(findRng() >> 32);
 			}
 		} while (i < NumInserts);
 		bench.event("done");
@@ -54,8 +61,10 @@ static void RandomFind(Bench& bench) {
 	bench.event("dtor");
 	bench.endMeasure();
 
+	// std::cout << num_found << std::endl;
+
 	// 0%, 25%, 50%, 75%, 100%
-	uint64_t results[] = {0x3163e88fd0795ae3, 0xca19937be09d1cba, 0xcacf1231545863ed, 0x290e087fc88f135a, 0xa520660353372c76};
+	uint64_t results[] = {0x16c09391c25947f7, 0x8bf70a7628ee2f30, 0x573d220db2cf2dce, 0x4418b7386d2917f1, 0x207d7d23fdc96763};
 
 	bench.result(results[NumSequential], num_found);
 }

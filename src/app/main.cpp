@@ -15,8 +15,7 @@ double median(std::vector<double> v) {
 	return (v[(s - 1) / 2] + v[s / 2]) / 2;
 }
 
-std::vector<double> run(std::string const& appname, std::string const& name, std::function<void(Bench&)> fn) {
-	std::vector<double> times;
+void run(std::string const& appname, std::string const& name, std::function<void(Bench&)> fn) {
 #ifdef ENABLE_MALLOC_HOOK
 	Bench bench;
 	fn(bench);
@@ -61,16 +60,10 @@ std::vector<double> run(std::string const& appname, std::string const& name, std
 
 	std::cout << bench.str() << "; \"" << MapName << "\"" << std::endl;
 #else
-	for (size_t i = 0; i < 10; ++i) {
-		Bench bench;
-		fn(bench);
-		times.push_back(bench.runtimeSeconds());
-		std::cout << "\t" << bench.str() << "; \"" << MapName << "\"" << std::endl;
-	}
-	std::sort(times.begin(), times.end());
+	Bench bench;
+	fn(bench);
+	std::cout << "\t" << bench.str() << "; \"" << MapName << "\"" << std::endl;
 #endif
-
-	return times;
 }
 
 void list(std::vector<std::string> const& args) {

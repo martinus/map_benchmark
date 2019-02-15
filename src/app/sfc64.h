@@ -19,6 +19,12 @@ public:
 	sfc64(sfc64&&) = default;
 	sfc64& operator=(sfc64&&) = default;
 
+	sfc64(std::array<uint64_t, 4> const& state)
+		: m_a(state[0])
+		, m_b(state[1])
+		, m_c(state[2])
+		, m_counter(state[3]) {}
+
 	static constexpr uint64_t(min)() {
 		return (std::numeric_limits<uint64_t>::min)();
 	}
