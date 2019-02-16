@@ -9,46 +9,24 @@ DEFAULTS=$(CXX) $(CXX_FLAGS) $(INCLUDES) $(SOURCES) $(LIBS)
 
 # standard compiliation is good enough
 DEFAULT_MAPS=\
-	std_unordered_map_cityhash \
-	std_unordered_map_fnv1ahash \
-	std_unordered_map_nullhash \
-	std_unordered_map_robinhoodhash \
-	robin_hood_unordered_flat_map_cityhash \
-	robin_hood_unordered_flat_map_fnv1ahash \
-	robin_hood_unordered_flat_map_nullhash \
-	robin_hood_unordered_flat_map_robinhoodhash \
-	robin_hood_unordered_node_map_cityhash \
-	robin_hood_unordered_node_map_fnv1ahash \
-	robin_hood_unordered_node_map_nullhash \
-	robin_hood_unordered_node_map_robinhoodhash \
-	ska_bytell_hash_map_cityhash \
-	ska_bytell_hash_map_fnv1ahash \
-	ska_bytell_hash_map_nullhash \
-	ska_bytell_hash_map_robinhoodhash \
-	tsl_hopscotch_fnv1ahash \
-	tsl_hopscotch_cityhash \
-	tsl_hopscotch_nullhash \
-	tsl_hopscotch_robinhoodhash \
-	tsl_robin_cityhash \
-	tsl_robin_fnv1ahash \
-	tsl_robin_nullhash \
-	tsl_robin_robinhoodhash \
-	tsl_sparse_cityhash \
-	tsl_sparse_fnv1ahash \
-	tsl_sparse_nullhash \
-	tsl_sparse_robinhoodhash \
+	robin_hood_unordered_flat_map \
+	robin_hood_unordered_node_map \
+	ska_bytell_hash_map \
+	std_unordered_map \
+	tsl_hopscotch_map \
+	tsl_robin_map \
+	tsl_sparse_map \
 
 # hand coded targets with special requirements
 ABSL_MAPS=\
-	absl_flat_hash_map_cityhash \
-	absl_flat_hash_map_fnv1ahash \
-	absl_flat_hash_map_nullhash \
-	absl_flat_hash_map_robinhoodhash \
-	absl_node_hash_map_cityhash \
-	absl_node_hash_map_fnv1ahash \
-	absl_node_hash_map_nullhash \
-	absl_node_hash_map_robinhoodhash \
+	absl_flat_hash_map \
+	absl_node_hash_map \
 
+HASHES=\
+	CityHash \
+	FNV1a \
+	NullHash \
+	robin_hood_hash \
 
 DEFAULT_BINARIES=$(patsubst %,build/%,$(DEFAULT_MAPS))
 ABSL_BINARIES=$(patsubst %,build/%,$(ABSL_MAPS))

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Map.h"
+
 #include <MapHash.h>
 #include <PeriodicMemoryStats.h>
 #include <sfc64.h>

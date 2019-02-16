@@ -37,3 +37,6 @@
 # generated files
 *.json
 *.html
+
+build/*
+3rdparty/*

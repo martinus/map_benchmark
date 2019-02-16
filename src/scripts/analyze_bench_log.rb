@@ -25,7 +25,7 @@ end
 
 h.sort.each do |benchmark, map_results|
     map_results.sort.each do |map, results|
-        str = "#{benchmark}; #{map}; #{median(results)}; #{results.sort.join('; ')}"
+        str = "#{benchmark}; #{map}; #{median(results)}"
         if replace_dot_with_comma
             str = str.gsub(".", ",")
         end

@@ -147,7 +147,7 @@ public:
 
 	size_t peak() {
 #ifdef _WIN32
-		// TODO
+	// TODO
 #else
 		return malloc_count_peak();
 #endif
