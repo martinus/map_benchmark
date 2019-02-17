@@ -1,10 +1,18 @@
 cmake_minimum_required(VERSION 2.8.9)
 project (map_benchmark)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# set(CMAKE_CXX_STANDARD 14)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_EXTENSIONS OFF)
 SET(CMAKE_CXX_FLAGS "-ggdb -O3 -march=native ${CMAKE_CXX_FLAGS}")
+
+file(GLOB SRC_BENCHMARKS "benchmarks/*.cpp")
+file(GLOB SRC_APP "app/*.cpp")
+
+file(GLOB INC_HASHES "hashes/*")
+file(GLOB INC_MAPS "maps/*")
+
+# 3rd party #####################################################################
 
 # absl stuff: see https://github.com/abseil/abseil-cpp/tree/master/CMake
 if(MSVC)
@@ -18,23 +26,41 @@ if(MSVC)
 endif()
 add_subdirectory("3rdparty/abseil-cpp")
 
+# pthread, required by absl see https://github.com/abseil/abseil-cpp/issues/183#issuecomment-458453010
+set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
 
-file(GLOB SRC_BENCHMARKS "benchmarks/*.cpp")
-file(GLOB SRC_APP "app/*.cpp")
+# folly 
+# install dependencies, see https://github.com/facebook/folly
+# sudo apt-get install \
+#   g++ \
+#   cmake \
+#   libboost-all-dev \
+#   libevent-dev \
+#   libdouble-conversion-dev \
+#   libgoogle-glog-dev \
+#   libgflags-dev \
+#   libiberty-dev \
+#   liblz4-dev \
+#   liblzma-dev \
+#   libsnappy-dev \
+#   make \
+#   zlib1g-dev \
+#   binutils-dev \
+#   libjemalloc-dev \
+#   libssl-dev \
+#   pkg-config
+add_subdirectory("3rdparty/folly")
 
-file(GLOB INC_HASHES "hashes/*")
-file(GLOB INC_MAPS "maps/*")
+
+# build stuff #####################################################################
 
 # use ccache
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif(CCACHE_PROGRAM)
-
-# pthread, see https://github.com/abseil/abseil-cpp/issues/183#issuecomment-458453010
-set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-set(THREADS_PREFER_PTHREAD_FLAG TRUE)
-find_package(Threads REQUIRED)
 
 # I like colors, even with ninja build
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -56,8 +82,15 @@ foreach(MAP_DIR ${INC_MAPS})
         file(GLOB SRC_HASH_DIR "${HASH_DIR}/*.cpp")
 
         add_executable(${EXECUTABLE_NAME} ${SRC_APP} ${SRC_BENCHMARKS} ${SRC_MAP_DIR} ${SRC_HASH_DIR})
-        target_include_directories(${EXECUTABLE_NAME} PRIVATE "app" "3rdparty" ${MAP_DIR} ${HASH_DIR})
-        target_link_libraries(${EXECUTABLE_NAME} absl::base absl::flat_hash_map Threads::Threads)
+        target_include_directories(${EXECUTABLE_NAME} PRIVATE "app" "3rdparty" ${MAP_DIR} ${HASH_DIR}
+            ${FOLLY_DIR}        )
+        
+        # absl
+        target_link_libraries(${EXECUTABLE_NAME} absl::base absl::flat_hash_map)
+        target_link_libraries(${EXECUTABLE_NAME} Threads::Threads)
+
+        # folly
+        target_link_libraries(${EXECUTABLE_NAME} folly)
 
         endforeach(HASH_DIR ${INC_HASHES})
 endforeach(MAP_DIR ${INC_MAPS})

@@ -1,3 +1,6 @@
 [submodule "src/3rdparty/abseil-cpp"]
 	path = src/3rdparty/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
+[submodule "src/3rdparty/folly"]
+	path = src/3rdparty/folly
+	url = https://github.com/facebook/folly.git
