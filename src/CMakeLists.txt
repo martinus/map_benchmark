@@ -75,15 +75,14 @@ foreach(MAP_DIR ${INC_MAPS})
     foreach(HASH_DIR ${INC_HASHES})
         # executable name: mapname_hashname
         get_filename_component(HASH_NAME ${HASH_DIR} NAME_WE)
-        set(EXECUTABLE_NAME "${MAP_NAME}__${HASH_NAME}")
+        set(EXECUTABLE_NAME "bench_${MAP_NAME}__${HASH_NAME}")
 
         # collect .cpp files in current hash and map directory
         file(GLOB SRC_MAP_DIR "${MAP_DIR}/*.cpp")
         file(GLOB SRC_HASH_DIR "${HASH_DIR}/*.cpp")
 
         add_executable(${EXECUTABLE_NAME} ${SRC_APP} ${SRC_BENCHMARKS} ${SRC_MAP_DIR} ${SRC_HASH_DIR})
-        target_include_directories(${EXECUTABLE_NAME} PRIVATE "app" "3rdparty" ${MAP_DIR} ${HASH_DIR}
-            ${FOLLY_DIR}        )
+        target_include_directories(${EXECUTABLE_NAME} PRIVATE "app" "3rdparty" ${MAP_DIR} ${HASH_DIR} ${FOLLY_DIR})
         
         # absl
         target_link_libraries(${EXECUTABLE_NAME} absl::base absl::flat_hash_map)
