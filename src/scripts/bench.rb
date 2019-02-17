@@ -6,18 +6,16 @@ ENV["LD_LIBRARY_PATH"] = "${LD_LIBRARY_PATH}:/home/martinus/dev/abseil-cpp/bazel
 
 benchs = `./#{Dir["bench*"].first} l`.split("\n")
 
-apps = Dir["bench*cityhash"]
-apps += Dir["bench*node*"]
-apps += Dir["bench*absl*nullhash"]
+apps = Dir["bench*"].sort.uniq
 
-apps = apps.sort.uniq
+STDERR.puts "running these apps:\n\t#{apps.join("\t\n")}"
 
 10.times do |i|
     benchs.each do |l|
         # next unless l =~ /RandomFind/
+        STDERR.puts "iteration #{i}"
         apps.each do |f|
             cmd = "timeout 10m ./#{f} f \"^#{l}$\""
-            STDERR.puts "iteration #{i}, running '#{cmd}''"
             if !system(cmd)
                 puts "TIMEOUT: #{f} #{l}"
             end
