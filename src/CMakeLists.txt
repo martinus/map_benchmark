@@ -31,6 +31,18 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif(CCACHE_PROGRAM)
 
+# pthread, see https://github.com/abseil/abseil-cpp/issues/183#issuecomment-458453010
+set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
+
+# I like colors, even with ninja build
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    add_compile_options (-fdiagnostics-color=always)
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    add_compile_options (-fcolor-diagnostics)
+endif ()
+
 # create targets for all map - hash pairs
 foreach(MAP_DIR ${INC_MAPS})
     get_filename_component(MAP_NAME ${MAP_DIR} NAME_WE)
@@ -45,7 +57,7 @@ foreach(MAP_DIR ${INC_MAPS})
 
         add_executable(${EXECUTABLE_NAME} ${SRC_APP} ${SRC_BENCHMARKS} ${SRC_MAP_DIR} ${SRC_HASH_DIR})
         target_include_directories(${EXECUTABLE_NAME} PRIVATE "app" "3rdparty" ${MAP_DIR} ${HASH_DIR})
-        target_link_libraries(${EXECUTABLE_NAME} absl::flat_hash_map)
+        target_link_libraries(${EXECUTABLE_NAME} absl::base absl::flat_hash_map Threads::Threads)
 
         endforeach(HASH_DIR ${INC_HASHES})
 endforeach(MAP_DIR ${INC_MAPS})
