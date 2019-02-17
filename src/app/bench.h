@@ -110,7 +110,7 @@ public:
 		}
 
 		std::stringstream ss;
-		ss << std::setw(10) << std::right << mRuntimeSec << "; " << std::hex << "0x" << s << "; \"" << title() << "\"";
+		ss << mRuntimeSec << "; " << std::hex << "\"0x" << s << "\"; \"" << title() << "\"";
 
 		return ss.str();
 	}

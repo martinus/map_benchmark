@@ -62,7 +62,7 @@ void run(std::string const& appname, std::string const& name, std::function<void
 #else
 	Bench bench;
 	fn(bench);
-	std::cout << "\t" << bench.str() << "; \"" << MapName << "\"; " << HashName << "\"" << std::endl;
+	std::cout << bench.str() << "; \"" << MapName << "\"; \"" << HashName << "\"" << std::endl;
 #endif
 }
 
