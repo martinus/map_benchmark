@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <fstream>
 #include <functional>
 #include <initializer_list>
 #include <iostream>
@@ -8,6 +9,7 @@
 #include <unordered_map>
 
 #include "Map.h"
+#include "getRSS.h"
 
 // inline
 #ifdef _WIN32
@@ -23,12 +25,13 @@
 class Bench {
 public:
     // use highresolution clock only if it is steady (never adjusted by the system).
-
     using clock =
         std::conditional<std::chrono::high_resolution_clock::is_steady, std::chrono::high_resolution_clock, std::chrono::steady_clock>::type;
 
     Bench(std::string testName)
-        : mTestName(std::move(testName)) {}
+        : mTestName(std::move(testName)) {
+            mInitialPeakRss = getPeakRSS();
+        }
 
     inline void beginMeasure(const char* measurementName) {
         show_tags(measurementName);
@@ -49,7 +52,15 @@ private:
 
     BENCHMARK_NOINLINE void show_result(clock::time_point end, uint64_t expected_result, uint64_t actual_result) {
         auto runtime_sec = std::chrono::duration<double>(end - mStartTime).count();
-        std::cout << actual_result << mSep << runtime_sec;
+
+        auto peakRss = getPeakRSS();
+        if (peakRss > mInitialPeakRss) {
+            peakRss -= mInitialPeakRss;
+        } else {
+            peakRss = 0;
+        }
+
+        std::cout << actual_result << mSep << runtime_sec << mSep << peakRss;
         if (actual_result != expected_result) {
             std::cout << mSep << mQuote << "ERROR: expected " << expected_result << mQuote;
         }
@@ -60,6 +71,7 @@ private:
     const char* mSep = "; ";
     const char* mQuote = "\"";
     std::string const mTestName;
+    size_t mInitialPeakRss;
 };
 
 class BenchRegistry {
