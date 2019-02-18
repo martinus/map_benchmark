@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Hash.h"
-#include "ska/bytell_hash_map.hpp"
+#include "skarupke__flat_hash_map/bytell_hash_map.hpp"
 
 static const char* MapName = "ska::bytell_hash_map";
 

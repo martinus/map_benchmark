@@ -1,6 +1,6 @@
 #pragma once
 
-#include "robin_hood/robin_hood.h"
+#include "martinus__robin-hood-hashing/src/include/robin_hood.h"
 
 static const char* HashName = "robin_hood::hash";
 

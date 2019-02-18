@@ -1,6 +1,32 @@
-[submodule "external/abseil-cpp"]
-	path = external/abseil-cpp
+[submodule "external/skarupke__flat_hash_map"]
+	path = external/skarupke__flat_hash_map
+	url = https://github.com/skarupke/flat_hash_map
+	branch = master
+[submodule "external/abseil__abseil-cpp"]
+	path = external/abseil__abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
-[submodule "external/folly"]
-	path = external/folly
+	branch = master
+[submodule "external/facebook__folly"]
+	path = external/facebook__folly
 	url = https://github.com/facebook/folly.git
+	branch = master
+[submodule "external/martinus__robin-hood-hashing"]
+	path = external/martinus__robin-hood-hashing
+	url = https://github.com/martinus/robin-hood-hashing.git
+	branch = master
+[submodule "external/greg7mdp__sparsepp"]
+	path = external/greg7mdp__sparsepp
+	url = https://github.com/greg7mdp/sparsepp.git
+	branch = master
+[submodule "external/Tessil__robin-map"]
+	path = external/Tessil__robin-map
+	url = https://github.com/Tessil/robin-map.git
+	branch = master
+[submodule "external/Tessil__hopscotch-map"]
+	path = external/Tessil__hopscotch-map
+	url = https://github.com/Tessil/hopscotch-map.git
+	branch = master
+[submodule "external/Tessil__sparse-map"]
+	path = external/Tessil__sparse-map
+	url = https://github.com/Tessil/sparse-map.git
+	branch = master

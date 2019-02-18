@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Hash.h"
-#include "tsl/sparse_map.h"
+#include "Tessil__sparse-map/include/tsl/sparse_map.h"
 
 static const char* MapName = "tsl::sparse_map";
 

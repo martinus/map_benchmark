@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Hash.h"
-#include "tsl/hopscotch_map.h"
+#include "Tessil__hopscotch-map/include/tsl/hopscotch_map.h"
 
 static const char* MapName = "tsl::hopscotch_map";
 

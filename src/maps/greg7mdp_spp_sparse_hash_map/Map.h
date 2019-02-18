@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Hash.h"
-#include "sparsepp/spp.h"
+#include "greg7mdp__sparsepp/sparsepp/spp.h"
 
 static const char* MapName = "spp::sparse_hash_map";
 

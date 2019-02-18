@@ -14,11 +14,6 @@ file(GLOB INC_MAPS "src/maps/*")
 
 # external code #####################################################################
 
-add_subdirectory("external/robin_hood")
-add_subdirectory("external/ska")
-add_subdirectory("external/sparsepp")
-add_subdirectory("external/tsl")
-
 # absl stuff: see https://github.com/abseil/abseil-cpp/tree/master/CMake
 if(MSVC)
     # /wd4005  macro-redefinition
@@ -29,7 +24,7 @@ if(MSVC)
     add_compile_options(/wd4005 /wd4068 /wd4244 /wd4267 /wd4800)
     add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS)
 endif()
-add_subdirectory("external/abseil-cpp")
+add_subdirectory("external/abseil__abseil-cpp")
 
 # pthread, required by absl see https://github.com/abseil/abseil-cpp/issues/183#issuecomment-458453010
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
@@ -56,7 +51,7 @@ find_package(Threads REQUIRED)
 #   libjemalloc-dev \
 #   libssl-dev \
 #   pkg-config
-add_subdirectory("external/folly")
+add_subdirectory("external/facebook__folly")
 
 
 # build stuff #####################################################################
