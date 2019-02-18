@@ -7,7 +7,7 @@ BENCHMARK(IterateIntegers) {
 
     size_t const num_iters = 50000;
 
-    int result = 0;
+    uint64_t result = 0;
     Map<int, int> map;
 
     auto const state = rng.state();
@@ -26,5 +26,5 @@ BENCHMARK(IterateIntegers) {
             result += keyVal.first;
         }
     }
-    bench.endMeasure(4234234, result);
+    bench.endMeasure(UINT64_C(18439538569855951616), result);
 }

@@ -17,7 +17,7 @@ BENCHMARK(RandomDistinct2) {
             checksum += ++map[static_cast<int>(rng(max_rng))];
         }
     }
-    bench.endMeasure(432423, checksum);
+    bench.endMeasure(549985352, checksum);
 
     {
         bench.beginMeasure({"25% distinct", MapName, HashName});
@@ -28,7 +28,7 @@ BENCHMARK(RandomDistinct2) {
             checksum += ++map[static_cast<int>(rng(max_rng))];
         }
     }
-    bench.endMeasure(432423, checksum);
+    bench.endMeasure(149979034, checksum);
 
     {
         bench.beginMeasure({"50% distinct", MapName, HashName});
@@ -38,7 +38,7 @@ BENCHMARK(RandomDistinct2) {
             checksum += ++map[static_cast<int>(rng(max_rng))];
         }
     }
-    bench.endMeasure(432423, checksum);
+    bench.endMeasure(249981806, checksum);
 
     {
         bench.beginMeasure({"100% distinct", MapName, HashName});
@@ -48,5 +48,5 @@ BENCHMARK(RandomDistinct2) {
             checksum += ++map[static_cast<int>(rng())];
         }
     }
-    bench.endMeasure(423432, checksum);
+    bench.endMeasure(50291811, checksum);
 }

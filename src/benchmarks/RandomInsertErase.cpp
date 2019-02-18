@@ -5,7 +5,7 @@
 #include <sstream>
 
 template <int RngShift>
-size_t run(size_t max_n, Bench& bench) {
+void run(size_t max_n, Bench& bench) {
     sfc64 rng(123);
 
     // time measured part
@@ -14,23 +14,19 @@ size_t run(size_t max_n, Bench& bench) {
     ss << "random insert & erase, leftshift " << RngShift << " bits";
 
     bench.beginMeasure({ss.str().c_str(), MapName, HashName});
-    {
-        Map<uint64_t, uint64_t> map;
-        for (size_t n = 2; n < max_n; ++n) {
-            for (size_t i = 0; i < max_n; ++i) {
-                map[rng(n) << RngShift] = i;
-                verifier += map.erase(rng(n) << RngShift);
-            }
+    Map<uint64_t, uint64_t> map;
+    for (size_t n = 2; n < max_n; ++n) {
+        for (size_t i = 0; i < max_n; ++i) {
+            map[rng(n) << RngShift] = i;
+            verifier += map.erase(rng(n) << RngShift);
         }
     }
-    return verifier;
+    bench.endMeasure(220534004, verifier);
 }
 
 BENCHMARK(RandomInsertErase) {
-    auto result = run<0>(21000, bench);
-    bench.endMeasure(321, result);
+    run<0>(21000, bench);
 }
 BENCHMARK(RandomInsertEraseShifted_4) {
-    auto result = run<4>(21000, bench);
-    bench.endMeasure(3321, result);
+    run<4>(21000, bench);
 }

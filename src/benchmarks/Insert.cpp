@@ -11,7 +11,7 @@ BENCHMARK(InsertHugeInt) {
         for (size_t n = 0; n < 100'000'000; ++n) {
             map[rng()];
         }
-        bench.endMeasure(100'000'000, map.size());
+        bench.endMeasure(98841586, map.size());
 
         bench.beginMeasure({"clear 100M int", MapName, HashName});
         map.clear();
@@ -23,7 +23,7 @@ BENCHMARK(InsertHugeInt) {
         for (size_t n = 0; n < 100'000'000; ++n) {
             map[rng()];
         }
-        bench.endMeasure(100'000'000, map.size());
+        bench.endMeasure(98843646, map.size());
 
         rng.state(state);
         bench.beginMeasure({"remove 100M int", MapName, HashName});
