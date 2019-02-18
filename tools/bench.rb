@@ -3,7 +3,8 @@
 benchs = `./#{Dir["bench*"].first} l`.split("\n")
 apps = Dir["bench*"].sort.uniq
 
-STDERR.puts "running these apps:\n\t#{apps.join("\t\n")}"
+STDERR.puts "apps:\n\t#{apps.join("\n\t")}"
+STDERR.puts "benchmarks:\n\t#{benchs.join("\n\t")}"
 
 10.times do |iter|
     benchs.each do |bench|
