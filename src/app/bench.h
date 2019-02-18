@@ -32,10 +32,11 @@ private:
         std::chrono::duration<double> duration = end - mStartTime;
 
         auto runtime_sec = duration.count();
-        std::cout << expected_result << mSep << runtime_sec << std::endl;
+        std::cout << actual_result << mSep << runtime_sec;
         if (actual_result != expected_result) {
-            std::cerr << "ERROR: expected " << expected_result << " but got " << actual_result << std::endl;
+            std::cout << mSep << "\"ERROR: expected " << expected_result << "\"";
         }
+        std::cout << std::endl;
     }
 
     clock::time_point mStartTime;
