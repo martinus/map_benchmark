@@ -14,6 +14,11 @@ file(GLOB INC_MAPS "maps/*")
 
 # 3rd party #####################################################################
 
+add_subdirectory("3rdparty/robin_hood")
+add_subdirectory("3rdparty/ska")
+add_subdirectory("3rdparty/sparsepp")
+add_subdirectory("3rdparty/tsl")
+
 # absl stuff: see https://github.com/abseil/abseil-cpp/tree/master/CMake
 if(MSVC)
     # /wd4005  macro-redefinition
