@@ -6,18 +6,18 @@ project (map_benchmark)
 # set(CMAKE_CXX_EXTENSIONS OFF)
 SET(CMAKE_CXX_FLAGS "-ggdb -O3 -march=native ${CMAKE_CXX_FLAGS}")
 
-file(GLOB SRC_BENCHMARKS "benchmarks/*.cpp")
-file(GLOB SRC_APP "app/*.cpp")
+file(GLOB SRC_BENCHMARKS "src/benchmarks/*.cpp")
+file(GLOB SRC_APP "src/app/*.cpp")
 
-file(GLOB INC_HASHES "hashes/*")
-file(GLOB INC_MAPS "maps/*")
+file(GLOB INC_HASHES "src/hashes/*")
+file(GLOB INC_MAPS "src/maps/*")
 
-# 3rd party #####################################################################
+# external code #####################################################################
 
-add_subdirectory("3rdparty/robin_hood")
-add_subdirectory("3rdparty/ska")
-add_subdirectory("3rdparty/sparsepp")
-add_subdirectory("3rdparty/tsl")
+add_subdirectory("external/robin_hood")
+add_subdirectory("external/ska")
+add_subdirectory("external/sparsepp")
+add_subdirectory("external/tsl")
 
 # absl stuff: see https://github.com/abseil/abseil-cpp/tree/master/CMake
 if(MSVC)
@@ -29,7 +29,7 @@ if(MSVC)
     add_compile_options(/wd4005 /wd4068 /wd4244 /wd4267 /wd4800)
     add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS)
 endif()
-add_subdirectory("3rdparty/abseil-cpp")
+add_subdirectory("external/abseil-cpp")
 
 # pthread, required by absl see https://github.com/abseil/abseil-cpp/issues/183#issuecomment-458453010
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
@@ -56,7 +56,7 @@ find_package(Threads REQUIRED)
 #   libjemalloc-dev \
 #   libssl-dev \
 #   pkg-config
-add_subdirectory("3rdparty/folly")
+add_subdirectory("external/folly")
 
 
 # build stuff #####################################################################
@@ -87,7 +87,7 @@ foreach(MAP_DIR ${INC_MAPS})
         file(GLOB SRC_HASH_DIR "${HASH_DIR}/*.cpp")
 
         add_executable(${EXECUTABLE_NAME} ${SRC_APP} ${SRC_BENCHMARKS} ${SRC_MAP_DIR} ${SRC_HASH_DIR})
-        target_include_directories(${EXECUTABLE_NAME} PRIVATE "app" "3rdparty" ${MAP_DIR} ${HASH_DIR} ${FOLLY_DIR})
+        target_include_directories(${EXECUTABLE_NAME} PRIVATE "src/app" "external" ${MAP_DIR} ${HASH_DIR} ${FOLLY_DIR})
         
         # absl
         target_link_libraries(${EXECUTABLE_NAME} absl::base absl::flat_hash_map)

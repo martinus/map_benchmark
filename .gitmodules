@@ -1,6 +1,6 @@
-[submodule "src/3rdparty/abseil-cpp"]
-	path = src/3rdparty/abseil-cpp
+[submodule "external/abseil-cpp"]
+	path = external/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
-[submodule "src/3rdparty/folly"]
-	path = src/3rdparty/folly
+[submodule "external/folly"]
+	path = external/folly
 	url = https://github.com/facebook/folly.git
