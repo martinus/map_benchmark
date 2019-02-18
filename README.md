@@ -1,14 +1,10 @@
 # map_benchmark
 Comprehensive benchmarks of C++ maps
 
-This is a work in progress.
-TODO's
+# building 
 
-* Add lots of map implementations
-* create simple benchmarking interface, so it's easy to add benchmarks
-* should benchmarks verify results? (add hashing for maps, e.g. XOR all entries hash_combine(key, value)
-* Add a few benchmarks
-* Create nice benchmark result (overview, runtime logging, candlestick chart with plotly.js)
-* Add automatically fetching for map implementations (if possible)
-* each benchmark result is a generated JSON file
-* parse generated JSON files to generate nice benchmark results homepage
+    git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
+    cd map_benchmark/build
+    cmake ../src
+    make -j $(nproc)
+
