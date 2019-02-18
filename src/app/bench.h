@@ -44,6 +44,7 @@ private:
     BENCHMARK_NOINLINE void show_tags(const char* measurementName) {
         std::cout << mQuote << MapName << mQuote << mSep << mQuote << HashName << mQuote << mSep << mQuote << mTestName << mQuote << mSep << mQuote
                   << measurementName << mQuote << mSep;
+        std::cout.flush();
     }
 
     BENCHMARK_NOINLINE void show_result(clock::time_point end, uint64_t expected_result, uint64_t actual_result) {
