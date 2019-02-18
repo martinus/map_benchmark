@@ -14,30 +14,120 @@
 #include <sstream>
 #include <vector>
 
+struct BenchTitleException {};
+
 class Bench {
 public:
-    using clock = std::chrono::high_resolution_clock;
+    Bench(size_t numTrials = 5, uint64_t seed = 123)
+        : mSeed(seed)
+        , mNumTrials(numTrials)
+        , mCurrentTrial(0)
+        , mResult(0)
+        , mExpected(0)
+        , mThrowAfterTitle(false) {}
 
-    template <typename Op>
-    void operator()(std::initializer_list<const char*> tags, uint64_t expected_result, Op&& op) {
-        auto const begin = clock::now();
-        op();
-        auto const end = clock::now();
-        show_result(tags, expected_result, begin, end);
+    void throwAfterTitle() {
+        mThrowAfterTitle = true;
+    }
+
+    Bench& title(const std::string& txt) {
+        mTitle = txt;
+        if (mThrowAfterTitle) {
+            throw BenchTitleException{};
+        }
+        return *this;
+    }
+
+    std::string const& title() const {
+        return mTitle;
+    }
+
+    Bench& description(const std::string& txt) {
+        mDescription = txt;
+        return *this;
+    }
+
+    const std::string& description() const {
+        return mDescription;
+    }
+
+    Bench& result(uint64_t expected, uint64_t actualResult) {
+        mExpected = expected;
+        mResult = actualResult;
+        return *this;
+    }
+
+    Bench& event(const char* msg) {
+        if (mPeriodicMemoryStats) {
+            mPeriodicMemoryStats->event(msg);
+        }
+        return *this;
+    }
+
+    sfc64& rng() {
+        return mRng;
+    }
+
+    inline void beginMeasure() {
+#ifdef ENABLE_MALLOC_HOOK
+        mPeriodicMemoryStats = std::make_unique<PeriodicMemoryStats>(0.02);
+#endif
+        mTimePoint = std::chrono::high_resolution_clock::now();
+    }
+
+    PeriodicMemoryStats* periodicMemoryStats() {
+        return mPeriodicMemoryStats.get();
+    }
+
+    inline void endMeasure() {
+        std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+        if (mPeriodicMemoryStats) {
+            mPeriodicMemoryStats->stop();
+        }
+
+        std::chrono::duration<double> diff = now - mTimePoint;
+
+        mRuntimeSec = diff.count();
+    }
+
+    double runtimeSeconds() const {
+        return mRuntimeSec;
+    }
+
+    std::string str() const {
+        size_t s = 0;
+        for (auto const& x : mRng.state()) {
+            hash_combine(s, x);
+        }
+        hash_combine(s, mResult);
+
+        if (mExpected != s) {
+            std::stringstream msg;
+            msg << "ERROR: expected "
+                << "0x" << std::hex << mExpected << " but got 0x" << std::hex << s;
+            std::cerr << msg.str() << std::endl;
+            // throw std::runtime_error(msg.str());
+        }
+
+        std::stringstream ss;
+        ss << mRuntimeSec << "; " << std::hex << "\"0x" << s << "\"; \"" << title() << "\"";
+
+        return ss.str();
     }
 
 private:
-    void show_result(std::initializer_list<const char*> tags, uint64_t expected_result, clock::time_point const& begin,
-                     clock::time_point const& end) {
-        std::chrono::duration<double> duration = end - begin;
-
-        const char* sep = "; ";
-        auto runtime_sec = duration.count();
-        for (auto tag : tags) {
-            std::cout << "\"" << tag << "\"" << sep;
-        }
-        std::cout << expected_result << sep << runtime_sec << std::endl;
-    }
+    uint64_t const mSeed;
+    sfc64 mRng;
+    std::string mTitle;
+    size_t const mNumTrials;
+    size_t mCurrentTrial;
+    std::chrono::high_resolution_clock::time_point mTimePoint;
+    uint64_t mResult;
+    uint64_t mExpected;
+    bool mThrowAfterTitle;
+    double mRuntimeSec;
+    std::string mDescription;
+    std::unique_ptr<PeriodicMemoryStats> mPeriodicMemoryStats;
 };
 
 #include <map>
