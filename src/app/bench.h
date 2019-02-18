@@ -30,8 +30,8 @@ public:
 
     Bench(std::string testName)
         : mTestName(std::move(testName)) {
-            mInitialPeakRss = getPeakRSS();
-        }
+        mInitialPeakRss = getPeakRSS();
+    }
 
     inline void beginMeasure(const char* measurementName) {
         show_tags(measurementName);
@@ -60,7 +60,7 @@ private:
             peakRss = 0;
         }
 
-        std::cout << actual_result << mSep << runtime_sec << mSep << peakRss;
+        std::cout << actual_result << mSep << runtime_sec << mSep << (peakRss / 1048576.0);
         if (actual_result != expected_result) {
             std::cout << mSep << mQuote << "ERROR: expected " << expected_result << mQuote;
         }
