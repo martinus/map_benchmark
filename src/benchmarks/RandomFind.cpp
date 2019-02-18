@@ -39,7 +39,7 @@ uint64_t RandomFind(Bench& bench) {
         size_t i = 0;
         size_t findCount = 0;
 
-        bench.beginMeasure({title.c_str(), MapName, HashName});
+        bench.beginMeasure(title.c_str());
         do {
             // insert NumTotal entries: some random, some sequential.
             std::shuffle(insertRandom.begin(), insertRandom.end(), rng);

@@ -11,7 +11,7 @@ BENCHMARK(IterateIntegers) {
     Map<int, int> map;
 
     auto const state = rng.state();
-    bench.beginMeasure({"iterating", MapName, HashName});
+    bench.beginMeasure("iterating");
     for (size_t n = 0; n < num_iters; ++n) {
         map[rng()] = n;
         for (auto const& keyVal : map) {

@@ -13,7 +13,7 @@ void run(size_t max_n, Bench& bench) {
     std::stringstream ss;
     ss << "random insert & erase, leftshift " << RngShift << " bits";
 
-    bench.beginMeasure({ss.str().c_str(), MapName, HashName});
+    bench.beginMeasure(ss.str().c_str());
     Map<uint64_t, uint64_t> map;
     for (size_t n = 2; n < max_n; ++n) {
         for (size_t i = 0; i < max_n; ++i) {

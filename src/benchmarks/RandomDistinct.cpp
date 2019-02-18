@@ -9,7 +9,7 @@ BENCHMARK(RandomDistinct2) {
 
     int checksum;
     {
-        bench.beginMeasure({"5% distinct", MapName, HashName});
+        bench.beginMeasure("5% distinct");
         checksum = 0;
         size_t const max_rng = n / 20;
         Map<int, int> map;
@@ -20,7 +20,7 @@ BENCHMARK(RandomDistinct2) {
     bench.endMeasure(549985352, checksum);
 
     {
-        bench.beginMeasure({"25% distinct", MapName, HashName});
+        bench.beginMeasure("25% distinct");
         checksum = 0;
         size_t const max_rng = n / 4;
         Map<int, int> map;
@@ -31,7 +31,7 @@ BENCHMARK(RandomDistinct2) {
     bench.endMeasure(149979034, checksum);
 
     {
-        bench.beginMeasure({"50% distinct", MapName, HashName});
+        bench.beginMeasure("50% distinct");
         size_t const max_rng = n / 2;
         Map<int, int> map;
         for (size_t i = 0; i < n; ++i) {
@@ -41,7 +41,7 @@ BENCHMARK(RandomDistinct2) {
     bench.endMeasure(249981806, checksum);
 
     {
-        bench.beginMeasure({"100% distinct", MapName, HashName});
+        bench.beginMeasure("100% distinct");
         checksum = 0;
         Map<int, int> map;
         for (size_t i = 0; i < n; ++i) {
