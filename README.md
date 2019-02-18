@@ -10,3 +10,10 @@ Install dependencies for folly::F14, see https://github.com/facebook/folly/#ubun
     cmake -DCMAKE_CXX_COMPILER="g++-8" -G Ninja ..
     ninja
 
+# Add a new Hashmap
+
+1. In `external`, add a submodule:
+   ```
+   git submodule add -b master https://github.com/rigtorp/HashMap.git rigtorp__HashMap
+   ```
+2. Create a directory in `src/map/` with a file `Hash.h`. See the others for example.
