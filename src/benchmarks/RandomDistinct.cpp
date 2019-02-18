@@ -1,53 +1,52 @@
+#include "Map.h"
 #include "bench.h"
+#include "sfc64.h"
 
-static void RandomDistinct2(Bench& bench) {
-	bench.title("RandomDistinct2");
-	static size_t const n = 50'000'000;
+BENCHMARK(RandomDistinct2) {
+    static size_t const n = 50'000'000;
 
-	auto& rng = bench.rng();
+    sfc64 rng(123);
 
-	int checksum = 0;
-	bench.beginMeasure();
-	{
-		size_t const max_rng = n / 20;
-		Map<int, int> map;
-		for (size_t i = 0; i < n; ++i) {
-			checksum += ++map[static_cast<int>(rng(max_rng))];
-		}
-		bench.event("5% distinct");
-	}
-	bench.event("dtor");
+    int checksum;
+    {
+        bench.beginMeasure({"5% distinct", MapName, HashName});
+        checksum = 0;
+        size_t const max_rng = n / 20;
+        Map<int, int> map;
+        for (size_t i = 0; i < n; ++i) {
+            checksum += ++map[static_cast<int>(rng(max_rng))];
+        }
+    }
+    bench.endMeasure(432423, checksum);
 
-	{
-		size_t const max_rng = n / 4;
-		Map<int, int> map;
-		for (size_t i = 0; i < n; ++i) {
-			checksum += ++map[static_cast<int>(rng(max_rng))];
-		}
-		bench.event("25% distinct");
-	}
-	bench.event("dtor");
+    {
+        bench.beginMeasure({"25% distinct", MapName, HashName});
+        checksum = 0;
+        size_t const max_rng = n / 4;
+        Map<int, int> map;
+        for (size_t i = 0; i < n; ++i) {
+            checksum += ++map[static_cast<int>(rng(max_rng))];
+        }
+    }
+    bench.endMeasure(432423, checksum);
 
-	{
-		size_t const max_rng = n / 2;
-		Map<int, int> map;
-		for (size_t i = 0; i < n; ++i) {
-			checksum += ++map[static_cast<int>(rng(max_rng))];
-		}
-		bench.event("50% distinct");
-	}
-	bench.event("dtor");
+    {
+        bench.beginMeasure({"50% distinct", MapName, HashName});
+        size_t const max_rng = n / 2;
+        Map<int, int> map;
+        for (size_t i = 0; i < n; ++i) {
+            checksum += ++map[static_cast<int>(rng(max_rng))];
+        }
+    }
+    bench.endMeasure(432423, checksum);
 
-	{
-		Map<int, int> map;
-		for (size_t i = 0; i < n; ++i) {
-			checksum += ++map[static_cast<int>(rng())];
-		}
-		bench.event("100% distinct");
-	}
-	bench.event("dtor");
-	bench.endMeasure();
-	bench.result(0xb054cacf033c42bd, checksum);
+    {
+        bench.beginMeasure({"100% distinct", MapName, HashName});
+        checksum = 0;
+        Map<int, int> map;
+        for (size_t i = 0; i < n; ++i) {
+            checksum += ++map[static_cast<int>(rng())];
+        }
+    }
+    bench.endMeasure(423432, checksum);
 }
-
-static BenchRegister reg(RandomDistinct2);

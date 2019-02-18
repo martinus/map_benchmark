@@ -1,92 +1,38 @@
+#include "Map.h"
 #include "bench.h"
+#include "sfc64.h"
 
-static void InsertHugeInt(Bench& bench) {
-	bench.title("InsertHugeInt");
-	auto& rng = bench.rng();
+BENCHMARK(InsertHugeInt) {
+    sfc64 rng(213);
 
-	size_t result = 0;
-	bench.beginMeasure();
-	{
-		Map<int, int> map;
-		for (size_t n = 0; n < 100'000'000; ++n) {
-			map[rng()];
-		}
-		result += map.size();
-		bench.event("inserted");
+    {
+        bench.beginMeasure({"insert 100M int", MapName, HashName});
+        Map<int, int> map;
+        for (size_t n = 0; n < 100'000'000; ++n) {
+            map[rng()];
+        }
+        bench.endMeasure(100'000'000, map.size());
 
-		map.clear();
-		bench.event("cleared");
+        bench.beginMeasure({"clear 100M int", MapName, HashName});
+        map.clear();
+        bench.endMeasure(0, map.size());
 
-		// remember the rng's state so we can remove like we've added
-		auto const state = rng.state();
-		for (size_t n = 0; n < 100'000'000; ++n) {
-			map[rng()];
-		}
-		result += map.size();
-		bench.event("inserted");
+        // remember the rng's state so we can remove like we've added
+        auto const state = rng.state();
+        bench.beginMeasure({"reinsert 100M int", MapName, HashName});
+        for (size_t n = 0; n < 100'000'000; ++n) {
+            map[rng()];
+        }
+        bench.endMeasure(100'000'000, map.size());
 
-		rng.state(state);
-		for (size_t n = 0; n < 100'000'000; ++n) {
-			map.erase(rng());
-		}
-		bench.event("removed");
-	}
-	bench.event("destructed");
-	bench.endMeasure();
+        rng.state(state);
+        bench.beginMeasure({"remove 100M int", MapName, HashName});
+        for (size_t n = 0; n < 100'000'000; ++n) {
+            map.erase(rng());
+        }
+        bench.endMeasure(0, map.size());
 
-	// result map status
-	bench.result(0x77ca8aa5816674af, result);
+        bench.beginMeasure({"destructor empty map", MapName, HashName});
+    }
+    bench.endMeasure(0, 0);
 }
-
-static BenchRegister reg(InsertHugeInt);
-
-#if 0
-//#if 1
-// static BenchRegister reg(InsertHugeInt);
-//#else
-struct BigData {
-	/*
-	std::shared_ptr<int> a;
-	std::map<int, int> b;
-	std::vector<double> c;
-	std::unique_ptr<int> d;
-	*/
-	std::fstream f;
-};
-
-static void InsertHugeBigData(Bench& bench) {
-	Map<int, std::fstream> map;
-	/*
-	bench.title("InsertHugeBigData");
-	auto& rng = bench.rng();
-
-	size_t result = 0;
-	bench.beginMeasure();
-	{
-		Map<int, BigData> map;
-		for (size_t n = 0; n < 4'000'000; ++n) {
-			map[rng()];
-		}
-		result += map.size();
-		bench.event("inserted");
-
-		map.clear();
-		bench.event("cleared");
-		for (size_t n = 0; n < 4'000'000; ++n) {
-			map[rng()];
-		}
-		result += map.size();
-		bench.event("inserted");
-	}
-	bench.event("destructed");
-	bench.endMeasure();
-
-	// result map status
-
-	bench.result(0x6b7621434f3cefb6, result);
-	*/
-}
-
-static BenchRegister reg(InsertHugeInt, InsertHugeBigData);
-//#endif
-#endif

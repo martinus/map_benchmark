@@ -1,154 +1,56 @@
 #pragma once
 
-#include "Map.h"
-
-#include <MapHash.h>
-#include <PeriodicMemoryStats.h>
-#include <sfc64.h>
-
-#include <algorithm>
 #include <chrono>
-#include <iomanip>
+#include <functional>
+#include <initializer_list>
 #include <iostream>
-#include <memory>
-#include <sstream>
-#include <vector>
-
-struct BenchTitleException {};
+#include <map>
+#include <unordered_map>
 
 class Bench {
 public:
-    Bench(size_t numTrials = 5, uint64_t seed = 123)
-        : mSeed(seed)
-        , mNumTrials(numTrials)
-        , mCurrentTrial(0)
-        , mResult(0)
-        , mExpected(0)
-        , mThrowAfterTitle(false) {}
+    using clock = std::chrono::high_resolution_clock;
 
-    void throwAfterTitle() {
-        mThrowAfterTitle = true;
+    inline void beginMeasure(std::initializer_list<const char*> tags) {
+        show_tags(tags);
+        mStartTime = clock::now();
     }
 
-    Bench& title(const std::string& txt) {
-        mTitle = txt;
-        if (mThrowAfterTitle) {
-            throw BenchTitleException{};
-        }
-        return *this;
-    }
-
-    std::string const& title() const {
-        return mTitle;
-    }
-
-    Bench& description(const std::string& txt) {
-        mDescription = txt;
-        return *this;
-    }
-
-    const std::string& description() const {
-        return mDescription;
-    }
-
-    Bench& result(uint64_t expected, uint64_t actualResult) {
-        mExpected = expected;
-        mResult = actualResult;
-        return *this;
-    }
-
-    Bench& event(const char* msg) {
-        if (mPeriodicMemoryStats) {
-            mPeriodicMemoryStats->event(msg);
-        }
-        return *this;
-    }
-
-    sfc64& rng() {
-        return mRng;
-    }
-
-    inline void beginMeasure() {
-#ifdef ENABLE_MALLOC_HOOK
-        mPeriodicMemoryStats = std::make_unique<PeriodicMemoryStats>(0.02);
-#endif
-        mTimePoint = std::chrono::high_resolution_clock::now();
-    }
-
-    PeriodicMemoryStats* periodicMemoryStats() {
-        return mPeriodicMemoryStats.get();
-    }
-
-    inline void endMeasure() {
-        std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
-        if (mPeriodicMemoryStats) {
-            mPeriodicMemoryStats->stop();
-        }
-
-        std::chrono::duration<double> diff = now - mTimePoint;
-
-        mRuntimeSec = diff.count();
-    }
-
-    double runtimeSeconds() const {
-        return mRuntimeSec;
-    }
-
-    std::string str() const {
-        size_t s = 0;
-        for (auto const& x : mRng.state()) {
-            hash_combine(s, x);
-        }
-        hash_combine(s, mResult);
-
-        if (mExpected != s) {
-            std::stringstream msg;
-            msg << "ERROR: expected "
-                << "0x" << std::hex << mExpected << " but got 0x" << std::hex << s;
-            std::cerr << msg.str() << std::endl;
-            // throw std::runtime_error(msg.str());
-        }
-
-        std::stringstream ss;
-        ss << mRuntimeSec << "; " << std::hex << "\"0x" << s << "\"; \"" << title() << "\"";
-
-        return ss.str();
+    void endMeasure(uint64_t expected_result, uint64_t actual_result) {
+        auto const end = clock::now();
+        show_result(end, expected_result, actual_result);
     }
 
 private:
-    uint64_t const mSeed;
-    sfc64 mRng;
-    std::string mTitle;
-    size_t const mNumTrials;
-    size_t mCurrentTrial;
-    std::chrono::high_resolution_clock::time_point mTimePoint;
-    uint64_t mResult;
-    uint64_t mExpected;
-    bool mThrowAfterTitle;
-    double mRuntimeSec;
-    std::string mDescription;
-    std::unique_ptr<PeriodicMemoryStats> mPeriodicMemoryStats;
+    void show_tags(std::initializer_list<const char*> tags) {
+        for (auto tag : tags) {
+            std::cout << "\"" << tag << "\"" << mSep;
+        }
+    }
+
+    void show_result(clock::time_point end, uint64_t expected_result, uint64_t actual_result) {
+        std::chrono::duration<double> duration = end - mStartTime;
+
+        auto runtime_sec = duration.count();
+        std::cout << expected_result << mSep << runtime_sec << std::endl;
+        if (actual_result != expected_result) {
+            std::cerr << "ERROR: expected " << expected_result << " but got " << actual_result << std::endl;
+        }
+    }
+
+    clock::time_point mStartTime;
+    const char* mSep = "; ";
 };
 
-#include <map>
-
-class BenchRegister {
+class BenchRegistry {
 public:
-    using NameToFn = std::map<std::string, std::function<void(Bench&)>>;
+    using Fn = std::function<void(Bench&)>;
+    using NameToFn = std::map<std::string, Fn>;
 
-    template <class... Fn>
-    BenchRegister(Fn&&... fns) {
-        for (auto& fn : {fns...}) {
-            Bench bench;
-            bench.throwAfterTitle();
-            try {
-                fn(bench);
-            } catch (const BenchTitleException&) {
-                if (!nameToFn().emplace(bench.title(), fn).second) {
-                    std::cerr << "benchmark with title '" << bench.title() << "' already exists!" << std::endl;
-                    throw std::exception();
-                }
-            }
+    BenchRegistry(const char* name, Fn fn) {
+        if (!nameToFn().emplace(name, fn).second) {
+            std::cerr << "benchmark with name '" << name << "' already exists!" << std::endl;
+            throw std::exception();
         }
     }
 
@@ -162,4 +64,21 @@ public:
         static NameToFn sNameToFn;
         return sNameToFn;
     }
+
+    static int run(const char* name) {
+        auto it = BenchRegistry::nameToFn().find(name);
+        if (it == BenchRegistry::nameToFn().end()) {
+            return -1;
+        }
+        Bench bench;
+        it->second(bench);
+        return 0;
+    }
 };
+
+#define BENCHMARK_PP_CAT(a, b) BENCHMARK_PP_INTERNAL_CAT(a, b)
+#define BENCHMARK_PP_INTERNAL_CAT(a, b) a##b
+#define BENCHMARK(f)                                                                                                                                 \
+    static void f(Bench& bench);                                                                                                                     \
+    static BenchRegistry BENCHMARK_PP_CAT(reg, __LINE__)(#f, f);                                                                                     \
+    static void f(Bench& bench)

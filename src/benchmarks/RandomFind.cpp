@@ -1,72 +1,91 @@
+#include "Map.h"
 #include "RandomBool.h"
 #include "bench.h"
+#include "sfc64.h"
 
+#include <algorithm>
 #include <iomanip>
 
 template <size_t NumRandom>
-static void RandomFind(Bench& bench) {
-	size_t constexpr NumTotal = 4;
-	size_t constexpr NumSequential = NumTotal - NumRandom;
+uint64_t RandomFind(Bench& bench) {
+    size_t constexpr NumTotal = 4;
+    size_t constexpr NumSequential = NumTotal - NumRandom;
 
-	size_t constexpr NumInserts = 1000000;
-	size_t constexpr NumFindsPerIter = 1000 * NumTotal;
+    size_t constexpr NumInserts = 1000000;
+    size_t constexpr NumFindsPerIter = 1000 * NumTotal;
 
-	// just multiply numbers with a small factor so we don't just sequentially insert numbers
-	size_t constexpr NotSequentialFactor = 31;
+    // just multiply numbers with a small factor so we don't just sequentially insert numbers
+    size_t constexpr NotSequentialFactor = 31;
 
-	std::stringstream ss;
-	ss << "RandomFind " << std::setw(3) << (NumSequential * 100 / NumTotal) << "% find success";
-	bench.title(ss.str());
-	auto& rng = bench.rng();
+    std::stringstream ss;
+    ss << "RandomFind " << std::setw(3) << (NumSequential * 100 / NumTotal) << "% find success";
+    auto title = ss.str();
 
-	size_t num_found = 0;
+    sfc64 rng(123);
 
-	std::array<bool, NumTotal> insertRandom = {false};
-	for (size_t i = 0; i < NumRandom; ++i) {
-		insertRandom[i] = true;
-	}
+    size_t num_found = 0;
 
-	sfc64 anotherUnrelatedRng(987654321);
-	auto const anotherUnrelatedRngInitialState = anotherUnrelatedRng.state();
-	sfc64 findRng(anotherUnrelatedRngInitialState);
+    std::array<bool, NumTotal> insertRandom = {false};
+    for (size_t i = 0; i < NumRandom; ++i) {
+        insertRandom[i] = true;
+    }
 
-	bench.beginMeasure();
-	{
-		Map<size_t, size_t> map;
-		size_t i = 0;
-		size_t findCount = 0;
-		do {
-			// insert NumTotal entries: some random, some sequential.
-			std::shuffle(insertRandom.begin(), insertRandom.end(), rng);
-			for (bool isRandomToInsert : insertRandom) {
-				auto val = anotherUnrelatedRng();
-				if (isRandomToInsert) {
-					map.emplace(rng() >> 32, i);
-				} else {
-					map.emplace(val >> 32, i);
-				}
-				++i;
-			}
+    sfc64 anotherUnrelatedRng(987654321);
+    auto const anotherUnrelatedRngInitialState = anotherUnrelatedRng.state();
+    sfc64 findRng(anotherUnrelatedRngInitialState);
 
-			for (size_t j = 0; j < NumFindsPerIter; ++j) {
-				if (++findCount > i) {
-					findCount = 0;
-					findRng.state(anotherUnrelatedRngInitialState);
-				}
-				num_found += map.count(findRng() >> 32);
-			}
-		} while (i < NumInserts);
-		bench.event("done");
-	}
-	bench.event("dtor");
-	bench.endMeasure();
+    {
+        Map<size_t, size_t> map;
+        size_t i = 0;
+        size_t findCount = 0;
 
-	// std::cout << num_found << std::endl;
+        bench.beginMeasure({title.c_str(), MapName, HashName});
+        do {
+            // insert NumTotal entries: some random, some sequential.
+            std::shuffle(insertRandom.begin(), insertRandom.end(), rng);
+            for (bool isRandomToInsert : insertRandom) {
+                auto val = anotherUnrelatedRng();
+                if (isRandomToInsert) {
+                    map.emplace(rng() >> 32, i);
+                } else {
+                    map.emplace(val >> 32, i);
+                }
+                ++i;
+            }
 
-	// 0%, 25%, 50%, 75%, 100%
-	uint64_t results[] = {0x16c09391c25947f7, 0x8bf70a7628ee2f30, 0x573d220db2cf2dce, 0x4418b7386d2917f1, 0x207d7d23fdc96763};
-
-	bench.result(results[NumSequential], num_found);
+            for (size_t j = 0; j < NumFindsPerIter; ++j) {
+                if (++findCount > i) {
+                    findCount = 0;
+                    findRng.state(anotherUnrelatedRngInitialState);
+                }
+                num_found += map.count(findRng() >> 32);
+            }
+        } while (i < NumInserts);
+    }
+    return num_found;
 }
 
-static BenchRegister reg(RandomFind<0>, RandomFind<1>, RandomFind<2>, RandomFind<3>, RandomFind<4>);
+BENCHMARK(RandomFind_0) {
+    auto result = RandomFind<0>(bench);
+    bench.endMeasure(1, result);
+}
+
+BENCHMARK(RandomFind_25) {
+    auto result = RandomFind<1>(bench);
+    bench.endMeasure(12, result);
+}
+
+BENCHMARK(RandomFind_50) {
+    auto result = RandomFind<2>(bench);
+    bench.endMeasure(123, result);
+}
+
+BENCHMARK(RandomFind_75) {
+    auto result = RandomFind<3>(bench);
+    bench.endMeasure(1234, result);
+}
+
+BENCHMARK(RandomFind_100) {
+    auto result = RandomFind<4>(bench);
+    bench.endMeasure(12345, result);
+}
