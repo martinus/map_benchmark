@@ -1,5 +1,3 @@
-#include "MallocHook.h"
-
 #include "bench.h"
 
 #include <fstream>
