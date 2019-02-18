@@ -66,26 +66,26 @@ uint64_t RandomFind(Bench& bench) {
 }
 
 BENCHMARK(RandomFind_0) {
-    auto result = RandomFind<0>(bench);
-    bench.endMeasure(1, result);
+    auto result = RandomFind<4>(bench);
+    bench.endMeasure(113878, result);
 }
 
 BENCHMARK(RandomFind_25) {
-    auto result = RandomFind<1>(bench);
-    bench.endMeasure(12, result);
+    auto result = RandomFind<3>(bench);
+    bench.endMeasure(250078938, result);
 }
 
 BENCHMARK(RandomFind_50) {
     auto result = RandomFind<2>(bench);
-    bench.endMeasure(123, result);
+    bench.endMeasure(500041672, result);
 }
 
 BENCHMARK(RandomFind_75) {
-    auto result = RandomFind<3>(bench);
-    bench.endMeasure(1234, result);
+    auto result = RandomFind<1>(bench);
+    bench.endMeasure(750019000, result);
 }
 
 BENCHMARK(RandomFind_100) {
-    auto result = RandomFind<4>(bench);
-    bench.endMeasure(12345, result);
+    auto result = RandomFind<0>(bench);
+    bench.endMeasure(999987348, result);
 }
