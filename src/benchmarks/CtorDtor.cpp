@@ -1,6 +1,5 @@
-#include "bench.h"
-
 #include "Map.h"
+#include "bench.h"
 
 BENCHMARK(CtorDtorEmptyMap) {
     size_t result = 0;

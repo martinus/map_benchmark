@@ -1,5 +1,4 @@
 #include "Map.h"
-#include "RandomBool.h"
 #include "bench.h"
 #include "sfc64.h"
 
