@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <iomanip>
 
-template <size_t NumRandom>
+template <size_t NumRandom, uint64_t BitMask>
 uint64_t RandomFind(Bench& bench) {
     size_t constexpr NumTotal = 4;
     size_t constexpr NumSequential = NumTotal - NumRandom;
@@ -45,9 +45,9 @@ uint64_t RandomFind(Bench& bench) {
             for (bool isRandomToInsert : insertRandom) {
                 auto val = anotherUnrelatedRng();
                 if (isRandomToInsert) {
-                    map.emplace(rng() >> 32, i);
+                    map.emplace(rng() & BitMask, i);
                 } else {
-                    map.emplace(val >> 32, i);
+                    map.emplace(val & BitMask, i);
                 }
                 ++i;
             }
@@ -57,34 +57,29 @@ uint64_t RandomFind(Bench& bench) {
                     findCount = 0;
                     findRng.state(anotherUnrelatedRngInitialState);
                 }
-                num_found += map.count(findRng() >> 32);
+                num_found += map.count(findRng() & BitMask);
             }
         } while (i < NumInserts);
     }
     return num_found;
 }
 
-BENCHMARK(RandomFind_0) {
-    auto result = RandomFind<4>(bench);
-    bench.endMeasure(113878, result);
+BENCHMARK(RandomFind_lower_32bit) {
+    static constexpr auto shift = UINT64_C(0x00000000FFFFFFFF);
+
+    bench.endMeasure(125989, RandomFind<4, shift>(bench));
+    bench.endMeasure(250096760, RandomFind<3, shift>(bench));
+    bench.endMeasure(500051318, RandomFind<2, shift>(bench));
+    bench.endMeasure(750019230, RandomFind<1, shift>(bench));
+    bench.endMeasure(999987348, RandomFind<0, shift>(bench));
 }
 
-BENCHMARK(RandomFind_25) {
-    auto result = RandomFind<3>(bench);
-    bench.endMeasure(250078938, result);
-}
+BENCHMARK(RandomFind_upper_32bit) {
+    static constexpr auto shift = UINT64_C(0xFFFFFFFF00000000);
 
-BENCHMARK(RandomFind_50) {
-    auto result = RandomFind<2>(bench);
-    bench.endMeasure(500041672, result);
-}
-
-BENCHMARK(RandomFind_75) {
-    auto result = RandomFind<1>(bench);
-    bench.endMeasure(750019000, result);
-}
-
-BENCHMARK(RandomFind_100) {
-    auto result = RandomFind<0>(bench);
-    bench.endMeasure(999987348, result);
+    bench.endMeasure(113878, RandomFind<4, shift>(bench));
+    bench.endMeasure(250078938, RandomFind<3, shift>(bench));
+    bench.endMeasure(500041672, RandomFind<2, shift>(bench));
+    bench.endMeasure(750019000, RandomFind<1, shift>(bench));
+    bench.endMeasure(999987348, RandomFind<0, shift>(bench));
 }
