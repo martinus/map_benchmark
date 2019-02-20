@@ -44,15 +44,16 @@ all_hashes = all_hashes.keys.sort
 def print_result(benchmark_name, hashmap, type, all_hashmaps, all_hashes)
     types = ["runtime [s]", "memory [MiB]"]
     puts "#{benchmark_name} #{types[type]}"
-    puts "; #{all_hashes.join("; ")}"
+    puts " hashmap | #{all_hashes.join(" | ")}".gsub("\"", "")
+    puts (["---"] * (all_hashes.size + 1)).join("|")
     all_hashmaps.each do |map|
-        printf "#{map}"
+        printf "#{map.gsub("\"", "")}"
         all_hashes.each do |hash|
             entry = hashmap[map][hash]
             if entry[type].empty?
-                printf "; \"timeout\""
+                printf " | timeout"
             else
-                printf "; #{median(entry[type])}"
+                printf " | %.3f", median(entry[type])
             end
         end
         puts
@@ -63,4 +64,23 @@ end
 h.sort.each do |benchmark_name, hashmap|
     print_result(benchmark_name, hashmap, 0, all_hashmaps, all_hashes)
     print_result(benchmark_name, hashmap, 1, all_hashmaps, all_hashes)
+end
+
+
+# show pareto front
+def print_pareto_front(benchmark_name, hashmap)
+    types = ["runtime [s]", "memory [MiB]"]
+    puts "#{benchmark_name}"
+    hashmap.each do |map_name, hash|
+        hash.each do |hash_name, result|
+            next if result[0].empty?
+            name = "#{map_name} #{hash_name}".gsub("\"", "")
+            puts "\"#{name}\"; #{median(result[0])}; #{median(result[1])}"
+        end
+    end
+    puts
+end
+
+h.sort.each do |benchmark_name, hashmap|
+    print_pareto_front(benchmark_name, hashmap)
 end
