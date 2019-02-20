@@ -58,8 +58,11 @@ find_package(Threads REQUIRED)
 #   libjemalloc-dev \
 #   libssl-dev \
 #   pkg-config
-add_subdirectory("external/facebook__folly")
 
+# make sure we get SSE and crc support!
+# see https://github.com/facebook/folly/blob/master/folly/container/detail/F14Table.cpp#L26
+list(APPEND FOLLY_CXX_FLAGS "-march=native")
+add_subdirectory("external/facebook__folly")
 
 # build stuff #####################################################################
 
@@ -93,6 +96,7 @@ foreach(MAP_DIR ${INC_MAPS})
         
         # absl
         target_link_libraries(${EXECUTABLE_NAME} absl::base absl::flat_hash_map)
+        
         target_link_libraries(${EXECUTABLE_NAME} Threads::Threads)
 
         # folly
