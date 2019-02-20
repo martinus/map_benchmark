@@ -94,13 +94,13 @@ foreach(MAP_DIR ${INC_MAPS})
         add_executable(${EXECUTABLE_NAME} ${SRC_APP} ${SRC_BENCHMARKS} ${SRC_MAP_DIR} ${SRC_HASH_DIR})
         target_include_directories(${EXECUTABLE_NAME} PRIVATE "src/app" "external" ${MAP_DIR} ${HASH_DIR} ${FOLLY_DIR})
         
-        # absl
-        target_link_libraries(${EXECUTABLE_NAME} absl::base absl::flat_hash_map)
-        
-        target_link_libraries(${EXECUTABLE_NAME} Threads::Threads)
+        if (EXISTS "${MAP_DIR}/dependencies.cmake")
+            include("${MAP_DIR}/dependencies.cmake")
+        endif ()
 
-        # folly
-        target_link_libraries(${EXECUTABLE_NAME} folly)
+        if (EXISTS "${HASH_DIR}/dependencies.cmake")
+            include("${HASH_DIR}/dependencies.cmake")
+        endif ()
 
         endforeach(HASH_DIR ${INC_HASHES})
 endforeach(MAP_DIR ${INC_MAPS})
