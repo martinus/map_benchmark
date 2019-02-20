@@ -45,7 +45,7 @@ def print_result(benchmark_name, hashmap, type, all_hashmaps, all_hashes)
     types = ["runtime [s]", "memory [MiB]"]
     puts "#{benchmark_name} #{types[type]}"
     puts " hashmap | #{all_hashes.join(" | ")}".gsub("\"", "")
-    puts (["---"] * (all_hashes.size + 1)).join("|")
+    puts "---#{(["|---:"]*all_hashes.size).join}"
     all_hashmaps.each do |map|
         printf "#{map.gsub("\"", "")}"
         all_hashes.each do |hash|
