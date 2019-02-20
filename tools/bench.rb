@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+require 'timeout'
+
+timeout_sec = 10*60
+
 benchs = ARGV
 if benchs.empty?
     benchs = `./#{Dir["bench*"].first} l`.split("\n")
@@ -13,8 +17,14 @@ STDERR.puts "benchmarks:\n\t#{benchs.join("\n\t")}"
     benchs.each do |bench|
         STDERR.puts "iteration #{iter}"
         apps.each do |app|
-            cmd = "timeout 10m ./#{app} #{bench}"
-            if !system(cmd)
+            cmd = "./#{app} #{bench}"
+            pid = Process.spawn(cmd)
+            begin
+                Timeout.timeout(timeout_sec) do
+                    Process.wait(pid)
+                end
+            rescue Timeout::Error
+                Process.kill('TERM', pid)
                 puts "TIMEOUT: #{app} #{bench}"
             end
         end
