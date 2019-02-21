@@ -16,17 +16,21 @@ size_t run(size_t max_n, uint64_t bitMask, Bench& bench) {
     Map<uint64_t, uint64_t> map;
     for (size_t i = 0; i < max_n; ++i) {
         map[rng() & bitMask] = i;
-        verifier += map.erase(rng() & bitMask);
+        auto it = map.find(rng() & bitMask);
+        if (it != map.end()) {
+            verifier += it->second;
+            map.erase(it);
+        }
     }
     return verifier;
 }
 
 BENCHMARK(RandomInsertErase) {
-    bench.endMeasure(50004640, run(100000000, UINT64_C(0x00000000'00000FFF), bench));
-    bench.endMeasure(51606619, run(100000000, UINT64_C(0x00F00000'00000000), bench));
-    bench.endMeasure(49984422, run(100000000, UINT64_C(0x000000FF'000000FF), bench));
-    bench.endMeasure(50093276, run(100000000, UINT64_C(0x0000000F'0000000F), bench));
-    bench.endMeasure(50096606, run(100000000, UINT64_C(0xF000000F'00000000), bench));
-    bench.endMeasure(49987113, run(100000000, UINT64_C(0x0000FFFF'00000000), bench));
-    bench.endMeasure(1558700, run(30000000, UINT64_C(0xF00F0F0F'F0F00F00), bench));
+    bench.endMeasure(2500192580072665, run(100000000, UINT64_C(0x00000000'00000FFF), bench));
+    bench.endMeasure(2580309529973681, run(100000000, UINT64_C(0x00F00000'00000000), bench));
+    bench.endMeasure(2498363333927799, run(100000000, UINT64_C(0x000000FF'000000FF), bench));
+    bench.endMeasure(2504472903901015, run(100000000, UINT64_C(0x0000000F'0000000F), bench));
+    bench.endMeasure(2504651273268435, run(100000000, UINT64_C(0xF000000F'00000000), bench));
+    bench.endMeasure(2498608646258729, run(100000000, UINT64_C(0x0000FFFF'00000000), bench));
+    bench.endMeasure(2466305693537, run(40000000, UINT64_C(0xF00F0F0F'F0F0FF00), bench));
 }
