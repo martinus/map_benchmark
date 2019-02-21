@@ -5,8 +5,29 @@
 #include <algorithm>
 #include <iomanip>
 
+template <typename T>
+struct HexRaii {
+    explicit HexRaii(T obj)
+        : mObj(obj) {}
+
+    T mObj;
+};
+
+template <typename T>
+HexRaii<T> hex(T obj) {
+    return HexRaii<T>(obj);
+}
+
+template <typename T>
+inline std::ostream& operator<<(std::ostream& os, HexRaii<T> const& h) {
+    std::ios_base::fmtflags flags(os.flags());
+    os << "0x" << std::setfill('0') << std::setw(sizeof(T) * 2) << std::hex << h.mObj;
+    os.flags(flags);
+    return os;
+}
+
 template <size_t NumRandom, uint64_t BitMask>
-uint64_t RandomFind(Bench& bench) {
+uint64_t RandomFindInternal(Bench& bench) {
     size_t constexpr NumTotal = 4;
     size_t constexpr NumSequential = NumTotal - NumRandom;
 
@@ -17,7 +38,7 @@ uint64_t RandomFind(Bench& bench) {
     size_t constexpr NotSequentialFactor = 31;
 
     std::stringstream ss;
-    ss << "RandomFind " << std::setw(3) << (NumSequential * 100 / NumTotal) << "% find success";
+    ss << std::setw(3) << (NumSequential * 100 / NumTotal) << "% success, " << hex(BitMask);
     auto title = ss.str();
 
     sfc64 rng(123);
@@ -45,9 +66,9 @@ uint64_t RandomFind(Bench& bench) {
             for (bool isRandomToInsert : insertRandom) {
                 auto val = anotherUnrelatedRng();
                 if (isRandomToInsert) {
-                    map.emplace(rng() & BitMask, i);
+                    map.emplace(rng() & BitMask, static_cast<size_t>(1));
                 } else {
-                    map.emplace(val & BitMask, i);
+                    map.emplace(val & BitMask, static_cast<size_t>(1));
                 }
                 ++i;
             }
@@ -57,29 +78,32 @@ uint64_t RandomFind(Bench& bench) {
                     findCount = 0;
                     findRng.state(anotherUnrelatedRngInitialState);
                 }
-                num_found += map.count(findRng() & BitMask);
+                auto it = map.find(findRng() & BitMask);
+                if (it != map.end()) {
+                    num_found += it->second;
+                }
             }
         } while (i < NumInserts);
     }
     return num_found;
 }
 
-BENCHMARK(RandomFind_lower_32bit) {
-    static constexpr auto shift = UINT64_C(0x00000000FFFFFFFF);
+BENCHMARK(RandomFind) {
+    static constexpr auto lower32bit = UINT64_C(0x00000000FFFFFFFF);
+    static constexpr auto upper32bit = UINT64_C(0xFFFFFFFF00000000);
 
-    bench.endMeasure(125989, RandomFind<4, shift>(bench));
-    bench.endMeasure(250096760, RandomFind<3, shift>(bench));
-    bench.endMeasure(500051318, RandomFind<2, shift>(bench));
-    bench.endMeasure(750019230, RandomFind<1, shift>(bench));
-    bench.endMeasure(999987348, RandomFind<0, shift>(bench));
-}
+    bench.endMeasure(125989, RandomFindInternal<4, lower32bit>(bench));
+    bench.endMeasure(113878, RandomFindInternal<4, upper32bit>(bench));
 
-BENCHMARK(RandomFind_upper_32bit) {
-    static constexpr auto shift = UINT64_C(0xFFFFFFFF00000000);
+    bench.endMeasure(250096760, RandomFindInternal<3, lower32bit>(bench));
+    bench.endMeasure(250078938, RandomFindInternal<3, upper32bit>(bench));
 
-    bench.endMeasure(113878, RandomFind<4, shift>(bench));
-    bench.endMeasure(250078938, RandomFind<3, shift>(bench));
-    bench.endMeasure(500041672, RandomFind<2, shift>(bench));
-    bench.endMeasure(750019000, RandomFind<1, shift>(bench));
-    bench.endMeasure(999987348, RandomFind<0, shift>(bench));
+    bench.endMeasure(500051318, RandomFindInternal<2, lower32bit>(bench));
+    bench.endMeasure(500041672, RandomFindInternal<2, upper32bit>(bench));
+
+    bench.endMeasure(750019230, RandomFindInternal<1, lower32bit>(bench));
+    bench.endMeasure(750019000, RandomFindInternal<1, upper32bit>(bench));
+
+    bench.endMeasure(999987348, RandomFindInternal<0, lower32bit>(bench));
+    bench.endMeasure(999987348, RandomFindInternal<0, upper32bit>(bench));
 }
