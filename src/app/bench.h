@@ -102,8 +102,13 @@ public:
         if (it == BenchRegistry::nameToFn().end()) {
             return -1;
         }
-        Bench bench(it->first);
-        it->second(bench);
+        try {
+            Bench bench(it->first);
+            it->second(bench);
+        } catch (...) {
+            // make sure we get a newline, even in case of an exception.
+            std::cout << "\"EXCEPTION\"" << std::endl;
+        }
         return 0;
     }
 };
