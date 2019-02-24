@@ -5,7 +5,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set(CMAKE_CXX_EXTENSIONS OFF)
 
-SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native")
+SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
+list(APPEND FOLLY_CXX_FLAGS "-march=native")
+
+#SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
+#list(APPEND FOLLY_CXX_FLAGS "-O3")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=gold ${CMAKE_EXE_LINKER_FLAGS}")
 #SET(CMAKE_STATIC_LINKER_FLAGS "-fuse-ld=gold ${CMAKE_STATIC_LINKER_FLAGS}")
@@ -60,7 +64,6 @@ find_package(Threads REQUIRED)
 
 # make sure we get SSE and crc support!
 # see https://github.com/facebook/folly/blob/master/folly/container/detail/F14Table.cpp#L26
-list(APPEND FOLLY_CXX_FLAGS "-march=native")
 add_subdirectory("external/facebook__folly")
 
 # build stuff #####################################################################
