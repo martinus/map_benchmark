@@ -27,17 +27,25 @@ end
 
 all_hashes = {}
 all_hashmaps = {}
+all_measurements = [] # we need to preserve order
 File.open(ARGV[0]).each_line do |l|
     l = l.gsub("\"", "").split(";").map { |w| w.strip }
-    next unless l.size == 7
+    next if (l.size < 4)
 
     # "absl::flat_hash_map"; "FNV1a"; "InsertHugeInt"; "insert 100M int"; 98841586; 11.8671; 1730.17
     hashmap_name, hash_name, benchmark_name, measurement_name, validator, runtime, memory = l
+    all_measurements.push(measurement_name) unless all_measurements.include?(measurement_name)
 
     entry = h[benchmark_name][measurement_name][hashmap_name][hash_name]
-
-    entry[0].push runtime.to_f
-    entry[1].push memory.to_f
+    
+    if l.size == 7
+        entry[0].push runtime.to_f
+        entry[1].push memory.to_f
+    else
+        # timeout
+        entry[0].push 1e10
+        entry[1].push 1e10
+    end
 
     all_hashmaps[hashmap_name] = true
     all_hashes[hash_name] = true
@@ -77,10 +85,9 @@ end
 
 # show pareto front
 # benchmark => measurement => hashmap => hash => [[time...], [memory...]]
-def print_pareto_front(benchmark_name, measurement, type, all_hashmaps, all_hashes)
+def print_pareto_front(benchmark_name, measurement, type, all_hashmaps, all_hashes, all_measurements)
     types = ["runtime [s]", "memory [MiB]"]
     puts "#{benchmark_name} #{types[type]}"
-    all_measurements = measurement.keys.sort
     
     puts " \"hashmap\"; #{all_measurements.map { |m| "\"#{m}\"" }.join("; ")}"
 
@@ -102,13 +109,12 @@ def print_pareto_front(benchmark_name, measurement, type, all_hashmaps, all_hash
 end
 
 h.sort.each do |benchmark_name, measurement|
-    print_pareto_front(benchmark_name, measurement, 1, all_hashmaps, all_hashes)
-    print_pareto_front(benchmark_name, measurement, 0, all_hashmaps, all_hashes)
+    print_pareto_front(benchmark_name, measurement, 1, all_hashmaps, all_hashes, all_measurements)
+    print_pareto_front(benchmark_name, measurement, 0, all_hashmaps, all_hashes, all_measurements)
 end
 
 # benchmark => measurement => hashmap => hash => [[time...], [memory...]]
-def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes)
-    all_measurement_names = measurement.keys.sort
+def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, all_measurements)
     full_hashmap_names = []
 
     measurement_values = Hash.new { |h,k| h[k] = [] }
@@ -116,7 +122,7 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes)
     all_hashmaps.each do |hashmap_name|
         all_hashes.each do |hash_name|
             full_hashmap_names.push "#{hashmap_name} #{hash_name}"
-            all_measurement_names.each do |measurement_name|
+            all_measurements.each do |measurement_name|
                 measurement_values[measurement_name].push median(measurement[measurement_name][hashmap_name][hash_name][type], 1e10)
             end
         end
@@ -168,10 +174,14 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes)
                 for (var j = 0; j < values.length; ++j) {
                     sum += values[j][i];
                 }
+                var title = sum.toPrecision(4).toString();
+                if (sum == 0) {
+                    title = "timeout";
+                }
                 var a = {
                     x: sum,
                     y: hash_names[i],
-                    text: sum.toPrecision(4).toString(),
+                    text: title,
                     showarrow: false,
                     xanchor: 'left',
                     xshift: 10
@@ -185,8 +195,8 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes)
 END_PLOTLY_TEMPLATE
 
     tpl.gsub!("{{BENCHMARK_NAME}}", benchmark_name)
-    tpl.gsub!("{{HEIGHT}}", "#{(full_hashmap_names.size*1.5).to_i}em")
-    tpl.gsub!("{{MEASUREMENT_NAMES}}", all_measurement_names.map{ |m| "'#{m}'" }.join(", "))
+    tpl.gsub!("{{HEIGHT}}", "#{[20, (full_hashmap_names.size*1.5).to_i+7].max}em")
+    tpl.gsub!("{{MEASUREMENT_NAMES}}", all_measurements.map{ |m| "'#{m}'" }.join(", "))
     tpl.gsub!("\n", "")
     tpl.gsub!("\t", "")
     tpl.gsub!("  ", "")
@@ -199,7 +209,8 @@ END_PLOTLY_TEMPLATE
     tpl.gsub!("{{HASHMAP_NAMES}}", text)    
 
     text = ""
-    measurement_values.sort.each do |name, data|
+    all_measurements.each do |measurement_name|
+        data = measurement_values[measurement_name]
         text << "["
         sum_idx.each do |sum, idx|
             if (sum < 1e5)
@@ -213,11 +224,12 @@ END_PLOTLY_TEMPLATE
     end
     tpl.gsub!("{{MEASUREMENTS}}", text)
 
+    puts
     puts tpl
 end
 
 
 h.sort.each do |benchmark_name, measurement|
-    print_plotly(benchmark_name, measurement, 1, all_hashmaps, all_hashes)
-    print_plotly(benchmark_name, measurement, 0, all_hashmaps, all_hashes)
+    print_plotly(benchmark_name, measurement, 1, all_hashmaps, all_hashes, all_measurements)
+    print_plotly(benchmark_name, measurement, 0, all_hashmaps, all_hashes, all_measurements)
 end
