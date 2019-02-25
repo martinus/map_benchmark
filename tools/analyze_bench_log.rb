@@ -167,6 +167,10 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, al
                     l: 350
                 },
                 annotations: [],
+                legend: {
+                    traceorder: "normal",
+                    orientation: "h"
+                }
             };
     
             for (var i = 0; i < hash_names.length; ++i) {
@@ -197,10 +201,6 @@ END_PLOTLY_TEMPLATE
     tpl.gsub!("{{BENCHMARK_NAME}}", benchmark_name)
     tpl.gsub!("{{HEIGHT}}", "#{[20, (full_hashmap_names.size*1.5).to_i+7].max}em")
     tpl.gsub!("{{MEASUREMENT_NAMES}}", all_measurements.map{ |m| "'#{m}'" }.join(", "))
-    tpl.gsub!("\n", "")
-    tpl.gsub!("\t", "")
-    tpl.gsub!("  ", "")
-    tpl.gsub!(", ", ",")
 
     text = ""
     sum_idx.each do |sum, idx|
@@ -223,6 +223,12 @@ END_PLOTLY_TEMPLATE
         text << "], "
     end
     tpl.gsub!("{{MEASUREMENTS}}", text)
+
+    # some cleanup
+    tpl.gsub!("\n", "")
+    tpl.gsub!("\t", "")
+    tpl.gsub!("  ", "")
+    tpl.gsub!(", ", ",")
 
     puts
     puts tpl
