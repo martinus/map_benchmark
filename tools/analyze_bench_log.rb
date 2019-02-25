@@ -123,19 +123,22 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, al
         all_hashes.each do |hash_name|
             full_hashmap_names.push "#{hashmap_name} #{hash_name}"
             all_measurements.each do |measurement_name|
-                measurement_values[measurement_name].push median(measurement[measurement_name][hashmap_name][hash_name][type], 1e10)
+                entry = measurement[measurement_name][hashmap_name][hash_name]
+                # [time, MiB]
+                measurement_values[measurement_name].push [median(entry[0], 1e10), median(entry[1])]
             end
         end
     end
 
     # create indices, and sort by sum of all measurements
-    sum_idx = (0...full_hashmap_names.size).to_a.map { |idx| [0.0, idx] }
+    time_size_idx = (0...full_hashmap_names.size).to_a.map { |idx| [0.0, 0.0, idx] }
     measurement_values.each do |_, measurement|
         measurement.each_with_index do |m, idx|
-            sum_idx[idx][0] += m
+            time_size_idx[idx][0] += m[0] # sort by time
+            time_size_idx[idx][1] = [time_size_idx[idx][1], m[1]].max
         end
     end
-    sum_idx.sort! { |a,b| b <=> a }
+    time_size_idx.sort! { |a,b| b <=> a }
 
     # now we have all data, print it.
     tpl = <<END_PLOTLY_TEMPLATE
@@ -143,9 +146,8 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, al
         <script>
             var hash_names = [{{HASHMAP_NAMES}}];
             var measurement_names = [{{MEASUREMENT_NAMES}}];
-            var values = [
-                {{MEASUREMENTS}}
-            ];
+            var values = [{{MEASUREMENTS}}];
+            var size_MiB = [{{SIZE_MIB}}];
 
             var data = [];
             for (var i = 0; i < measurement_names.length; ++i) {
@@ -169,7 +171,6 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, al
                 annotations: [],
                 legend: {
                     traceorder: "normal",
-                    orientation: "h"
                 }
             };
     
@@ -178,7 +179,7 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, al
                 for (var j = 0; j < values.length; ++j) {
                     sum += values[j][i];
                 }
-                var title = sum.toPrecision(4).toString();
+                var title = sum.toPrecision(4).toString() + " sec, " + size_MiB[i].toPrecision(3).toString() + " MiB";
                 if (sum == 0) {
                     title = "timeout";
                 }
@@ -203,32 +204,35 @@ END_PLOTLY_TEMPLATE
     tpl.gsub!("{{MEASUREMENT_NAMES}}", all_measurements.map{ |m| "'#{m}'" }.join(", "))
 
     text = ""
-    sum_idx.each do |sum, idx|
+    time_size_idx.each do |time, size, idx|
         text << "'" << full_hashmap_names[idx] << "', "
     end
     tpl.gsub!("{{HASHMAP_NAMES}}", text)    
 
-    text = ""
+    text_measurements = ""
     all_measurements.each do |measurement_name|
         data = measurement_values[measurement_name]
-        text << "["
-        sum_idx.each do |sum, idx|
-            if (sum < 1e5)
-                text << data[idx].to_s
+        text_measurements << "["
+        time_size_idx.each do |time, size, idx|
+            if (time < 1e5)
+                text_measurements << data[idx][0].to_s
             else
-                text << "0"
+                text_measurements << "0"
             end
-            text << ", "
+            text_measurements << ","
         end
-        text << "], "
+        text_measurements << "],"
     end
-    tpl.gsub!("{{MEASUREMENTS}}", text)
+    tpl.gsub!("{{MEASUREMENTS}}", text_measurements)
+
+    text_size_MiB = time_size_idx.map{ |time, size, idx| size }.join(",")
+    tpl.gsub!("{{SIZE_MIB}}", text_size_MiB)
 
     # some cleanup
-    tpl.gsub!("\n", "")
-    tpl.gsub!("\t", "")
-    tpl.gsub!("  ", "")
-    tpl.gsub!(", ", ",")
+    #tpl.gsub!("\n", "")
+    #tpl.gsub!("\t", "")
+    #tpl.gsub!("  ", "")
+    #tpl.gsub!(", ", ",")
 
     puts
     puts tpl
