@@ -1,30 +1,10 @@
 #include "Map.h"
 #include "bench.h"
+#include "hex.h"
 #include "sfc64.h"
 
 #include <algorithm>
 #include <iomanip>
-
-template <typename T>
-struct HexRaii {
-    explicit HexRaii(T obj)
-        : mObj(obj) {}
-
-    T mObj;
-};
-
-template <typename T>
-HexRaii<T> hex(T obj) {
-    return HexRaii<T>(obj);
-}
-
-template <typename T>
-inline std::ostream& operator<<(std::ostream& os, HexRaii<T> const& h) {
-    std::ios_base::fmtflags flags(os.flags());
-    os << "0x" << std::setfill('0') << std::setw(sizeof(T) * 2) << std::hex << h.mObj;
-    os.flags(flags);
-    return os;
-}
 
 template <size_t NumRandom, uint64_t BitMask>
 uint64_t RandomFindInternal(Bench& bench) {

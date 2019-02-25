@@ -1,30 +1,8 @@
 #include "Hash.h"
 #include "bench.h"
+#include "hex.h"
 
 #include <bitset>
-#include <iomanip>
-#include <iostream>
-#include <limits>
-
-template <typename T>
-struct HexRaii {
-    explicit HexRaii(T val)
-        : mVal(val) {}
-    T mVal;
-};
-
-template <typename T>
-HexRaii<T> hex(T val) {
-    return HexRaii<T>(val);
-}
-
-template <typename T>
-inline std::ostream& operator<<(std::ostream& os, HexRaii<T> const& h) {
-    auto const f = os.flags();
-    os << "0x" << std::setfill('0') << std::setw(sizeof(T) * 2) << std::hex << h.mVal;
-    os.flags(f);
-    return os;
-}
 
 template <typename T>
 void showHash(T val) {
