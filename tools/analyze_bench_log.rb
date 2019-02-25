@@ -179,7 +179,7 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, al
                 for (var j = 0; j < values.length; ++j) {
                     sum += values[j][i];
                 }
-                var title = sum.toPrecision(4).toString() + " sec, " + size_MiB[i].toPrecision(3).toString() + " MiB";
+                var title = sum.toPrecision(4).toString() + " sec, " + size_MiB[i].toPrecision(4).toString() + " MiB";
                 if (sum == 0) {
                     title = "timeout";
                 }
