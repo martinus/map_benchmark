@@ -11,7 +11,7 @@ uint64_t RandomFindInternal(Bench& bench) {
     size_t constexpr NumTotal = 4;
     size_t constexpr NumSequential = NumTotal - NumRandom;
 
-    size_t constexpr NumInserts = 1000000;
+    size_t constexpr NumInserts = 500000;
     size_t constexpr NumFindsPerIter = 1000 * NumTotal;
 
     // just multiply numbers with a small factor so we don't just sequentially insert numbers
@@ -46,9 +46,9 @@ uint64_t RandomFindInternal(Bench& bench) {
             for (bool isRandomToInsert : insertRandom) {
                 auto val = anotherUnrelatedRng();
                 if (isRandomToInsert) {
-                    map.emplace(rng() & BitMask, static_cast<size_t>(1));
+                    map[rng() & BitMask] = static_cast<size_t>(1);
                 } else {
-                    map.emplace(val & BitMask, static_cast<size_t>(1));
+                    map[val & BitMask] = static_cast<size_t>(1);
                 }
                 ++i;
             }

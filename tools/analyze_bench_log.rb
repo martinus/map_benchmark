@@ -27,14 +27,17 @@ end
 
 all_hashes = {}
 all_hashmaps = {}
-all_measurements = [] # we need to preserve order
+
+# map from benchmark to measurement_names, but sorted.
+all_measurements = Hash.new { |h,k| h[k] = [] }
+
 File.open(ARGV[0]).each_line do |l|
     l = l.gsub("\"", "").split(";").map { |w| w.strip }
     next if (l.size < 4)
 
     # "absl::flat_hash_map"; "FNV1a"; "InsertHugeInt"; "insert 100M int"; 98841586; 11.8671; 1730.17
     hashmap_name, hash_name, benchmark_name, measurement_name, validator, runtime, memory = l
-    all_measurements.push(measurement_name) unless all_measurements.include?(measurement_name)
+    all_measurements[benchmark_name].push(measurement_name) unless all_measurements[benchmark_name].include?(measurement_name)
 
     entry = h[benchmark_name][measurement_name][hashmap_name][hash_name]
     
@@ -74,14 +77,14 @@ def print_result_2d(benchmark_name, measurement_name, hashmap, type, all_hashmap
     end
     puts
 end
-
+=begin
 h.sort.each do |benchmark_name, measurement|
     measurement.sort.each do |measurement_name, hashmap|
         print_result_2d(benchmark_name, measurement_name, hashmap, 1, all_hashmaps, all_hashes)
         print_result_2d(benchmark_name, measurement_name, hashmap, 0, all_hashmaps, all_hashes)
     end
 end
-
+=end
 
 # show pareto front
 # benchmark => measurement => hashmap => hash => [[time...], [memory...]]
@@ -108,13 +111,14 @@ def print_pareto_front(benchmark_name, measurement, type, all_hashmaps, all_hash
     puts
 end
 
+=begin
 h.sort.each do |benchmark_name, measurement|
-    print_pareto_front(benchmark_name, measurement, 1, all_hashmaps, all_hashes, all_measurements)
-    print_pareto_front(benchmark_name, measurement, 0, all_hashmaps, all_hashes, all_measurements)
+    print_pareto_front(benchmark_name, measurement, 1, all_hashmaps, all_hashes, all_measurements[benchmark_name])
+    print_pareto_front(benchmark_name, measurement, 0, all_hashmaps, all_hashes, all_measurements[benchmark_name])
 end
-
+=end
 # benchmark => measurement => hashmap => hash => [[time...], [memory...]]
-def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, all_measurements)
+def print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_measurements)
     full_hashmap_names = []
 
     measurement_values = Hash.new { |h,k| h[k] = [] }
@@ -142,61 +146,66 @@ def print_plotly(benchmark_name, measurement, type, all_hashmaps, all_hashes, al
 
     # now we have all data, print it.
     tpl = <<END_PLOTLY_TEMPLATE
-    <div id="map_benchmark_{{BENCHMARK_NAME}}" style="height:{{HEIGHT}}"><!-- Plotly chart will be drawn inside this DIV --></div>
-        <script>
-            var hash_names = [{{HASHMAP_NAMES}}];
-            var measurement_names = [{{MEASUREMENT_NAMES}}];
-            var values = [{{MEASUREMENTS}}];
-            var size_MiB = [{{SIZE_MIB}}];
+<html>
+    <head><script src="https://cdn.plot.ly/plotly-latest.min.js"></script></head>
+    <body>    
+        <div id="map_benchmark_{{BENCHMARK_NAME}}" style="height:{{HEIGHT}}"><!-- Plotly chart will be drawn inside this DIV --></div>
+            <script>
+                var hash_names = [{{HASHMAP_NAMES}}];
+                var measurement_names = [{{MEASUREMENT_NAMES}}];
+                var values = [{{MEASUREMENTS}}];
+                var size_MiB = [{{SIZE_MIB}}];
 
-            var data = [];
-            for (var i = 0; i < measurement_names.length; ++i) {
-                var trace = {
-                    y: hash_names,
-                    x: values[i],
-                    name: measurement_names[i],
-                    type: 'bar',
-                    orientation: 'h',
+                var data = [];
+                for (var i = 0; i < measurement_names.length; ++i) {
+                    var trace = {
+                        y: hash_names,
+                        x: values[i],
+                        name: measurement_names[i],
+                        type: 'bar',
+                        orientation: 'h',
+                    };
+                    data.push(trace);
+                }
+
+
+                var layout = {
+                    barmode: 'stack',
+                    title: '{{BENCHMARK_NAME}}',
+                    margin: {
+                        l: 350
+                    },
+                    annotations: [],
+                    legend: {
+                        traceorder: "normal",
+                    }
                 };
-                data.push(trace);
-            }
-
-
-            var layout = {
-                barmode: 'stack',
-                title: '{{BENCHMARK_NAME}}',
-                margin: {
-                    l: 350
-                },
-                annotations: [],
-                legend: {
-                    traceorder: "normal",
+        
+                for (var i = 0; i < hash_names.length; ++i) {
+                    var sum = 0.0;
+                    for (var j = 0; j < values.length; ++j) {
+                        sum += values[j][i];
+                    }
+                    var title = sum.toPrecision(4).toString() + " sec, " + size_MiB[i].toPrecision(4).toString() + " MiB";
+                    if (sum == 0) {
+                        title = "timeout";
+                    }
+                    var a = {
+                        x: sum,
+                        y: hash_names[i],
+                        text: title,
+                        showarrow: false,
+                        xanchor: 'left',
+                        xshift: 10
+                    };
+                    layout.annotations.push(a);
                 }
-            };
-    
-            for (var i = 0; i < hash_names.length; ++i) {
-                var sum = 0.0;
-                for (var j = 0; j < values.length; ++j) {
-                    sum += values[j][i];
-                }
-                var title = sum.toPrecision(4).toString() + " sec, " + size_MiB[i].toPrecision(4).toString() + " MiB";
-                if (sum == 0) {
-                    title = "timeout";
-                }
-                var a = {
-                    x: sum,
-                    y: hash_names[i],
-                    text: title,
-                    showarrow: false,
-                    xanchor: 'left',
-                    xshift: 10
-                };
-                layout.annotations.push(a);
-            }
 
-            Plotly.newPlot('map_benchmark_{{BENCHMARK_NAME}}', data, layout, { showSendToCloud: true });
-        </script>
-    </div>
+                Plotly.newPlot('map_benchmark_{{BENCHMARK_NAME}}', data, layout, { showSendToCloud: true });
+            </script>
+        </div>
+    </body>
+</html>
 END_PLOTLY_TEMPLATE
 
     tpl.gsub!("{{BENCHMARK_NAME}}", benchmark_name)
@@ -207,6 +216,7 @@ END_PLOTLY_TEMPLATE
     time_size_idx.each do |time, size, idx|
         text << "'" << full_hashmap_names[idx] << "', "
     end
+
     tpl.gsub!("{{HASHMAP_NAMES}}", text)    
 
     text_measurements = ""
@@ -234,12 +244,11 @@ END_PLOTLY_TEMPLATE
     #tpl.gsub!("  ", "")
     #tpl.gsub!(", ", ",")
 
-    puts
-    puts tpl
+    filename = "#{benchmark_name}.html"
+    File.write(filename, tpl)
+    puts "wrote #{filename}"
 end
 
-
 h.sort.each do |benchmark_name, measurement|
-    print_plotly(benchmark_name, measurement, 1, all_hashmaps, all_hashes, all_measurements)
-    print_plotly(benchmark_name, measurement, 0, all_hashmaps, all_hashes, all_measurements)
+    print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_measurements[benchmark_name])
 end

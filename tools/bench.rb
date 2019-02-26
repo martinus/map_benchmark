@@ -2,7 +2,7 @@
 
 require 'timeout'
 
-timeout_sec = 5*60
+timeout_sec = 10*60
 
 benchs = ARGV
 if benchs.empty?
