@@ -66,6 +66,8 @@ find_package(Threads REQUIRED)
 # see https://github.com/facebook/folly/blob/master/folly/container/detail/F14Table.cpp#L26
 add_subdirectory("external/facebook__folly")
 
+add_subdirectory("external/electronicarts__EASTL")
+
 # build stuff #####################################################################
 
 # use ccache
