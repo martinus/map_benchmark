@@ -64,48 +64,48 @@ uint64_t randomFindInternal(Bench& bench, size_t numRandom, uint64_t bitMask, si
     return num_found;
 }
 
-BENCHMARK(RandomFind_100) {
+BENCHMARK(RandomFind_200) {
     static constexpr auto lower32bit = UINT64_C(0x00000000FFFFFFFF);
     static constexpr auto upper32bit = UINT64_C(0xFFFFFFFF00000000);
-    static constexpr size_t numInserts = 100;
-    static constexpr size_t numFindsPerInsert = 10000000;
+    static constexpr size_t numInserts = 200;
+    static constexpr size_t numFindsPerInsert = 5000000;
 
     bench.endMeasure(0, randomFindInternal(bench, 4, lower32bit, numInserts, numFindsPerInsert));
     bench.endMeasure(0, randomFindInternal(bench, 4, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(241310123, randomFindInternal(bench, 3, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(241310123, randomFindInternal(bench, 3, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(244807024, randomFindInternal(bench, 3, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(244807024, randomFindInternal(bench, 3, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(482620247, randomFindInternal(bench, 2, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(482620247, randomFindInternal(bench, 2, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(489614048, randomFindInternal(bench, 2, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(489614048, randomFindInternal(bench, 2, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(723930369, randomFindInternal(bench, 1, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(723930369, randomFindInternal(bench, 1, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(734421072, randomFindInternal(bench, 1, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(734421072, randomFindInternal(bench, 1, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(965240493, randomFindInternal(bench, 0, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(965240493, randomFindInternal(bench, 0, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(979228096, randomFindInternal(bench, 0, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(979228096, randomFindInternal(bench, 0, upper32bit, numInserts, numFindsPerInsert));
 }
 
-BENCHMARK(RandomFind_1000) {
+BENCHMARK(RandomFind_2000) {
     static constexpr auto lower32bit = UINT64_C(0x00000000FFFFFFFF);
     static constexpr auto upper32bit = UINT64_C(0xFFFFFFFF00000000);
-    static constexpr size_t numInserts = 1000;
-    static constexpr size_t numFindsPerInsert = 1000000;
+    static constexpr size_t numInserts = 2000;
+    static constexpr size_t numFindsPerInsert = 500000;
 
     bench.endMeasure(0, randomFindInternal(bench, 4, lower32bit, numInserts, numFindsPerInsert));
     bench.endMeasure(0, randomFindInternal(bench, 4, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(248562023, randomFindInternal(bench, 3, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(248562023, randomFindInternal(bench, 3, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(249194555, randomFindInternal(bench, 3, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(249194555, randomFindInternal(bench, 3, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(497124047, randomFindInternal(bench, 2, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(497124047, randomFindInternal(bench, 2, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(498389112, randomFindInternal(bench, 2, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(498389112, randomFindInternal(bench, 2, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(745686069, randomFindInternal(bench, 1, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(745686069, randomFindInternal(bench, 1, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(747583668, randomFindInternal(bench, 1, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(747583668, randomFindInternal(bench, 1, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(994248093, randomFindInternal(bench, 0, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(994248093, randomFindInternal(bench, 0, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(996778223, randomFindInternal(bench, 0, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(996778223, randomFindInternal(bench, 0, upper32bit, numInserts, numFindsPerInsert));
 }
 
 BENCHMARK(RandomFind_500000) {
@@ -114,18 +114,18 @@ BENCHMARK(RandomFind_500000) {
     static constexpr size_t numInserts = 500000;
     static constexpr size_t numFindsPerInsert = 1000;
 
-    bench.endMeasure(125989, randomFindInternal(bench, 4, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(113878, randomFindInternal(bench, 4, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(33571, randomFindInternal(bench, 4, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(29114, randomFindInternal(bench, 4, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(250096760, randomFindInternal(bench, 3, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(250078938, randomFindInternal(bench, 3, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(125018398, randomFindInternal(bench, 3, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(125016517, randomFindInternal(bench, 3, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(500051318, randomFindInternal(bench, 2, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(500041672, randomFindInternal(bench, 2, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(250006412, randomFindInternal(bench, 2, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(250004852, randomFindInternal(bench, 2, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(750019230, randomFindInternal(bench, 1, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(750019000, randomFindInternal(bench, 1, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(374997827, randomFindInternal(bench, 1, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(374996290, randomFindInternal(bench, 1, upper32bit, numInserts, numFindsPerInsert));
 
-    bench.endMeasure(999987348, randomFindInternal(bench, 0, lower32bit, numInserts, numFindsPerInsert));
-    bench.endMeasure(999987348, randomFindInternal(bench, 0, upper32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(499988041, randomFindInternal(bench, 0, lower32bit, numInserts, numFindsPerInsert));
+    bench.endMeasure(499988041, randomFindInternal(bench, 0, upper32bit, numInserts, numFindsPerInsert));
 }
