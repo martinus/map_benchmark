@@ -13,7 +13,9 @@ size_t run(size_t max_n, size_t string_length, uint32_t bitMask, Bench& bench) {
     ss << string_length << " bytes" << std::dec;
 
     std::string str(string_length, 'x');
-    auto strData32 = reinterpret_cast<uint32_t*>(&str[0]);
+    // point to the back of the string (32bit aligned), so comparison takes a while
+    auto const idx32 = (string_length / 4) - 1;
+    auto const strData32 = reinterpret_cast<uint32_t*>(&str[0]) + idx32;
 
     bench.beginMeasure(ss.str().c_str());
     Map<std::string, std::string> map;
