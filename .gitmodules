@@ -34,3 +34,7 @@
 	path = external/electronicarts__EASTL
 	url = https://github.com/electronicarts/EASTL
 	branch = master
+[submodule "external/ktprime__ktprime"]
+	path = external/ktprime__ktprime
+	url = https://github.com/ktprime/ktprime
+	branch = master
