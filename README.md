@@ -17,3 +17,9 @@ Install dependencies for folly::F14, see https://github.com/facebook/folly/#ubun
    git submodule add -b master https://github.com/rigtorp/HashMap.git rigtorp__HashMap
    ```
 2. Create a directory in `src/map/` with a file `Hash.h`. See the others for example.
+
+
+# Maps I couldn't add
+* [QHash](https://github.com/qt/qtbase): It's interface is too different to be easily includeable. e.g. `iterator->first` and `iterator->second` do not exist.
+* [rigtorp::HashMap](https://github.com/rigtorp/HashMap): Doesn't have a default constructor
+
