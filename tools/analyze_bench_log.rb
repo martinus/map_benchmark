@@ -172,6 +172,10 @@ var layout = {
 Plotly.newPlot('myDiv', data, layout);
 =end
 
+# we want
+# benchmark => hash => [runtime_sum, [runtimes_median], [memory_median], hashmap_name]
+
+
 # benchmark => measurement => hashmap => hash => [[time...], [memory...]]
 def print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_measurements_sorted)
     # [sum, [runtimes], [memory], hashmap_name, hash_name]
