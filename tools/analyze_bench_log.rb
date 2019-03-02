@@ -31,7 +31,7 @@ all_hashmaps = {}
 # map from benchmark to measurement_names, but sorted.
 all_measurements = Hash.new { |h,k| h[k] = [] }
 
-File.open(ARGV[0]).each_line do |l|
+STDIN.each_line do |l|
     l = l.gsub("\"", "").split(";").map { |w| w.strip }
     next if (l.size < 4)
 
@@ -117,50 +117,101 @@ h.sort.each do |benchmark_name, measurement|
     print_pareto_front(benchmark_name, measurement, 0, all_hashmaps, all_hashes, all_measurements[benchmark_name])
 end
 =end
+
+
+=begin
+
+var colors = Plotly.d3.scale.category10().range()
+
+var trace1a = {
+  x: [1e-8, 2e-8, 3e-8],
+  y: ["robin_hood::unordered_flat_map", "boost::unordered_map", "absl::flat_hash_map"],
+  type: 'bar',
+  orientation: 'h',
+  name: '4 bits, 50M inserts & erase robin_hood::hash', 
+  xaxis: 'x',
+  yaxis: 'y',
+  marker: {  color: colors[0], }
+};
+
+var trace1b = {
+  x: [3e-8, 2e-8, 4e-8],
+  y: ["robin_hood::unordered_flat_map", "boost::unordered_map", "absl::flat_hash_map"],
+  type: 'bar',
+  orientation: 'h',
+  xaxis: 'x',
+  yaxis: 'y2',
+  marker: {  color: colors[0], }
+};
+
+
+var trace2 = {
+  x: [2e-8, 3e-8, 4e-8],
+  y: ["boost::unordered_map", "robin_hood::unordered_flat_map", "absl::flat_hash_map"],
+  type: 'bar',
+  yaxis: 'y2',
+  orientation: 'h',
+  marker: {  color: colors[1], }
+
+};
+
+var data = [trace1a, trace1b, trace2];
+
+var layout = {
+  grid: {subplots:[['xy'], ['xy2']]},
+  
+  barmode: 'stack',
+  yaxis: { title: 'absl::Hash'},
+  legend: {traceorder: 'reversed'},
+  yaxis2: {title: 'robin_hood::hash',},
+                      margin: {
+                        l: 350
+                    },
+};
+
+Plotly.newPlot('myDiv', data, layout);
+=end
+
 # benchmark => measurement => hashmap => hash => [[time...], [memory...]]
-def print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_measurements)
-    full_hashmap_names = []
-
-    measurement_values = Hash.new { |h,k| h[k] = [] }
-
+def print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_measurements_sorted)
+    # [sum, [runtimes], [memory], hashmap_name, hash_name]
+    values = []
     all_hashmaps.each do |hashmap_name|
         all_hashes.each do |hash_name|
-            full_hashmap_names.push "#{hashmap_name} #{hash_name}"
-            all_measurements.each do |measurement_name|
+            dataset = [0.0, [], [], hashmap_name, hash_name]
+            all_measurements_sorted.each do |measurement_name|
                 entry = measurement[measurement_name][hashmap_name][hash_name]
-                # [time, MiB]
-                measurement_values[measurement_name].push [median(entry[0], 1e10), median(entry[1])]
+                r = median(entry[0], 1e10)
+
+                dataset[0] += r
+                dataset[1].push (r >= 1e10 ? 0 : r)
+                dataset[2].push median(entry[1])
             end
+            values.push dataset
         end
     end
 
-    # create indices, and sort by sum of all measurements
-    time_size_idx = (0...full_hashmap_names.size).to_a.map { |idx| [0.0, 0.0, idx] }
-    measurement_values.each do |_, measurement|
-        measurement.each_with_index do |m, idx|
-            time_size_idx[idx][0] += m[0] # sort by time
-            time_size_idx[idx][1] = [time_size_idx[idx][1], m[1]].max
-        end
-    end
-    time_size_idx.sort! { |a,b| b <=> a }
+    # sort by sum
+    values.sort! { |a,b| b <=> a }
 
     # now we have all data, print it.
     tpl = <<END_PLOTLY_TEMPLATE
-<html>
-    <head><script src="https://cdn.plot.ly/plotly-latest.min.js"></script></head>
-    <body>    
-        <div id="map_benchmark_{{BENCHMARK_NAME}}" style="height:{{HEIGHT}}"><!-- Plotly chart will be drawn inside this DIV --></div>
+        <div id="{{UID}}" style="height:{{HEIGHT}}"></div>
             <script>
-                var hash_names = [{{HASHMAP_NAMES}}];
+                var hashmap_names = [{{HASHMAP_NAMES}}];
                 var measurement_names = [{{MEASUREMENT_NAMES}}];
-                var values = [{{MEASUREMENTS}}];
+                var measurements = [{{MEASUREMENTS}}];
                 var size_MiB = [{{SIZE_MIB}}];
 
                 var data = [];
                 for (var i = 0; i < measurement_names.length; ++i) {
+                    var trace_x = [];
+                    for (var j = 0; j < measurements.length; ++j) {
+                        trace_x.push(measurements[j][i]);
+                    }                    
                     var trace = {
-                        y: hash_names,
-                        x: values[i],
+                        y: hashmap_names,
+                        x: trace_x,
                         name: measurement_names[i],
                         type: 'bar',
                         orientation: 'h',
@@ -181,10 +232,10 @@ def print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_meas
                     }
                 };
         
-                for (var i = 0; i < hash_names.length; ++i) {
+                for (var i = 0; i < hashmap_names.length; ++i) {
                     var sum = 0.0;
-                    for (var j = 0; j < values.length; ++j) {
-                        sum += values[j][i];
+                    for (var j = 0; j < measurements.length; ++j) {
+                        sum += measurements[j][i];
                     }
                     var title = sum.toPrecision(4).toString() + " sec, " + size_MiB[i].toPrecision(4).toString() + " MiB";
                     if (sum == 0) {
@@ -192,7 +243,7 @@ def print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_meas
                     }
                     var a = {
                         x: sum,
-                        y: hash_names[i],
+                        y: hashmap_names[i],
                         text: title,
                         showarrow: false,
                         xanchor: 'left',
@@ -201,53 +252,107 @@ def print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_meas
                     layout.annotations.push(a);
                 }
 
-                Plotly.newPlot('map_benchmark_{{BENCHMARK_NAME}}', data, layout, { showSendToCloud: true });
+                Plotly.newPlot('{{UID}}', data, layout, { showSendToCloud: true });
             </script>
         </div>
+END_PLOTLY_TEMPLATE
+    
+    tpl_prefix = <<END_PLOTLY_TEMPLATE
+<html>
+    <head><script src="https://cdn.plot.ly/plotly-latest.min.js"></script></head>
+    <body>
+END_PLOTLY_TEMPLATE
+
+    tpl_postfix = <<END_PLOTLY_TEMPLATE
     </body>
 </html>
 END_PLOTLY_TEMPLATE
 
-    tpl.gsub!("{{BENCHMARK_NAME}}", benchmark_name)
-    tpl.gsub!("{{HEIGHT}}", "#{[20, (full_hashmap_names.size*1.5).to_i+7].max}em")
-    tpl.gsub!("{{MEASUREMENT_NAMES}}", all_measurements.map{ |m| "'#{m}'" }.join(", "))
+    filename = "#{benchmark_name}.html"
+    File.open(filename, "wt") do |f|
+        f.write(tpl_prefix)
 
-    text = ""
-    time_size_idx.each do |time, size, idx|
-        text << "'" << full_hashmap_names[idx] << "', "
-    end
+        all_hashes.each do |hash_name|
+            t = tpl.gsub("{{BENCHMARK_NAME}}", "#{benchmark_name} #{hash_name}")
+            t.gsub!("{{HEIGHT}}", "#{[20, (all_hashmaps.size*1.5).to_i+7].max}em")
+            t.gsub!("{{MEASUREMENT_NAMES}}", all_measurements_sorted.map{ |m| "'#{m}'" }.join(", "))
 
-    tpl.gsub!("{{HASHMAP_NAMES}}", text)    
-
-    text_measurements = ""
-    all_measurements.each do |measurement_name|
-        data = measurement_values[measurement_name]
-        text_measurements << "["
-        time_size_idx.each do |time, size, idx|
-            if (time < 1e5)
-                text_measurements << data[idx][0].to_s
-            else
-                text_measurements << "0"
+            text_hashmap_names = ""
+            text_measurements = ""
+            text_size = ""
+            values.each do |sum, runtime_measures, memory_measures, hashmap_name, current_hash_name|
+                next unless hash_name == current_hash_name
+                text_hashmap_names << "'" << hashmap_name << "',"
+                text_measurements << "[" << runtime_measures.join(",") << "],"
+                text_size << memory_measures.last.to_s << ","
             end
-            text_measurements << ","
+
+            t.gsub!("{{HASHMAP_NAMES}}", text_hashmap_names)    
+            t.gsub!("{{MEASUREMENTS}}", text_measurements)
+            t.gsub!("{{SIZE_MIB}}", text_size)
+            t.gsub!("{{UID}}", "id_#{rand(2**32).to_s(16)}")
+
+            f.write(t)
         end
-        text_measurements << "],"
+
+        f.write(tpl_postfix)
     end
-    tpl.gsub!("{{MEASUREMENTS}}", text_measurements)
+    puts "wrote #{filename}"
+end
 
-    text_size_MiB = time_size_idx.map{ |time, size, idx| size }.join(",")
-    tpl.gsub!("{{SIZE_MIB}}", text_size_MiB)
+=begin
+    # create indices, and sort by sum of all measurements
+    time_size_idx = (0...(all_hashmaps.size*all_hashes.size)).to_a.map { |idx| [0.0, 0.0, idx] }
+    measurement_values.each do |_, measurement|
+        measurement.each_with_index do |m, idx|
+            time_size_idx[idx][0] += m[0] # sort by runtime
+            time_size_idx[idx][1] = [time_size_idx[idx][1], m[1]].max
+        end
+    end
+    time_size_idx.sort! { |a,b| b <=> a }
 
-    # some cleanup
-    #tpl.gsub!("\n", "")
-    #tpl.gsub!("\t", "")
-    #tpl.gsub!("  ", "")
-    #tpl.gsub!(", ", ",")
+
 
     filename = "#{benchmark_name}.html"
+    File.open(filename, "wt") do |f|
+        f.write tpl_prefix
+        
+        all_hashes.each do |hash_name|
+            t = tpl.gsub("{{BENCHMARK_NAME}}", "#{benchmark_name} #{hash_name}")
+            t.gsub!("{{HEIGHT}}", "#{[20, (all_hashmaps.size*1.5).to_i+7].max}em")
+            t.gsub!("{{MEASUREMENT_NAMES}}", all_measurements.map{ |m| "'#{m}'" }.join(", "))
+
+            text = ""
+            time_size_idx.each do |time, size, idx|
+                next unless all_hashes[]
+                text << "'" << full_hashmap_names[idx] << "', "
+            end
+
+        tpl.gsub!("{{HASHMAP_NAMES}}", text)    
+
+        text_measurements = ""
+        all_measurements.each do |measurement_name|
+            data = measurement_values[measurement_name]
+            text_measurements << "["
+            time_size_idx.each do |time, size, idx|
+                if (time < 1e5)
+                    text_measurements << data[idx][0].to_s
+                else
+                    text_measurements << "0"
+                end
+                text_measurements << ","
+            end
+            text_measurements << "],"
+        end
+        tpl.gsub!("{{MEASUREMENTS}}", text_measurements)
+
+        text_size_MiB = time_size_idx.map{ |time, size, idx| size }.join(",")
+        tpl.gsub!("{{SIZE_MIB}}", text_size_MiB)
+
     File.write(filename, tpl)
     puts "wrote #{filename}"
 end
+=end
 
 h.sort.each do |benchmark_name, measurement|
     print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_measurements[benchmark_name])

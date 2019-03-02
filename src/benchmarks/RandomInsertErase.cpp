@@ -1,36 +1,44 @@
 #include "Map.h"
 #include "bench.h"
+#include "hex.h"
 #include "sfc64.h"
 
+#include <algorithm>
+#include <bitset>
+#include <numeric>
 #include <sstream>
 
-size_t run(size_t max_n, uint64_t bitMask, Bench& bench) {
-    sfc64 rng(123);
-
-    // time measured part
-    size_t verifier = 0;
-    std::stringstream ss;
-    ss << max_n << " @ 0x" << std::hex << bitMask << std::dec;
-
-    bench.beginMeasure(ss.str().c_str());
-    Map<uint64_t, uint64_t> map;
-    for (size_t i = 0; i < max_n; ++i) {
-        map[rng() & bitMask] = i;
-        auto it = map.find(rng() & bitMask);
-        if (it != map.end()) {
-            verifier += it->second;
-            map.erase(it);
-        }
-    }
-    return verifier;
-}
-
 BENCHMARK(RandomInsertErase) {
-    bench.endMeasure(2500192580072665, run(100000000, UINT64_C(0x00000000'00000FFF), bench));
-    bench.endMeasure(2580309529973681, run(100000000, UINT64_C(0x00F00000'00000000), bench));
-    bench.endMeasure(2498363333927799, run(100000000, UINT64_C(0x000000FF'000000FF), bench));
-    bench.endMeasure(2504472903901015, run(100000000, UINT64_C(0x0000000F'0000000F), bench));
-    bench.endMeasure(2504651273268435, run(100000000, UINT64_C(0xF000000F'00000000), bench));
-    bench.endMeasure(2498608646258729, run(100000000, UINT64_C(0x0000FFFF'00000000), bench));
-    bench.endMeasure(2466305693537, run(40000000, UINT64_C(0xF00F0F0F'F0F0FF00), bench));
+    // random bits to set for the mask
+    std::vector<int> bits(64);
+    std::iota(bits.begin(), bits.end(), 0);
+    sfc64 rng(999);
+    std::random_shuffle(bits.begin(), bits.end(), rng);
+
+    uint64_t bitMask = 0;
+    auto bitsIt = bits.begin();
+
+    size_t const expectedFinalSizes[] = {7, 127, 2084, 32722, 524149, 8367491};
+    size_t const max_n = 50000000;
+
+    Map<uint64_t, uint64_t> map;
+    for (int i = 0; i < 6; ++i) {
+        // each iteration, set 4 new random bits.
+        for (int b = 0; b < 4; ++b) {
+            bitMask |= UINT64_C(1) << *bitsIt++;
+        }
+
+        // set name
+        size_t verifier = 0;
+        std::stringstream ss;
+        ss << std::bitset<64>(bitMask).count() << " bits, " << (max_n / 1000'000) << "M cycles";
+
+        // benchmark randomly inserting & erasing
+        bench.beginMeasure(ss.str().c_str());
+        for (size_t i = 0; i < max_n; ++i) {
+            map.emplace(rng() & bitMask, i);
+            map.erase(rng() & bitMask);
+        }
+        bench.endMeasure(expectedFinalSizes[i], map.size());
+    }
 }

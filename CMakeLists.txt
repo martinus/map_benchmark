@@ -106,5 +106,5 @@ foreach(MAP_DIR ${INC_MAPS})
             include("${HASH_DIR}/dependencies.cmake")
         endif ()
 
-        endforeach(HASH_DIR ${INC_HASHES})
+    endforeach(HASH_DIR ${INC_HASHES})
 endforeach(MAP_DIR ${INC_MAPS})
