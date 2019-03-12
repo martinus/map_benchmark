@@ -1,11 +1,9 @@
 #pragma once
 
-#define LOG_HASH
-
 #include "Hash.h"
 #include "ktprime__ktprime/hash_table5.hpp"
 
-static const char* MapName = "emilib4::HashMap";
+static const char* MapName = "emilib1::HashMap";
 
 template <class Key, class Val>
-using Map = emilib4::HashMap<Key, Val, Hash<Key>>;
+using Map = emilib1::HashMap<Key, Val, Hash<Key>>;
