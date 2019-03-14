@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "pp"
+require "erb"
 
 def median(values, invalid_value = 900)
     if values.nil? || values.empty?
@@ -14,7 +15,7 @@ end
 
 replace_dot_with_comma = true
 
-# benchmark => measurement => hashmap => hash => [[time...], [memory...]]
+# benchmark => hash => hashmap => measurement => [[time...], [memory...]]
 h = Hash.new do |h,k|
     h[k] = Hash.new do |h,k|
         h[k] = Hash.new do |h,k| 
@@ -39,7 +40,7 @@ STDIN.each_line do |l|
     hashmap_name, hash_name, benchmark_name, measurement_name, validator, runtime, memory = l
     all_measurements[benchmark_name].push(measurement_name) unless all_measurements[benchmark_name].include?(measurement_name)
 
-    entry = h[benchmark_name][measurement_name][hashmap_name][hash_name]
+    entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
     
     if l.size == 7
         entry[0].push runtime.to_f
@@ -56,6 +57,136 @@ end
 
 all_hashmaps = all_hashmaps.keys.sort
 all_hashes = all_hashes.keys.sort
+
+# what we get:
+#   benchmark => hash => hashmap => measurement => [[time...], [memory...]]
+# what we want:
+#   benchmark => [hash, [runtime_sum, memory_max, [runtimes_median], hashmap_name]]
+#   where [hash, ...] is sorted by fastest hash, and runtimes sorted by hashmap.
+def convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, all_measurements_sorted)
+    hash_to_data = {}
+    hash.each do |hash_name, hashmap|
+        data = []
+        hashmap.each do |hashmap_name, measurements|
+            runtime_sum = 0.0
+            memory_max = 0.0
+            runtimes_median = []
+            memory_median = []
+            all_measurements_sorted.each do |m|
+                runtimes, memory = measurements[m]
+                med = median(runtimes)
+                runtime_sum += med
+                runtimes_median.push(med)
+                memory_max = [memory_max, median(memory)].max
+            end
+            data.push [runtime_sum, memory_max, runtimes_median, hashmap_name]
+        end
+        hash_to_data[hash_name] = data.sort
+    end
+
+    data = hash_to_data.to_a.sort do |a, b|
+        # [hashname, [[runtime_sum, memory_max, [runtimes_median], hashmap_name1], [runtime_sum, ...]]
+        a[1][0][0] <=> b[1][0][0]
+    end
+
+    # finally we have the data exactly as we want, we can generate 
+    data
+end
+
+h.sort.each do |benchmark_name, hash|
+    
+    tpl = <<END_PLOTLY_TEMPLATE
+<html>
+
+<head>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div id="<%= uid %>" style="height:<%= height_em %>em">
+        <!-- Plotly chart will be drawn inside this DIV -->
+    </div>
+    <script>
+        var colors = Plotly.d3.scale.category10().range();
+% names.each_with_index do |n, idx|
+        var m<%= idx %>y = [ <%= n %>];
+% end
+        var measurement_names = [ <%= measurement_names_str %> ];
+
+        var data = [
+% hash.each_with_index do |h, hash_idx|
+%   h.each_with_index do do |measurement, measurement_idx|
+            {
+                x: [ measurement.join(", ") ],
+                y: m<%= hash_idx %>y,
+                name: 'hash <%= hash_idx %> measurement <%= measurement_idx %>',
+                type: 'bar',
+                orientation: 'h',
+                yaxis: 'y<%= hash_idx == 0 ? '' : hash_idx+1 %>',
+                marker: { color: colors[<%= measurement_idx %>], }
+            },
+%   end
+% end
+        ];
+
+        var layout = {
+            grid: { subplots: [
+% hash.each_with_index do |h, hash_idx|
+                ['xy<%= hash_idx == 0 ? '' : hash_idx+1 %>'],
+% end
+            ] },
+
+            barmode: 'stack',
+% hash.each_with_index do |h, hash_idx|
+            yaxis<%= hash_idx == 0 ? '' : hash_idx+1 %>: { title: 'TODO hash title' },
+% end
+            legend: { traceorder: 'reversed' },
+            margin: { l: 350 },
+        };
+
+        Plotly.newPlot('<%= uid %>', data, layout);
+    </script>
+    </div>
+
+</body>
+
+</html>
+END_PLOTLY_TEMPLATE
+
+
+    # [hashname, [[runtime_sum, memory_max, [runtimes_median], hashmap_name], [runtime_sum, ...]]
+    measurement_names = all_measurements[benchmark_name]
+    data = convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, measurement_names)
+
+    # generate hashmap names for each hash, in order
+    names = []
+    data.each_with_index do |item, idx|
+        names.push(item[1].map { |x| "\"#{x.last}\"" }.join(", "))
+    end
+
+    # generate data for each hashname for all measurements
+    data.each_with_index do |hashname, d|
+        measurement_names.times do |i|
+            m = []
+            d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
+                m.push(runtimes_median[measurement_idx])
+            end
+            # now m contains everything for that measurement
+        end
+    end
+    data.map do |hash_name, hashmap_data
+
+    height_em = [20, (all_hashmaps.size*1.5).to_i+7].max
+    uid = "id_#{rand(2**32).to_s(16)}"
+    measurement_names_str = measurement_names.map { |n| "\"#{n}\"" }.join(", ")
+
+    puts ERB.new(tpl, 0, "%<>").result(binding)
+
+
+    pp data
+end
+
 
 # print each benchmark as a nice table
 def print_result_2d(benchmark_name, measurement_name, hashmap, type, all_hashmaps, all_hashes)
@@ -357,7 +488,3 @@ end
     puts "wrote #{filename}"
 end
 =end
-
-h.sort.each do |benchmark_name, measurement|
-    print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_measurements[benchmark_name])
-end
