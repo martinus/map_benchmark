@@ -74,14 +74,22 @@ def convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, all_measur
             memory_median = []
             all_measurements_sorted.each do |m|
                 runtimes, memory = measurements[m]
-                med = median(runtimes)
+                med = median(runtimes, 1e10)
                 runtime_sum += med
                 runtimes_median.push(med)
                 memory_max = [memory_max, median(memory)].max
             end
+
+            # clean up data if we had a timeout 
+            if (runtime_sum >= 1e10) 
+                runtime_sum = 1e10
+                runtimes_median = runtimes_median.map { |x| 0 }
+            end
             data.push [runtime_sum, memory_max, runtimes_median, hashmap_name]
         end
-        hash_to_data[hash_name] = data.sort
+        hash_to_data[hash_name] = data.sort do |a, b|
+            b <=> a
+        end
     end
 
     data = hash_to_data.to_a.sort do |a, b|
@@ -116,11 +124,11 @@ h.sort.each do |benchmark_name, hash|
 
         var data = [
 % hash.each_with_index do |h, hash_idx|
-%   h.each_with_index do do |measurement, measurement_idx|
+%   h.each_with_index do |measurement, measurement_idx|
             {
-                x: [ measurement.join(", ") ],
+                x: [ <%= measurement.join(", ") %> ],
                 y: m<%= hash_idx %>y,
-                name: 'hash <%= hash_idx %> measurement <%= measurement_idx %>',
+                name: measurement_names[<%= measurement_idx %>] + ' (<%= hash_names[hash_idx] %>)',
                 type: 'bar',
                 orientation: 'h',
                 yaxis: 'y<%= hash_idx == 0 ? '' : hash_idx+1 %>',
@@ -131,6 +139,7 @@ h.sort.each do |benchmark_name, hash|
         ];
 
         var layout = {
+            title: { text: '<%= benchmark_name %>'},
             grid: { subplots: [
 % hash.each_with_index do |h, hash_idx|
                 ['xy<%= hash_idx == 0 ? '' : hash_idx+1 %>'],
@@ -138,10 +147,10 @@ h.sort.each do |benchmark_name, hash|
             ] },
 
             barmode: 'stack',
-% hash.each_with_index do |h, hash_idx|
-            yaxis<%= hash_idx == 0 ? '' : hash_idx+1 %>: { title: 'TODO hash title' },
+% hash_names.each_with_index do |h, hash_idx|
+            yaxis<%= hash_idx == 0 ? '' : hash_idx+1 %>: { title: '<%= h %>' },
 % end
-            legend: { traceorder: 'reversed' },
+            legend: { traceorder: 'normal' },
             margin: { l: 350 },
         };
 
@@ -166,25 +175,27 @@ END_PLOTLY_TEMPLATE
     end
 
     # generate data for each hashname for all measurements
-    data.each_with_index do |hashname, d|
-        measurement_names.times do |i|
+    hash_names = []
+    hash = []
+    data.each do |hashname, d|
+        hash_names.push(hashname)
+        measurements = []
+        measurement_names.size.times do |measurement_idx|
             m = []
             d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
                 m.push(runtimes_median[measurement_idx])
             end
             # now m contains everything for that measurement
+            measurements.push(m)
         end
+        hash.push(measurements)
     end
-    data.map do |hash_name, hashmap_data
 
-    height_em = [20, (all_hashmaps.size*1.5).to_i+7].max
+    height_em = [20, ((all_hashmaps.size * all_hashes.size) * 1.5).to_i+7].max
     uid = "id_#{rand(2**32).to_s(16)}"
     measurement_names_str = measurement_names.map { |n| "\"#{n}\"" }.join(", ")
 
     puts ERB.new(tpl, 0, "%<>").result(binding)
-
-
-    pp data
 end
 
 
@@ -319,7 +330,7 @@ def print_plotly(benchmark_name, measurement, all_hashmaps, all_hashes, all_meas
                 r = median(entry[0], 1e10)
 
                 dataset[0] += r
-                dataset[1].push (r >= 1e10 ? 0 : r)
+                dataset[1].push (r >= 1e9 ? 0 : r)
                 dataset[2].push median(entry[1])
             end
             values.push dataset
