@@ -204,7 +204,11 @@ END_PLOTLY_TEMPLATE
     data.each do |hashname, d|
         t = []
         d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
-            t.push sprintf("\"%.2f sec, %.1f MiB\"", runtime_sum, memory_max)
+            if runtime_sum < 1e10
+                t.push sprintf("\"%.2f sec, %.1f MiB\"", runtime_sum, memory_max)
+            else
+                t.push sprintf("\"timeout\"", runtime_sum, memory_max)
+            end
         end
         text.push(t)
     end
