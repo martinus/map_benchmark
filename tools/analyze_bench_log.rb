@@ -135,7 +135,11 @@ h.sort.each do |benchmark_name, hash|
                 type: 'bar',
                 orientation: 'h',
                 yaxis: 'y<%= hash_idx == 0 ? '' : hash_idx+1 %>',
-                marker: { color: colors[<%= measurement_idx %>], }
+                marker: { color: colors[<%= measurement_idx %>], },
+%       if measurement_idx == h.size-1
+                textposition: 'outside',
+                text: [ <%= text[hash_idx].join(", ") %> ],
+%       end
             },
 %   end
 % end
@@ -143,7 +147,9 @@ h.sort.each do |benchmark_name, hash|
 
         var layout = {
             title: { text: '<%= benchmark_name %>'},
-            grid: { subplots: [
+            grid: {
+                ygap: 0.1,
+                subplots: [
 % hash.each_with_index do |h, hash_idx|
                 ['xy<%= hash_idx == 0 ? '' : hash_idx+1 %>'],
 % end
@@ -194,7 +200,16 @@ END_PLOTLY_TEMPLATE
         hash.push(measurements)
     end
 
-    height_em = [20, ((all_hashmaps.size * all_hashes.size) * 1.5).to_i+7].max
+    text = []
+    data.each do |hashname, d|
+        t = []
+        d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
+            t.push sprintf("\"%.2f sec, %.1f MiB\"", runtime_sum, memory_max)
+        end
+        text.push(t)
+    end
+
+    height_em = [20, (((all_hashmaps.size + 5) * all_hashes.size) * 1.5).to_i].max
     uid = "id_#{rand(2**32).to_s(16)}"
     measurement_names_str = measurement_names.map { |n| "\"#{n}\"" }.join(", ")
 
