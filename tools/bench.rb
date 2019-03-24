@@ -2,6 +2,8 @@
 
 require 'timeout'
 
+cmd_prefix = "taskset -c 5,11"
+
 timeout_sec = 15*60
 
 benchs = ARGV
@@ -19,7 +21,7 @@ bad_commands = {}
     benchs.each do |bench|
         STDERR.puts "iteration #{iter}"
         apps.each do |app|
-            cmd = "./#{app} #{bench}"
+            cmd = "#{cmd_prefix} ./#{app} #{bench}"
             if (bad_commands.key?(cmd))
                 puts "SKIPPING #{app} #{bench}"
             else
