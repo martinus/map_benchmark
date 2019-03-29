@@ -3,6 +3,13 @@
 require "pp"
 require "erb"
 
+TEST_CONFIG = Hash.new { |h,k| h[k] = {} }
+
+TEST_CONFIG["RandomFind_500000"] = {
+    "factor" => 1.0/(500000 * 1000),
+    "type" => "avg"
+}
+
 def median(values, invalid_value = 900)
     if values.nil? || values.empty?
         return invalid_value
@@ -11,6 +18,17 @@ def median(values, invalid_value = 900)
     idx1 = values.length / 2
     idx2 = (values.length - 1) / 2
     (v[idx1] + v[idx2]) / 2
+end
+
+def si_format(n)
+    fmt = ["", "m", "µ", "n", "p", "f", "a", "z", "y"]
+    factor = 1.0
+    idx = 0
+    while n*factor < 1
+        factor *= 1000;
+        idx += 1
+    end
+    sprintf("%.1f %s", factor*n, fmt[idx])
 end
 
 replace_dot_with_comma = true
@@ -43,7 +61,7 @@ STDIN.each_line do |l|
     entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
     
     if l.size == 7
-        entry[0].push runtime.to_f
+        entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name]["factor"] || 1.0)
         entry[1].push memory.to_f
     else
         # timeout
@@ -84,7 +102,10 @@ def convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, all_measur
             if (runtime_sum >= 1e10) 
                 runtime_sum = 1e10
                 runtimes_median = runtimes_median.map { |x| 0 }
+            elsif TEST_CONFIG[benchmark_name]["type"] == "avg"
+                runtime_sum /= all_measurements_sorted.size
             end
+
             data.push [runtime_sum, memory_max, runtimes_median, hashmap_name]
         end
         hash_to_data[hash_name] = data.sort do |a, b|
@@ -107,69 +128,55 @@ end
 h.sort.each do |benchmark_name, hash|
     
     tpl = <<END_PLOTLY_TEMPLATE
-<html>
+<html><head></head><body>
 
-<head>
-    <!-- Plotly.js -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-</head>
-
-<body>
-    <div id="<%= uid %>" style="height:<%= height_em %>em">
-        <!-- Plotly chart will be drawn inside this DIV -->
-    </div>
-    <script>
-        var colors = Plotly.d3.scale.category10().range();
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<div id="<%= uid %>" style="height:<%= height_em %>em"></div>
+<script>
+    var colors = Plotly.d3.scale.category10().range();
 % names.each_with_index do |n, idx|
-        var m<%= idx %>y = [ <%= n %>];
+    var m<%= idx %>y = [ <%= n %>];
 % end
-        var measurement_names = [ <%= measurement_names_str %> ];
+    var measurement_names = [ <%= measurement_names_str %> ];
 
-        var data = [
+    var data = [
 % hash.each_with_index do |h, hash_idx|
 %   h.each_with_index do |measurement, measurement_idx|
-            {
-                x: [ <%= measurement.join(", ") %> ],
-                y: m<%= hash_idx %>y,
-                name: measurement_names[<%= measurement_idx %>] + ' (<%= hash_names[hash_idx] %>)',
-                type: 'bar',
-                orientation: 'h',
-                yaxis: 'y<%= hash_idx == 0 ? '' : hash_idx+1 %>',
-                marker: { color: colors[<%= measurement_idx %>], },
+        { x: [ <%= measurement.join(", ") %> ],
+          y: m<%= hash_idx %>y, name: measurement_names[<%= measurement_idx %>] + ' (<%= hash_names[hash_idx] %>)', type: 'bar', orientation: 'h', yaxis: 'y<%= hash_idx == 0 ? '' : hash_idx+1 %>', marker: { color: colors[<%= measurement_idx %>], },
 %       if measurement_idx == h.size-1
-                textposition: 'outside',
-                text: [ <%= text[hash_idx].join(", ") %> ],
+            textposition: 'outside',
+            text: [ <%= text[hash_idx].join(", ") %> ],
 %       end
-            },
+        },
 %   end
 % end
-        ];
+    ];
 
-        var layout = {
-            title: { text: '<%= benchmark_name %>'},
-            grid: {
-                ygap: 0.1,
-                subplots: [
+    var layout = {
+        title: { text: '<%= benchmark_name %>'},
+        grid: {
+            ygap: 0.1,
+            subplots: [
 % hash.each_with_index do |h, hash_idx|
-                ['xy<%= hash_idx == 0 ? '' : hash_idx+1 %>'],
+            ['xy<%= hash_idx == 0 ? '' : hash_idx+1 %>'],
 % end
-            ] },
+        ] },
 
-            barmode: 'stack',
+        barmode: 'stack',
 % hash_names.each_with_index do |h, hash_idx|
-            yaxis<%= hash_idx == 0 ? '' : hash_idx+1 %>: { title: '<%= h %>' },
+        yaxis<%= hash_idx == 0 ? '' : hash_idx+1 %>: { title: '<%= h %>', automargin: true, },
 % end
-            legend: { traceorder: 'normal' },
-            margin: { l: 350 },
-        };
+        xaxis: { automargin: true, },
+        legend: { traceorder: 'normal' },
+        margin: { pad: 0, l:0, r:0, t:0, b:0, },
+        showlegend:false,
+    };
 
-        Plotly.newPlot('<%= uid %>', data, layout);
-    </script>
-    </div>
+    Plotly.newPlot('<%= uid %>', data, layout);
+</script>
 
-</body>
-
-</html>
+</body></html>
 END_PLOTLY_TEMPLATE
 
 
@@ -205,9 +212,9 @@ END_PLOTLY_TEMPLATE
         t = []
         d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
             if runtime_sum < 1e10
-                t.push sprintf("\"%.2f sec, %.1f MiB\"", runtime_sum, memory_max)
+                t.push sprintf("\"%ss%s, %.1f MiB\"", si_format(runtime_sum), (TEST_CONFIG[benchmark_name]["type"] == "avg" ? " avg" : ""), memory_max)
             else
-                t.push sprintf("\"timeout\"", runtime_sum, memory_max)
+                t.push sprintf("\"timeout\"")
             end
         end
         text.push(t)
