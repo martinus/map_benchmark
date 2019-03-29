@@ -5,10 +5,16 @@ require "erb"
 
 TEST_CONFIG = Hash.new { |h,k| h[k] = {} }
 
-TEST_CONFIG["RandomFind_500000"] = {
-    "factor" => 1.0/(500000 * 1000),
-    "type" => "avg"
+TEST_CONFIG["RandomFind_200"] =    { "factor" => 1.0/(200 * 5000000), "type" => "avg" }
+TEST_CONFIG["RandomFind_2000"] =   { "factor" => 1.0/(2000 * 500000), "type" => "avg" }
+TEST_CONFIG["RandomFind_500000"] = { "factor" => 1.0/(500000 * 1000), "type" => "avg" }
+MAP_NAMES = {
+    "boost::multi_index::hashed_unique" => "boost::multi_index::<br>hashed_unique",
+    "robin_hood::unordered_node_map" => "robin_hood::<br>unordered_node_map",
+    "robin_hood::unordered_flat_map" => "robin_hood::<br>unordered_flat_map",
+    "boost::unordered_map 1_65_1" => "boost::unordered_map",
 }
+
 
 def median(values, invalid_value = 900)
     if values.nil? || values.empty?
@@ -28,7 +34,11 @@ def si_format(n)
         factor *= 1000;
         idx += 1
     end
-    sprintf("%.1f %s", factor*n, fmt[idx])
+    val = factor*n
+    digits = 0;
+    digits = 1 if val < 100
+    digits = 2 if val < 10
+    sprintf("%.#{digits}f%s", factor*n, fmt[idx])
 end
 
 replace_dot_with_comma = true
@@ -154,7 +164,7 @@ h.sort.each do |benchmark_name, hash|
     ];
 
     var layout = {
-        title: { text: '<%= benchmark_name %>'},
+        // title: { text: '<%= benchmark_name %>'},
         grid: {
             ygap: 0.1,
             subplots: [
@@ -187,7 +197,7 @@ END_PLOTLY_TEMPLATE
     # generate hashmap names for each hash, in order
     names = []
     data.each_with_index do |item, idx|
-        names.push(item[1].map { |x| "\"#{x.last}\"" }.join(", "))
+        names.push(item[1].map { |x| "\"#{MAP_NAMES[x.last] || x.last}\"" }.join(", "))
     end
 
     # generate data for each hashname for all measurements
@@ -212,7 +222,9 @@ END_PLOTLY_TEMPLATE
         t = []
         d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
             if runtime_sum < 1e10
-                t.push sprintf("\"%ss%s, %.1f MiB\"", si_format(runtime_sum), (TEST_CONFIG[benchmark_name]["type"] == "avg" ? " avg" : ""), memory_max)
+                time = sprintf("%ss%s", si_format(runtime_sum), (TEST_CONFIG[benchmark_name]["type"] == "avg" ? " avg" : ""))
+                mem = sprintf(memory_max >= 10 ? "%.fMB" : "%.1fMB", memory_max)
+                t.push "\"#{time} #{mem}\""
             else
                 t.push sprintf("\"timeout\"")
             end
