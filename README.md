@@ -8,8 +8,7 @@ Comprehensive benchmarks of C++ maps
 
 ```
 git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
-cd map_benchmark/build/
-../tools/build.sh
+./map_benchmark/tools/build.sh
 ```
 
 # Add a new Hashmap
