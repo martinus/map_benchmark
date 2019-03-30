@@ -5,10 +5,11 @@ Comprehensive benchmarks of C++ maps
 
 1. Install dependencies for folly::F14, see https://github.com/facebook/folly/#ubuntu-1604-lts
 1. Install `ninja` and `cmake`
-
-    git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
-    cd map_benchmark/build/
-    ../tools/build.sh
+   ```
+   git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
+   cd map_benchmark/build/
+   ../tools/build.sh
+   ```
 
 # Add a new Hashmap
 
