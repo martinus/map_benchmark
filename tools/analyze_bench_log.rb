@@ -8,6 +8,9 @@ TEST_CONFIG = Hash.new { |h,k| h[k] = {} }
 TEST_CONFIG["RandomFind_200"] =    { "factor" => 1.0/(200 * 5000000), "type" => "avg" }
 TEST_CONFIG["RandomFind_2000"] =   { "factor" => 1.0/(2000 * 500000), "type" => "avg" }
 TEST_CONFIG["RandomFind_500000"] = { "factor" => 1.0/(500000 * 1000), "type" => "avg" }
+TEST_CONFIG["CtorDtorEmptyMap"] =  { "factor" => 1.0/100_000_000 }
+TEST_CONFIG["CtorDtorSingleEntryMap"] =  { "factor" => 1.0/50_000_000 }
+
 MAP_NAMES = {
     "boost::multi_index::hashed_unique" => "boost::multi_index::<br>hashed_unique",
     "robin_hood::unordered_node_map" => "robin_hood::<br>unordered_node_map",
