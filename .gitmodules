@@ -38,3 +38,7 @@
 	path = external/ktprime__ktprime
 	url = https://github.com/ktprime/ktprime
 	branch = master
+[submodule "external/greg7mdp__parallel-hashmap"]
+	path = external/greg7mdp__parallel-hashmap
+	url = https://github.com/greg7mdp/parallel-hashmap
+	branch = master
