@@ -199,10 +199,32 @@ END_PLOTLY_TEMPLATE
     measurement_names = all_measurements[benchmark_name]
     data = convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, measurement_names)
 
+    # find out pareto front
+    hashname_hashmap_paretofront = Hash.new { |h,k| h[k] = {} }
+    data.each do |hashname, d|
+        best_memory_max = Float::MAX        
+        d.reverse.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
+            if memory_max < best_memory_max
+                hashname_hashmap_paretofront[hashname][hashmap_name] = true
+                best_memory_max = memory_max
+            end
+        end
+    end
+
     # generate hashmap names for each hash, in order
     names = []
-    data.each_with_index do |item, idx|
-        names.push(item[1].map { |x| "\"#{MAP_NAMES[x.last] || x.last}\"" }.join(", "))
+    data.each do |hashname, d|
+        n = []
+        d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
+            prefix = "\""
+            postfix = "\""
+            if hashname_hashmap_paretofront[hashname][hashmap_name]
+                prefix = "\"<b>"
+                postfix = "</b>\""
+            end
+            n.push(prefix + (MAP_NAMES[hashmap_name] || hashmap_name) + postfix)
+        end
+        names.push(n.join(", "))
     end
 
     # generate data for each hashname for all measurements
@@ -229,7 +251,15 @@ END_PLOTLY_TEMPLATE
             if runtime_sum < 1e10
                 time = sprintf("%ss%s", si_format(runtime_sum), (TEST_CONFIG[benchmark_name]["type"] == "avg" ? " avg" : ""))
                 mem = sprintf(memory_max >= 10 ? "%.fMB" : "%.1fMB", memory_max)
-                t.push "\"#{time}<br>#{mem}\""
+
+                prefix = "\""
+                postfix = "\""
+                if hashname_hashmap_paretofront[hashname][hashmap_name]
+                    prefix = "\"<b>"
+                    postfix = "</b>\""
+                end
+    
+                t.push "#{prefix}#{time}<br>#{mem}#{postfix}"
             else
                 t.push sprintf("\"timeout\"")
             end
