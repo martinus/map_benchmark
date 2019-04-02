@@ -16,6 +16,8 @@ MAP_NAMES = {
     "robin_hood::unordered_node_map" => "robin_hood::<br>unordered_node_map",
     "robin_hood::unordered_flat_map" => "robin_hood::<br>unordered_flat_map",
     "boost::unordered_map 1_65_1" => "boost::unordered_map",
+    "phmap::parallel_node_hash_map" => "phmap::<br>parallel_node_hash_map",
+    "phmap::parallel_flat_hash_map" => "phmap::<br>parallel_flat_hash_map",
 }
 
 
@@ -227,7 +229,7 @@ END_PLOTLY_TEMPLATE
             if runtime_sum < 1e10
                 time = sprintf("%ss%s", si_format(runtime_sum), (TEST_CONFIG[benchmark_name]["type"] == "avg" ? " avg" : ""))
                 mem = sprintf(memory_max >= 10 ? "%.fMB" : "%.1fMB", memory_max)
-                t.push "\"#{time} #{mem}\""
+                t.push "\"#{time}<br>#{mem}\""
             else
                 t.push sprintf("\"timeout\"")
             end
@@ -235,7 +237,7 @@ END_PLOTLY_TEMPLATE
         text.push(t)
     end
 
-    height_em = [20, (((all_hashmaps.size + 5) * all_hashes.size) * 1.5).to_i].max
+    height_em = [20, (((all_hashmaps.size + 5) * all_hashes.size) * 2.0).to_i].max
     uid = "id_#{rand(2**32).to_s(16)}"
     measurement_names_str = measurement_names.map { |n| "\"#{n}\"" }.join(", ")
 
