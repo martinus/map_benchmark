@@ -37,3 +37,6 @@
 # generated files
 *.json
 *.html
+
+.vagrant
+
