@@ -17,7 +17,7 @@ git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
    ```
    git submodule add -b master https://github.com/rigtorp/HashMap.git rigtorp__HashMap
    ```
-2. Create a directory in `src/map/` with a file `Hash.h`. See the others for example.
+2. Create a directory in `src/maps/` with a file `Map.h`. See the others for example.
 
 
 # Maps I couldn't add
@@ -51,10 +51,10 @@ git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
    ```
 1. Run `sudo update-grub`
 1. reboot
-1. Edit `bench.rb` so the `taskset -c ...` prefix is correct.
+1. Edit `tools/bench.rb` so the `taskset -c ...` prefix is correct.
 1. Install Python module `perf`, see https://perf.readthedocs.io/en/latest/
 1. Run `sudo python3 -m perf system tune`
-1. Start the benchmarks: ```../tools/bench.rb |tee ../data/all_new.txt```
+1. Start the benchmarks (from the build directory): ```../tools/bench.rb |tee ../data/all_new.txt```
 
 Sources:
 * https://wiki.ubuntuusers.de/GRUB_2/Konfiguration/
