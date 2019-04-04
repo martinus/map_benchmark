@@ -16,7 +16,7 @@ SET(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=gold ${CMAKE_EXE_LINKER_FLAGS}")
 SET(MAKE_MODULE_LINKER_FLAGS "-fuse-ld=gold ${MAKE_MODULE_LINKER_FLAGS}")
 SET(CMAKE_SHARED_LINKER_FLAGS "-fuse-ld=gold ${CMAKE_SHARED_LINKER_FLAGS}")
 
-file(GLOB SRC_BENCHMARKS "src/benchmarks/*.cpp")
+file(GLOB SRC_BENCHMARKS "src/greg_benchmarks/*.cpp")
 file(GLOB SRC_APP "src/app/*.cpp")
 
 file(GLOB INC_HASHES "src/hashes/*")

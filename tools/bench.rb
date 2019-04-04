@@ -2,7 +2,7 @@
 
 require 'timeout'
 
-cmd_prefix = "taskset -c 5,11"
+cmd_prefix = "" # taskset -c 5,11"
 
 timeout_sec = 15*60
 
