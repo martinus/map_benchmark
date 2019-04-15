@@ -11,6 +11,24 @@ git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
 ./map_benchmark/tools/build.sh
 ```
 
+# Sourcode Layout
+
+The implementation if the benchmark is open source, get it here: [martinus/map_benchmark](https://github.com/martinus/map_benchmark). It is split in several parts:
+
+1. `external`:  all map implementations available through github are added as git submodules here.
+1. `src/hashes`: One directory for each hashing algorithm, each directory contains a `Hash.h` which basically contains a `using` instruction for the hash, e.g. like this:
+  ```cpp
+  template <class Key>
+  using Hash = robin_hood::hash<Key>;
+  ```
+1. `src/maps`: One directory for each unordered map implementation, each directory contains a `Map.h` which basically contains a `using` instruction for the map. It includes `Hash.h`. E.g. like this:
+  ```cpp
+  #include "Hash.h"
+  template <class Key, class Val>
+  using Map = robin_hood::unordered_flat_map<Key, Val, Hash<Key>>;
+  ```
+
+
 # Add a new Hashmap
 
 1. In `external`, add a submodule:
