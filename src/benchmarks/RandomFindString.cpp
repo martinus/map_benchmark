@@ -73,7 +73,7 @@ uint64_t randomFindInternalString(Bench& bench, size_t numRandom, size_t const l
 }
 
 BENCHMARK(RandomFindString) {
-    static constexpr size_t numInserts = 100000;
+    static constexpr size_t numInserts = 100'000;
     static constexpr size_t numFindsPerInsert = 1000;
 
     bench.endMeasure(3214, randomFindInternalString(bench, 4, 100, numInserts, numFindsPerInsert));
@@ -84,7 +84,7 @@ BENCHMARK(RandomFindString) {
 }
 
 BENCHMARK(RandomFindString_1000000) {
-    static constexpr size_t numInserts = 1000000;
+    static constexpr size_t numInserts = 1'000'000;
     static constexpr size_t numFindsPerInsert = 200;
 
     bench.endMeasure(25189, randomFindInternalString(bench, 4, 13, numInserts, numFindsPerInsert));
