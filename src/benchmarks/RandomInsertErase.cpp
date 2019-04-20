@@ -8,6 +8,22 @@
 #include <numeric>
 #include <sstream>
 
+template <typename T>
+struct as_bits_t {
+    T value;
+};
+
+template <typename T>
+as_bits_t<T> as_bits(T value) {
+    return as_bits_t<T>{value};
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, as_bits_t<T> const& t) {
+    os << std::bitset<sizeof(t.value) * 8>(t.value);
+    return os;
+}
+
 BENCHMARK(RandomInsertErase) {
     // random bits to set for the mask
     std::vector<int> bits(64);
@@ -19,7 +35,7 @@ BENCHMARK(RandomInsertErase) {
     auto bitsIt = bits.begin();
 
     size_t const expectedFinalSizes[] = {7, 127, 2084, 32722, 524149, 8367491};
-    size_t const max_n = 50000000;
+    size_t const max_n = 50'000'00;
 
     Map<uint64_t, uint64_t> map;
     for (int i = 0; i < 6; ++i) {
@@ -27,6 +43,8 @@ BENCHMARK(RandomInsertErase) {
         for (int b = 0; b < 4; ++b) {
             bitMask |= UINT64_C(1) << *bitsIt++;
         }
+
+        // std::cout << (i + 1) << ". " << as_bits(bitMask) << std::endl;
 
         // set name
         size_t verifier = 0;

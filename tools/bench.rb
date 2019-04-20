@@ -10,7 +10,8 @@ benchs = ARGV
 if benchs.empty?
     benchs = `./#{Dir["bench*"].first} l`.split("\n")
 end
-apps = Dir["bench*"].sort.uniq.shuffle
+apps = Dir["bench*"].sort.uniq
+#apps = apps.shuffle
 
 STDERR.puts "apps:\n\t#{apps.join("\n\t")}"
 STDERR.puts "benchmarks:\n\t#{benchs.join("\n\t")}"
