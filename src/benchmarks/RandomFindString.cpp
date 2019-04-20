@@ -82,3 +82,14 @@ BENCHMARK(RandomFindString) {
     bench.endMeasure(74993243, randomFindInternalString(bench, 1, 100, numInserts, numFindsPerInsert));
     bench.endMeasure(99989650, randomFindInternalString(bench, 0, 100, numInserts, numFindsPerInsert));
 }
+
+BENCHMARK(RandomFindString_1000000) {
+    static constexpr size_t numInserts = 1000000;
+    static constexpr size_t numFindsPerInsert = 200;
+
+    bench.endMeasure(25189, randomFindInternalString(bench, 4, 13, numInserts, numFindsPerInsert));
+    bench.endMeasure(50019351, randomFindInternalString(bench, 3, 13, numInserts, numFindsPerInsert));
+    bench.endMeasure(100010271, randomFindInternalString(bench, 2, 13, numInserts, numFindsPerInsert));
+    bench.endMeasure(150003848, randomFindInternalString(bench, 1, 13, numInserts, numFindsPerInsert));
+    bench.endMeasure(199997474, randomFindInternalString(bench, 0, 13, numInserts, numFindsPerInsert));
+}

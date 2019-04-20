@@ -5,21 +5,26 @@ require "erb"
 
 TEST_CONFIG = Hash.new { |h,k| h[k] = {} }
 
-TEST_CONFIG["RandomFind_200"] =    { "factor" => 1.0/(200 * 5000000), "type" => "avg" }
-TEST_CONFIG["RandomFind_2000"] =   { "factor" => 1.0/(2000 * 500000), "type" => "avg" }
-TEST_CONFIG["RandomFind_500000"] = { "factor" => 1.0/(500000 * 1000), "type" => "avg" }
+TEST_CONFIG["RandomFind_200"] =    { "factor" => 1.0/(200 * 5_000_000), "type" => "avg" }
+TEST_CONFIG["RandomFind_2000"] =   { "factor" => 1.0/(2000 * 500_000), "type" => "avg" }
+TEST_CONFIG["RandomFind_500000"] = { "factor" => 1.0/(500_000 * 1000), "type" => "avg" }
+
+TEST_CONFIG["RandomFindString"] = { "factor" => 1.0/(100_000 * 1000), "type" => "avg" }
+TEST_CONFIG["RandomFindString_1000000"] = { "factor" => 1.0/(1_000_000 * 200), "type" => "avg" }
+
 TEST_CONFIG["CtorDtorEmptyMap"] =  { "factor" => 1.0/100_000_000 }
 TEST_CONFIG["CtorDtorSingleEntryMap"] =  { "factor" => 1.0/50_000_000 }
 
-MAP_NAMES = {
+NAME_REPLACEMENTS = {
     "boost::multi_index::hashed_unique" => "boost::multi_index::<br>hashed_unique",
     "robin_hood::unordered_node_map" => "robin_hood::<br>unordered_node_map",
     "robin_hood::unordered_flat_map" => "robin_hood::<br>unordered_flat_map",
     "boost::unordered_map 1_65_1" => "boost::unordered_map",
     "phmap::parallel_node_hash_map" => "phmap::<br>parallel_node_hash_map",
     "phmap::parallel_flat_hash_map" => "phmap::<br>parallel_flat_hash_map",
-}
 
+    "Identity" => "libstdc++-v3",
+}
 
 def median(values, invalid_value = 900)
     if values.nil? || values.empty?
@@ -117,8 +122,8 @@ def convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, all_measur
             if (runtime_sum >= 1e10) 
                 runtime_sum = 1e10
                 runtimes_median = runtimes_median.map { |x| 0 }
-            elsif TEST_CONFIG[benchmark_name]["type"] == "avg"
-                runtime_sum /= all_measurements_sorted.size
+            #elsif TEST_CONFIG[benchmark_name]["type"] == "avg"
+            #    runtime_sum /= all_measurements_sorted.size
             end
 
             data.push [runtime_sum, memory_max, runtimes_median, hashmap_name]
@@ -182,7 +187,7 @@ h.sort.each do |benchmark_name, hash|
 % hash_names.each_with_index do |h, hash_idx|
         yaxis<%= hash_idx == 0 ? '' : hash_idx+1 %>: { title: '<%= h %>', automargin: true, },
 % end
-        xaxis: { automargin: true, },
+        xaxis: { automargin: true, range: [0, <%= xaxis_width %>]},
         legend: { traceorder: 'normal' },
         margin: { pad: 0, l:0, r:0, t:0, b:0, },
         showlegend:false,
@@ -222,7 +227,7 @@ END_PLOTLY_TEMPLATE
                 prefix = "\"<b>"
                 postfix = "</b>\""
             end
-            n.push(prefix + (MAP_NAMES[hashmap_name] || hashmap_name) + postfix)
+            n.push(prefix + (NAME_REPLACEMENTS[hashmap_name] || hashmap_name) + postfix)
         end
         names.push(n.join(", "))
     end
@@ -231,7 +236,7 @@ END_PLOTLY_TEMPLATE
     hash_names = []
     hash = []
     data.each do |hashname, d|
-        hash_names.push(hashname)
+        hash_names.push(NAME_REPLACEMENTS[hashname] || hashname)
         measurements = []
         measurement_names.size.times do |measurement_idx|
             m = []
@@ -244,13 +249,28 @@ END_PLOTLY_TEMPLATE
         hash.push(measurements)
     end
 
+    best_time = 0
     text = []
     data.each do |hashname, d|
         t = []
         d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
+            total = runtime_sum
+            if TEST_CONFIG[benchmark_name]["type"] == "avg"
+                total /= measurement_names.size
+            end
             if runtime_sum < 1e10
-                time = sprintf("%ss%s", si_format(runtime_sum), (TEST_CONFIG[benchmark_name]["type"] == "avg" ? " avg" : ""))
-                mem = sprintf(memory_max >= 10 ? "%.fMB" : "%.1fMB", memory_max)
+                time = sprintf("%ss%s", si_format(total), (TEST_CONFIG[benchmark_name]["type"] == "avg" ? " avg" : ""))
+                mem_fmt = nil
+                if (memory_max > 100 || memory_max == 0)
+                    mem_fmt = "%.0f"
+                elsif (memory_max > 10)
+                    mem_fmt = "%.1f"
+                elsif (memory_max > 1)
+                    mem_fmt = "%.2f"
+                else
+                    mem_fmt = "%.3f"
+                end
+                mem = sprintf(mem_fmt + "MB", memory_max)
 
                 prefix = "\""
                 postfix = "\""
@@ -266,6 +286,11 @@ END_PLOTLY_TEMPLATE
         end
         text.push(t)
     end
+
+    # first hash, last entry
+    best_hash_xrange = data.first[1].first[0]
+    worst_hash_xrange = data.last[1].find{ |x| x[0] < 1e10 }[0]
+    xaxis_width = [1.5 * best_hash_xrange, 1.07 * worst_hash_xrange].min
 
     height_em = [20, (((all_hashmaps.size + 5) * all_hashes.size) * 2.0).to_i].max
     uid = "id_#{rand(2**32).to_s(16)}"
