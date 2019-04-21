@@ -68,7 +68,7 @@ BENCHMARK(RandomFind_200) {
     static constexpr auto lower32bit = UINT64_C(0x00000000FFFFFFFF);
     static constexpr auto upper32bit = UINT64_C(0xFFFFFFFF00000000);
     static constexpr size_t numInserts = 200;
-    static constexpr size_t numFindsPerInsert = 5000000;
+    static constexpr size_t numFindsPerInsert = 5'000'000;
 
     bench.endMeasure(0, randomFindInternal(bench, 4, lower32bit, numInserts, numFindsPerInsert));
     bench.endMeasure(0, randomFindInternal(bench, 4, upper32bit, numInserts, numFindsPerInsert));
@@ -90,7 +90,7 @@ BENCHMARK(RandomFind_2000) {
     static constexpr auto lower32bit = UINT64_C(0x00000000FFFFFFFF);
     static constexpr auto upper32bit = UINT64_C(0xFFFFFFFF00000000);
     static constexpr size_t numInserts = 2000;
-    static constexpr size_t numFindsPerInsert = 500000;
+    static constexpr size_t numFindsPerInsert = 500'000;
 
     bench.endMeasure(0, randomFindInternal(bench, 4, lower32bit, numInserts, numFindsPerInsert));
     bench.endMeasure(0, randomFindInternal(bench, 4, upper32bit, numInserts, numFindsPerInsert));
@@ -111,7 +111,7 @@ BENCHMARK(RandomFind_2000) {
 BENCHMARK(RandomFind_500000) {
     static constexpr auto lower32bit = UINT64_C(0x00000000FFFFFFFF);
     static constexpr auto upper32bit = UINT64_C(0xFFFFFFFF00000000);
-    static constexpr size_t numInserts = 500000;
+    static constexpr size_t numInserts = 500'000;
     static constexpr size_t numFindsPerInsert = 1000;
 
     bench.endMeasure(33571, randomFindInternal(bench, 4, lower32bit, numInserts, numFindsPerInsert));
