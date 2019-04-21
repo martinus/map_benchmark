@@ -3,17 +3,15 @@
 require "pp"
 require "erb"
 
-TEST_CONFIG = Hash.new { |h,k| h[k] = {} }
-
-TEST_CONFIG["RandomFind_200"] =    { "factor" => 1.0/(200 * 5_000_000), "type" => "avg" }
-TEST_CONFIG["RandomFind_2000"] =   { "factor" => 1.0/(2000 * 500_000), "type" => "avg" }
-TEST_CONFIG["RandomFind_500000"] = { "factor" => 1.0/(500_000 * 1000), "type" => "avg" }
-
-TEST_CONFIG["RandomFindString"] = { "factor" => 1.0/(100_000 * 1000), "type" => "avg" }
-TEST_CONFIG["RandomFindString_1000000"] = { "factor" => 1.0/(1_000_000 * 200), "type" => "avg" }
-
-TEST_CONFIG["CtorDtorEmptyMap"] =  { "factor" => 1.0/100_000_000 }
-TEST_CONFIG["CtorDtorSingleEntryMap"] =  { "factor" => 1.0/50_000_000 }
+TEST_CONFIG = {
+    "RandomFind_200" => { "factor" => 1.0/(200 * 5_000_000), "type" => "avg" },
+    "RandomFind_2000" => { "factor" => 1.0/(2000 * 500_000), "type" => "avg" },
+    "RandomFind_500000" => { "factor" => 1.0/(500_000 * 1000), "type" => "avg" },
+    "RandomFindString" => { "factor" => 1.0/(100_000 * 1000), "type" => "avg" },
+    "RandomFindString_1000000" => { "factor" => 1.0/(1_000_000 * 200), "type" => "avg" },
+    "CtorDtorEmptyMap" => { "factor" => 1.0/100_000_000 },
+    "CtorDtorSingleEntryMap" =>  { "factor" => 1.0/50_000_000 },
+}
 
 NAME_REPLACEMENTS = {
     "boost::multi_index::hashed_unique" => "boost::multi_index::<br>hashed_unique",
@@ -81,7 +79,7 @@ STDIN.each_line do |l|
     entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
     
     if l.size == 7
-        entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name]["factor"] || 1.0)
+        entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name] ? TEST_CONFIG[benchmark_name]["factor"] : 1.0)
         entry[1].push memory.to_f
     else
         # timeout
@@ -255,11 +253,12 @@ END_PLOTLY_TEMPLATE
         t = []
         d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
             total = runtime_sum
-            if TEST_CONFIG[benchmark_name]["type"] == "avg"
+            is_avg = TEST_CONFIG[benchmark_name] && TEST_CONFIG[benchmark_name]["type"] == "avg"
+            if is_avg
                 total /= measurement_names.size
             end
             if runtime_sum < 1e10
-                time = sprintf("%ss%s", si_format(total), (TEST_CONFIG[benchmark_name]["type"] == "avg" ? " avg" : ""))
+                time = sprintf("%ss%s", si_format(total), (is_avg ? " avg" : ""))
                 mem_fmt = nil
                 if (memory_max > 100 || memory_max == 0)
                     mem_fmt = "%.0f"
