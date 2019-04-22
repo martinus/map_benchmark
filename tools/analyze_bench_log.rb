@@ -4,13 +4,36 @@ require "pp"
 require "erb"
 
 TEST_CONFIG = {
-    "RandomFind_200" => { "factor" => 1.0/(200 * 5_000_000), "type" => "avg" },
-    "RandomFind_2000" => { "factor" => 1.0/(2000 * 500_000), "type" => "avg" },
-    "RandomFind_500000" => { "factor" => 1.0/(500_000 * 1000), "type" => "avg" },
-    "RandomFindString" => { "factor" => 1.0/(100_000 * 1000), "type" => "avg" },
-    "RandomFindString_1000000" => { "factor" => 1.0/(1_000_000 * 200), "type" => "avg" },
-    "CtorDtorEmptyMap" => { "factor" => 1.0/100_000_000 },
-    "CtorDtorSingleEntryMap" =>  { "factor" => 1.0/50_000_000 },
+    "RandomFind_200" => {
+        "factor" => 1.0/(200 * 5_000_000),
+        "type" => "avg"
+    },
+    "RandomFind_2000" => {
+        "factor" => 1.0/(2000 * 500_000),
+        "type" => "avg"
+    },
+    "RandomFind_500000" => {
+        "factor" => 1.0/(500_000 * 1000),
+        "type" => "avg"
+    },
+    "RandomFindString" => {
+        "factor" => 1.0/(100_000 * 1000),
+        "type" => "avg",
+        "autozoom" => true
+    },
+    "RandomInsertErase" => {
+        "autozoom" => true
+    },
+    "RandomFindString_1000000" => {
+        "factor" => 1.0/(1_000_000 * 200),
+        "type" => "avg"
+    },
+    "CtorDtorEmptyMap" => {
+        "factor" => 1.0/100_000_000
+    },
+    "CtorDtorSingleEntryMap" =>  {
+        "factor" => 1.0/50_000_000
+    },
 }
 
 NAME_REPLACEMENTS = {
@@ -76,10 +99,13 @@ STDIN.each_line do |l|
     hashmap_name, hash_name, benchmark_name, measurement_name, validator, runtime, memory = l
     all_measurements[benchmark_name].push(measurement_name) unless all_measurements[benchmark_name].include?(measurement_name)
 
+    TEST_CONFIG[benchmark_name] = {} unless TEST_CONFIG[benchmark_name]
+
+
     entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
     
     if l.size == 7
-        entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name] ? TEST_CONFIG[benchmark_name]["factor"] : 1.0)
+        entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name]["factor"] || 1.0)
         entry[1].push memory.to_f
     else
         # timeout
@@ -120,8 +146,6 @@ def convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, all_measur
             if (runtime_sum >= 1e10) 
                 runtime_sum = 1e10
                 runtimes_median = runtimes_median.map { |x| 0 }
-            #elsif TEST_CONFIG[benchmark_name]["type"] == "avg"
-            #    runtime_sum /= all_measurements_sorted.size
             end
 
             data.push [runtime_sum, memory_max, runtimes_median, hashmap_name]
@@ -185,7 +209,7 @@ h.sort.each do |benchmark_name, hash|
 % hash_names.each_with_index do |h, hash_idx|
         yaxis<%= hash_idx == 0 ? '' : hash_idx+1 %>: { title: '<%= h %>', automargin: true, },
 % end
-        xaxis: { automargin: true, range: [0, <%= xaxis_width %>]},
+        xaxis: { automargin: true, <% if (!autozoom) %> range: [0, <%= xaxis_width %>] <% end %> },
         legend: { traceorder: 'normal' },
         margin: { pad: 0, l:0, r:0, t:0, b:0, },
         showlegend:false,
@@ -253,7 +277,7 @@ END_PLOTLY_TEMPLATE
         t = []
         d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
             total = runtime_sum
-            is_avg = TEST_CONFIG[benchmark_name] && TEST_CONFIG[benchmark_name]["type"] == "avg"
+            is_avg = TEST_CONFIG[benchmark_name]["type"] == "avg"
             if is_avg
                 total /= measurement_names.size
             end
@@ -289,6 +313,7 @@ END_PLOTLY_TEMPLATE
     # first hash, last entry
     best_hash_xrange = data.first[1].first[0]
     worst_hash_xrange = data.last[1].find{ |x| x[0] < 1e10 }[0]
+    autozoom = TEST_CONFIG[benchmark_name]["autozoom"]
     xaxis_width = [1.5 * best_hash_xrange, 1.07 * worst_hash_xrange].min
 
     height_em = [20, (((all_hashmaps.size + 5) * all_hashes.size) * 2.0).to_i].max
