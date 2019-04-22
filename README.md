@@ -1,6 +1,10 @@
 # map_benchmark
 Comprehensive benchmarks of C++ maps
 
+# Results
+
+[Please see here.](http://localhost:4000/2019/04/01/hashmap-benchmarks-01-overview/)
+
 # building
 
 1. Install dependencies for folly::F14, see https://github.com/facebook/folly/#ubuntu-1604-lts
