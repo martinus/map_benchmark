@@ -71,9 +71,9 @@ BENCHMARK(StringHashBench) {
 }
 */
 BENCHMARK(RandomInsertEraseStrings) {
-    bench.endMeasure(9734165, run(20000000, 7, 0xfffff, bench));
-    bench.endMeasure(9734165, run(20000000, 8, 0xfffff, bench));
-    bench.endMeasure(9734165, run(20000000, 13, 0xfffff, bench));
-    bench.endMeasure(5867228, run(12000000, 100, 0x7ffff, bench));
-    bench.endMeasure(2966452, run(6000000, 1000, 0x1ffff, bench));
+    bench.endMeasure(9734165, run(20'000'000, 7, 0xfffff, bench));
+    bench.endMeasure(9734165, run(20'000'000, 8, 0xfffff, bench));
+    bench.endMeasure(9734165, run(20'000'000, 13, 0xfffff, bench));
+    bench.endMeasure(5867228, run(12'000'000, 100, 0x7ffff, bench));
+    bench.endMeasure(2966452, run(6'000'000, 1000, 0x1ffff, bench));
 }
