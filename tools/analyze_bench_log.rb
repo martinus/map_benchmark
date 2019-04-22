@@ -91,20 +91,23 @@ all_hashmaps = {}
 # map from benchmark to measurement_names, but sorted.
 all_measurements = Hash.new { |h,k| h[k] = [] }
 
+all_data = []
 STDIN.each_line do |l|
     l = l.gsub("\"", "").split(";").map { |w| w.strip }
-    next if (l.size < 4)
+    next if (l.size < 5)
+    all_data.push(l)
+end
 
-    # "absl::flat_hash_map"; "FNV1a"; "InsertHugeInt"; "insert 100M int"; 98841586; 11.8671; 1730.17
-    hashmap_name, hash_name, benchmark_name, measurement_name, validator, runtime, memory = l
+all_data.sort.each do |l|
+    # "absl::flat_hash_map"; "FNV1a"; "InsertHugeInt"; sort_order, "insert 100M int"; 98841586; 11.8671; 1730.17
+    hashmap_name, hash_name, benchmark_name, sort_order, measurement_name, validator, runtime, memory = l
     all_measurements[benchmark_name].push(measurement_name) unless all_measurements[benchmark_name].include?(measurement_name)
 
     TEST_CONFIG[benchmark_name] = {} unless TEST_CONFIG[benchmark_name]
 
-
     entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
     
-    if l.size == 7
+    if l.size == 8
         entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name]["factor"] || 1.0)
         entry[1].push memory.to_f
     else
@@ -167,8 +170,7 @@ def convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, all_measur
     data
 end
 
-h.sort.each do |benchmark_name, hash|
-    
+h.sort.each do |benchmark_name, hash|  
     tpl = <<END_PLOTLY_TEMPLATE
 <html><head></head><body>
 
@@ -312,7 +314,7 @@ END_PLOTLY_TEMPLATE
 
     # first hash, last entry
     best_hash_xrange = data.first[1].first[0]
-    worst_hash_xrange = data.last[1].find{ |x| x[0] < 1e10 }[0]
+    worst_hash_xrange = data.last[1].find{ |x| x[0] < 1e10 }[0] || 0.0
     autozoom = TEST_CONFIG[benchmark_name]["autozoom"]
     xaxis_width = [1.5 * best_hash_xrange, 1.07 * worst_hash_xrange].min
 

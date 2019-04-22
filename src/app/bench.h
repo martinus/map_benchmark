@@ -4,6 +4,7 @@
 #include <fstream>
 #include <functional>
 #include <initializer_list>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <unordered_map>
@@ -34,6 +35,7 @@ public:
     }
 
     inline void beginMeasure(const char* measurementName) {
+        ++mMeasureCount;
         show_tags(measurementName);
         mStartTime = clock::now();
     }
@@ -45,8 +47,12 @@ public:
 
 private:
     BENCHMARK_NOINLINE void show_tags(const char* measurementName) {
-        std::cout << mQuote << MapName << mQuote << mSep << mQuote << HashName << mQuote << mSep << mQuote << mTestName << mQuote << mSep << mQuote
-                  << measurementName << mQuote << mSep;
+
+        std::cout << mQuote << MapName << mQuote << mSep;
+        std::cout << mQuote << HashName << mQuote << mSep;
+        std::cout << mQuote << mTestName << mQuote << mSep;
+        std::cout << mQuote << std::setfill('0') << std::setw(2) << mMeasureCount << mQuote << mSep;
+        std::cout << mQuote << measurementName << mQuote << mSep;
         std::cout.flush();
     }
 
@@ -72,6 +78,7 @@ private:
     const char* mQuote = "\"";
     std::string const mTestName;
     size_t mInitialPeakRss;
+    size_t mMeasureCount = 0;
 };
 
 class BenchRegistry {
