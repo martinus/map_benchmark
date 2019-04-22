@@ -3,7 +3,7 @@ Comprehensive benchmarks of C++ maps
 
 # Results
 
-[Please see here.](http://localhost:4000/2019/04/01/hashmap-benchmarks-01-overview/)
+[Please see here.](https://martin.ankerl.com/2019/04/01/hashmap-benchmarks-01-overview/)
 
 # building
 
