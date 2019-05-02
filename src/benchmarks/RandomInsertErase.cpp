@@ -35,7 +35,7 @@ BENCHMARK(RandomInsertErase) {
     auto bitsIt = bits.begin();
 
     size_t const expectedFinalSizes[] = {7, 127, 2084, 32722, 524149, 8367491};
-    size_t const max_n = 50'000'00;
+    size_t const max_n = 50'000'000;
 
     Map<uint64_t, uint64_t> map;
     for (int i = 0; i < 6; ++i) {
