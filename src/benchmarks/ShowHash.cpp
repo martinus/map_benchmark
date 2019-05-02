@@ -8,14 +8,14 @@ template <typename T>
 void showHash(T val) {
     auto sh = std::hash<T>{}(val);
     auto mh = Hash<T>{}(val);
-    std::cout << hex(val) << " -> " << hex(sh) << " " << hex(mh) << " " << std::bitset<sizeof(size_t) * 8>(mh) << std::endl;
+    std::cerr << hex(val) << " -> " << hex(sh) << " " << hex(mh) << " " << std::bitset<sizeof(size_t) * 8>(mh) << std::endl;
 }
 
 template <typename T>
 void showHash(const char* title) {
-    std::cout << std::endl << title << std::endl;
+    std::cerr << std::endl << title << std::endl;
 
-    std::cout << "input                 std::hash          " << HashName << std::endl;
+    std::cerr << "input                 std::hash          " << HashName << std::endl;
     for (T i = 0; i < 100; ++i) {
         showHash(i);
     }
