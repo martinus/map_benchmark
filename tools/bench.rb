@@ -20,6 +20,7 @@ bad_commands = {}
 
 10.times do |iter|
     benchs.each do |bench|
+        STDERR.puts
         STDERR.puts "iteration #{iter}"
         apps.each do |app|
             cmd = "#{cmd_prefix} ./#{app} #{bench}"
@@ -42,6 +43,5 @@ bad_commands = {}
                 end
             end
         end
-        puts
     end
 end
