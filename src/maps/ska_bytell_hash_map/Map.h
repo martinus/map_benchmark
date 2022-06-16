@@ -1,5 +1,7 @@
 #pragma once
 
+#include <limits>
+
 #include "Hash.h"
 #include "skarupke__flat_hash_map/bytell_hash_map.hpp"
 

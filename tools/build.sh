@@ -5,6 +5,6 @@ SOURCEDIR=$(dirname "$0")/..
 BUILDDIR=${SOURCEDIR}/build
 
 cd ${BUILDDIR}
-cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
+CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
 
 ninja

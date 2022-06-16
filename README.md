@@ -15,7 +15,7 @@ git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
 ./map_benchmark/tools/build.sh
 ```
 
-# Sourcode Layout
+# Sourcecode Layout
 
 The implementation if the benchmark is open source, get it here: [martinus/map_benchmark](https://github.com/martinus/map_benchmark). It is split in several parts:
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Hash.h"
-#include "ktprime__ktprime/hash_table5.hpp"
+#include "ktprime__emhash/hash_table8.hpp"
 
-static const char* MapName = "emilib1::HashMap";
+static const char* MapName = "emhash8::HashMap";
 
 template <class Key, class Val>
-using Map = emilib1::HashMap<Key, Val, Hash<Key>>;
+using Map = emhash8::HashMap<Key, Val, Hash<Key>>;

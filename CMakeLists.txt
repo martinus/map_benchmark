@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set(CMAKE_CXX_EXTENSIONS OFF)
 
+
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
 list(APPEND FOLLY_CXX_FLAGS "-march=native")
 
@@ -34,7 +35,9 @@ if(MSVC)
     add_compile_options(/wd4005 /wd4068 /wd4244 /wd4267 /wd4800)
     add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS)
 endif()
+set(ABSL_PROPAGATE_CXX_STD ON)
 add_subdirectory("external/abseil__abseil-cpp")
+
 
 # pthread, required by absl see https://github.com/abseil/abseil-cpp/issues/183#issuecomment-458453010
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
@@ -65,8 +68,7 @@ find_package(Threads REQUIRED)
 # make sure we get SSE and crc support!
 # see https://github.com/facebook/folly/blob/master/folly/container/detail/F14Table.cpp#L26
 add_subdirectory("external/facebook__folly")
-
-add_subdirectory("external/electronicarts__EASTL")
+#add_subdirectory("external/electronicarts__EASTL")
 
 # build stuff #####################################################################
 

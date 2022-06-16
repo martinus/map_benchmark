@@ -29,7 +29,7 @@ BENCHMARK(RandomInsertErase) {
     std::vector<int> bits(64);
     std::iota(bits.begin(), bits.end(), 0);
     sfc64 rng(999);
-    std::random_shuffle(bits.begin(), bits.end(), rng);
+    std::shuffle(bits.begin(), bits.end(), rng);
 
     uint64_t bitMask = 0;
     auto bitsIt = bits.begin();
