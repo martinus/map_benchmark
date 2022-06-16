@@ -2,6 +2,7 @@
 #include "bench.h"
 #include "hex.h"
 #include "sfc64.h"
+#include "shuffle.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -37,7 +38,7 @@ uint64_t randomFindInternal(Bench& bench, size_t numRandom, uint64_t bitMask, si
         bench.beginMeasure(title.c_str());
         do {
             // insert NumTotal entries: some random, some sequential.
-            std::shuffle(insertRandom.begin(), insertRandom.end(), rng);
+            slightlyBiasedShuffle(insertRandom.begin(), insertRandom.end(), rng);
             for (bool isRandomToInsert : insertRandom) {
                 auto val = anotherUnrelatedRng();
                 if (isRandomToInsert) {

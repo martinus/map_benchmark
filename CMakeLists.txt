@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9)
 project (map_benchmark)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -23,6 +23,10 @@ file(GLOB SRC_APP "src/app/*.cpp")
 file(GLOB INC_HASHES "src/hashes/*")
 file(GLOB INC_MAPS "src/maps/*")
 
+# first: use locally built boost version
+#list(APPEND CMAKE_PREFIX_PATH /home/martinus/boost-develop-beta/boost-install)
+
+
 # external code #####################################################################
 
 # absl stuff: see https://github.com/abseil/abseil-cpp/tree/master/CMake
@@ -37,7 +41,6 @@ if(MSVC)
 endif()
 set(ABSL_PROPAGATE_CXX_STD ON)
 add_subdirectory("external/abseil__abseil-cpp")
-
 
 # pthread, required by absl see https://github.com/abseil/abseil-cpp/issues/183#issuecomment-458453010
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)

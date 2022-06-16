@@ -2,6 +2,7 @@
 #include "bench.h"
 #include "hex.h"
 #include "sfc64.h"
+#include "shuffle.h"
 
 #include <algorithm>
 #include <bitset>
@@ -29,7 +30,7 @@ BENCHMARK(RandomInsertErase) {
     std::vector<int> bits(64);
     std::iota(bits.begin(), bits.end(), 0);
     sfc64 rng(999);
-    std::shuffle(bits.begin(), bits.end(), rng);
+    slightlyBiasedShuffle(bits.begin(), bits.end(), rng);
 
     uint64_t bitMask = 0;
     auto bitsIt = bits.begin();
