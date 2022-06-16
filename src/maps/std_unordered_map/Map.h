@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pool.h"
 #include "Hash.h"
 #include <unordered_map>
 

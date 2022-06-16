@@ -35,10 +35,17 @@ BENCHMARK(RandomInsertErase) {
     uint64_t bitMask = 0;
     auto bitsIt = bits.begin();
 
-    size_t const expectedFinalSizes[] = {7, 127, 2084, 32722, 524149, 8367491};
+    size_t const expectedFinalSizes[] = {7, 123, 2031, 32800, 524439, 8366634};
     size_t const max_n = 50'000'000;
 
-    Map<uint64_t, uint64_t> map;
+    using M = Map<uint64_t, uint64_t>;
+#ifdef USE_POOL_ALLOCATOR
+    M::allocator_type::ResourceType resource;
+    M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+    M map;
+#endif
+
     for (int i = 0; i < 6; ++i) {
         // each iteration, set 4 new random bits.
         for (int b = 0; b < 4; ++b) {

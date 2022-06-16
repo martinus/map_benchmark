@@ -7,7 +7,13 @@ BENCHMARK(InsertHugeInt) {
 
     {
         bench.beginMeasure("insert 100M int");
-        Map<int, int> map;
+        using M = Map<int, int>;
+#ifdef USE_POOL_ALLOCATOR
+        M::allocator_type::ResourceType resource;
+        M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+        M map;
+#endif
         for (size_t n = 0; n < 100'000'000; ++n) {
             map[static_cast<int>(rng())];
         }

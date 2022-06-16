@@ -18,7 +18,13 @@ size_t run(size_t max_n, size_t string_length, uint32_t bitMask, Bench& bench) {
     auto const strData32 = reinterpret_cast<uint32_t*>(&str[0]) + idx32;
 
     bench.beginMeasure(ss.str().c_str());
-    Map<std::string, std::string> map;
+    using M = Map<std::string, std::string>;
+#ifdef USE_POOL_ALLOCATOR
+    M::allocator_type::ResourceType resource;
+    M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+    M map;
+#endif
     for (size_t i = 0; i < max_n; ++i) {
         *strData32 = rng() & bitMask;
 

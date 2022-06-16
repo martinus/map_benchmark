@@ -8,7 +8,14 @@ BENCHMARK(IterateIntegers) {
     size_t const num_iters = 50000;
 
     uint64_t result = 0;
-    Map<uint64_t, uint64_t> map;
+
+    using M = Map<uint64_t, uint64_t>;
+#ifdef USE_POOL_ALLOCATOR
+    M::allocator_type::ResourceType resource;
+    M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+    M map;
+#endif
 
     auto const state = rng.state();
     bench.beginMeasure("iterate while adding");

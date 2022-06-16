@@ -23,11 +23,12 @@ file(GLOB SRC_APP "src/app/*.cpp")
 file(GLOB INC_HASHES "src/hashes/*")
 file(GLOB INC_MAPS "src/maps/*")
 
-# first: use locally built boost version
-#list(APPEND CMAKE_PREFIX_PATH /home/martinus/boost-develop-beta/boost-install)
-
-
 # external code #####################################################################
+
+# boost: use locally built boost version
+list(APPEND CMAKE_PREFIX_PATH /home/martinus/boost-develop-beta/boost-install)
+find_package(Boost 1.80)
+
 
 # absl stuff: see https://github.com/abseil/abseil-cpp/tree/master/CMake
 if(MSVC)

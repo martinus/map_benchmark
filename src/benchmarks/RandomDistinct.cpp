@@ -12,7 +12,14 @@ BENCHMARK(RandomDistinct2) {
         bench.beginMeasure("5% distinct");
         checksum = 0;
         size_t const max_rng = n / 20;
-        Map<int, int> map;
+
+        using M = Map<int, int>;
+#ifdef USE_POOL_ALLOCATOR
+        M::allocator_type::ResourceType resource;
+        M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+        M map;
+#endif
         for (size_t i = 0; i < n; ++i) {
             checksum += ++map[static_cast<int>(rng(max_rng))];
         }
@@ -23,7 +30,14 @@ BENCHMARK(RandomDistinct2) {
         bench.beginMeasure("25% distinct");
         checksum = 0;
         size_t const max_rng = n / 4;
-        Map<int, int> map;
+
+        using M = Map<int, int>;
+#ifdef USE_POOL_ALLOCATOR
+        M::allocator_type::ResourceType resource;
+        M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+        M map;
+#endif
         for (size_t i = 0; i < n; ++i) {
             checksum += ++map[static_cast<int>(rng(max_rng))];
         }
@@ -33,7 +47,14 @@ BENCHMARK(RandomDistinct2) {
     {
         bench.beginMeasure("50% distinct");
         size_t const max_rng = n / 2;
-        Map<int, int> map;
+
+        using M = Map<int, int>;
+#ifdef USE_POOL_ALLOCATOR
+        M::allocator_type::ResourceType resource;
+        M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+        M map;
+#endif
         for (size_t i = 0; i < n; ++i) {
             checksum += ++map[static_cast<int>(rng(max_rng))];
         }
@@ -43,7 +64,13 @@ BENCHMARK(RandomDistinct2) {
     {
         bench.beginMeasure("100% distinct");
         checksum = 0;
-        Map<int, int> map;
+        using M = Map<int, int>;
+#ifdef USE_POOL_ALLOCATOR
+        M::allocator_type::ResourceType resource;
+        M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+        M map;
+#endif
         for (size_t i = 0; i < n; ++i) {
             checksum += ++map[static_cast<int>(rng())];
         }

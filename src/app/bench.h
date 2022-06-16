@@ -68,7 +68,7 @@ private:
 
         std::cout << actual_result << mSep << runtime_sec << mSep << (peakRss / 1048576.0);
         if (actual_result != expected_result) {
-            std::cout << mSep << mQuote << "ERROR: expected " << expected_result << mQuote;
+            std::cout << mSep << mQuote << "ERROR: expected " << expected_result << " but got " << actual_result << mQuote;
         }
         std::cout << std::endl;
     }

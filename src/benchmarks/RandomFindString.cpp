@@ -36,7 +36,13 @@ uint64_t randomFindInternalString(Bench& bench, size_t numRandom, size_t const l
     auto const strData32 = reinterpret_cast<uint32_t*>(&str[0]) + idx32;
 
     {
-        Map<std::string, size_t> map;
+        using M = Map<std::string, size_t>;
+#ifdef USE_POOL_ALLOCATOR
+        M::allocator_type::ResourceType resource;
+        M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+        M map;
+#endif
         size_t i = 0;
         size_t findCount = 0;
 
@@ -77,10 +83,10 @@ BENCHMARK(RandomFindString) {
     static constexpr size_t numInserts = 100'000;
     static constexpr size_t numFindsPerInsert = 1000;
 
-    bench.endMeasure(3214, randomFindInternalString(bench, 4, 100, numInserts, numFindsPerInsert));
-    bench.endMeasure(24998929, randomFindInternalString(bench, 3, 100, numInserts, numFindsPerInsert));
-    bench.endMeasure(49996121, randomFindInternalString(bench, 2, 100, numInserts, numFindsPerInsert));
-    bench.endMeasure(74993243, randomFindInternalString(bench, 1, 100, numInserts, numFindsPerInsert));
+    bench.endMeasure(1721, randomFindInternalString(bench, 4, 100, numInserts, numFindsPerInsert));
+    bench.endMeasure(24999056, randomFindInternalString(bench, 3, 100, numInserts, numFindsPerInsert));
+    bench.endMeasure(49996344, randomFindInternalString(bench, 2, 100, numInserts, numFindsPerInsert));
+    bench.endMeasure(74992237, randomFindInternalString(bench, 1, 100, numInserts, numFindsPerInsert));
     bench.endMeasure(99989650, randomFindInternalString(bench, 0, 100, numInserts, numFindsPerInsert));
 }
 
@@ -88,9 +94,9 @@ BENCHMARK(RandomFindString_1000000) {
     static constexpr size_t numInserts = 1'000'000;
     static constexpr size_t numFindsPerInsert = 200;
 
-    bench.endMeasure(25189, randomFindInternalString(bench, 4, 13, numInserts, numFindsPerInsert));
-    bench.endMeasure(50019351, randomFindInternalString(bench, 3, 13, numInserts, numFindsPerInsert));
-    bench.endMeasure(100010271, randomFindInternalString(bench, 2, 13, numInserts, numFindsPerInsert));
-    bench.endMeasure(150003848, randomFindInternalString(bench, 1, 13, numInserts, numFindsPerInsert));
+    bench.endMeasure(26187, randomFindInternalString(bench, 4, 13, numInserts, numFindsPerInsert));
+    bench.endMeasure(50017770, randomFindInternalString(bench, 3, 13, numInserts, numFindsPerInsert));
+    bench.endMeasure(100012105, randomFindInternalString(bench, 2, 13, numInserts, numFindsPerInsert));
+    bench.endMeasure(150003241, randomFindInternalString(bench, 1, 13, numInserts, numFindsPerInsert));
     bench.endMeasure(199997474, randomFindInternalString(bench, 0, 13, numInserts, numFindsPerInsert));
 }
