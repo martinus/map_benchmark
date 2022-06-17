@@ -12,7 +12,7 @@ if benchs.empty?
 end
 apps = Dir["bench*"].sort.uniq
 
-apps = apps.shuffle
+# apps = apps.shuffle
 
 STDERR.puts "apps:\n\t#{apps.join("\n\t")}"
 STDERR.puts "benchmarks:\n\t#{benchs.join("\n\t")}"
