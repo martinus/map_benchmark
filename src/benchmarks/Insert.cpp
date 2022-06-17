@@ -9,7 +9,7 @@ BENCHMARK(InsertHugeInt) {
         bench.beginMeasure("insert 100M int");
         using M = Map<int, int>;
 #ifdef USE_POOL_ALLOCATOR
-        M::allocator_type::ResourceType resource;
+        Resource<int, int> resource;
         M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
         M map;

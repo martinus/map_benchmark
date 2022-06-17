@@ -13,3 +13,6 @@ static const char* MapName = "boost::unordered_map PoolAllocator " BOOST_LIB_VER
 template <class Key, class Val>
 using Map = boost::unordered_map<Key, Val, Hash<Key>, std::equal_to<Key>,
                                  PoolAllocator<std::pair<const Key, Val>, sizeof(std::pair<const Key, Val>) + sizeof(void*) * 4, alignof(void*)>>;
+
+template <class Key, class Val>
+using Resource = typename Map<Key, Val>::allocator_type::ResourceType;

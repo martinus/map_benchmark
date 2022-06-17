@@ -38,7 +38,7 @@ uint64_t randomFindInternalString(Bench& bench, size_t numRandom, size_t const l
     {
         using M = Map<std::string, size_t>;
 #ifdef USE_POOL_ALLOCATOR
-        M::allocator_type::ResourceType resource;
+        Resource<std::string, size_t> resource;
         M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
         M map;

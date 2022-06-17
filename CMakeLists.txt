@@ -27,7 +27,7 @@ file(GLOB INC_MAPS "src/maps/*")
 
 # boost: use locally built boost version
 list(APPEND CMAKE_PREFIX_PATH /home/martinus/boost-develop-beta/boost-install)
-find_package(Boost 1.80)
+find_package(Boost 1.80 COMPONENTS container REQUIRED) # for allocators
 
 
 # absl stuff: see https://github.com/abseil/abseil-cpp/tree/master/CMake

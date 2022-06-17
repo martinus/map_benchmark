@@ -33,7 +33,7 @@ uint64_t randomFindInternal(Bench& bench, size_t numRandom, uint64_t bitMask, si
     {
         using M = Map<size_t, size_t>;
 #ifdef USE_POOL_ALLOCATOR
-        M::allocator_type::ResourceType resource;
+        Resource<size_t, size_t> resource;
         M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
         M map;

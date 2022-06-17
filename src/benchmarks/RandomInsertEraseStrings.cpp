@@ -20,7 +20,7 @@ size_t run(size_t max_n, size_t string_length, uint32_t bitMask, Bench& bench) {
     bench.beginMeasure(ss.str().c_str());
     using M = Map<std::string, std::string>;
 #ifdef USE_POOL_ALLOCATOR
-    M::allocator_type::ResourceType resource;
+    Resource<std::string, std::string> resource;
     M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
     M map;

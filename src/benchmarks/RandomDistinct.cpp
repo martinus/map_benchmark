@@ -15,7 +15,7 @@ BENCHMARK(RandomDistinct2) {
 
         using M = Map<int, int>;
 #ifdef USE_POOL_ALLOCATOR
-        M::allocator_type::ResourceType resource;
+        Resource<int, int> resource;
         M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
         M map;
@@ -33,7 +33,7 @@ BENCHMARK(RandomDistinct2) {
 
         using M = Map<int, int>;
 #ifdef USE_POOL_ALLOCATOR
-        M::allocator_type::ResourceType resource;
+        Resource<int, int> resource;
         M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
         M map;
@@ -50,7 +50,7 @@ BENCHMARK(RandomDistinct2) {
 
         using M = Map<int, int>;
 #ifdef USE_POOL_ALLOCATOR
-        M::allocator_type::ResourceType resource;
+        Resource<int, int> resource;
         M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
         M map;
@@ -66,7 +66,7 @@ BENCHMARK(RandomDistinct2) {
         checksum = 0;
         using M = Map<int, int>;
 #ifdef USE_POOL_ALLOCATOR
-        M::allocator_type::ResourceType resource;
+        Resource<int, int> resource;
         M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
         M map;

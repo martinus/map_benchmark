@@ -11,7 +11,7 @@ BENCHMARK(IterateIntegers) {
 
     using M = Map<uint64_t, uint64_t>;
 #ifdef USE_POOL_ALLOCATOR
-    M::allocator_type::ResourceType resource;
+    Resource<uint64_t, uint64_t> resource;
     M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
     M map;
