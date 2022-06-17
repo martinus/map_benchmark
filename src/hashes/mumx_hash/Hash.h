@@ -8,7 +8,7 @@
 #include <type_traits>
 #include <utility>
 
-static const char* HashName = "mumxmumxx1";
+static const char* HashName = "mumx";
 
 #include <cstdint>
 
@@ -16,7 +16,8 @@ static const char* HashName = "mumxmumxx1";
 template <typename T>
 struct Hash {
     size_t operator()(T const& v) const {
-        return ankerl::mixer::mumxmumxx1(v);
+        static constexpr auto a = UINT64_C(0x2ca7aea0ebd71d49);
+        return ankerl::mixer::mumx(v, a);
     }
 };
 
