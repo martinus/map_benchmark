@@ -42,3 +42,7 @@
 	path = external/greg7mdp__gtl
 	url = https://github.com/greg7mdp/gtl.git
 	branch = main
+[submodule "external/jiwan__dense_hash_map"]
+	path = external/jiwan__dense_hash_map
+	url = https://github.com/Jiwan/dense_hash_map.git
+	branch = master
