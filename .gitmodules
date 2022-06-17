@@ -38,3 +38,7 @@
 	path = external/ktprime__emhash
 	url = https://github.com/ktprime/emhash
 	branch = master
+[submodule "external/greg7mdp__gtl"]
+	path = external/greg7mdp__gtl
+	url = https://github.com/greg7mdp/gtl.git
+	branch = main

@@ -12,7 +12,7 @@ if benchs.empty?
 end
 apps = Dir["bench*"].sort.uniq
 
-# apps = apps.shuffle
+ apps = apps.shuffle
 
 STDERR.puts "apps:\n\t#{apps.join("\n\t")}"
 STDERR.puts "benchmarks:\n\t#{benchs.join("\n\t")}"
@@ -28,8 +28,16 @@ bad_commands = {}
 
             # filter: benchmarks with 'String' run all hashes, benchmarks *without* don't run boost::hash, because std::hash and boost::hash is the same in that case.
             if !(bench =~ /String/) && app =~ /boost_hash/
-                puts "SKIPPING #{app} #{bench} because"
+                puts "SKIPPING #{app} #{bench} non-String boost_hash"
+                next
             end
+            
+            # btree_map filter: only run std_hash, nothing else
+            if app =~ /btree_map/ && !(app =~ /std_hash/)
+                puts "SKIPPING #{app} #{bench} btree_map not std_hash"
+                next
+            end
+
 
             cmd = "#{cmd_prefix} ./#{app} #{bench}"
             if (bad_commands.key?(cmd))
