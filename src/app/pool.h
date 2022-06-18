@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <list>
 #include <new>
+#include <memory>
 #include <type_traits>
 #include <utility>
 
