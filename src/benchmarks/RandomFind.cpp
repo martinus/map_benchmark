@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <sstream>
 
 uint64_t randomFindInternal(Bench& bench, size_t numRandom, uint64_t bitMask, size_t numInserts, size_t numFindsPerInsert) {
     size_t constexpr NumTotal = 4;
