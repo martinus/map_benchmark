@@ -37,12 +37,14 @@ TEST_CONFIG = {
 }
 
 NAME_REPLACEMENTS = {
-    "boost::multi_index::hashed_unique" => "boost::multi_index::<br>hashed_unique",
-    "robin_hood::unordered_node_map" => "robin_hood::<br>unordered_node_map",
-    "robin_hood::unordered_flat_map" => "robin_hood::<br>unordered_flat_map",
-    "boost::unordered_map 1_65_1" => "boost::unordered_map",
-    "phmap::parallel_node_hash_map" => "phmap::<br>parallel_node_hash_map",
-    "phmap::parallel_flat_hash_map" => "phmap::<br>parallel_flat_hash_map",
+    "boost::multi_index::hashed_unique" => "boost::multi_index::hashed_unique",
+    "robin_hood::unordered_node_map" => "robin_hood::unordered_node_map",
+    "robin_hood::unordered_flat_map" => "robin_hood::unordered_flat_map",
+    "boost::unordered_map 1_80" => "boost::unordered_map",
+    "boost::unordered_map unsynchronized_pool_resource 1_80" => "boost::unordered_map & unsynchronized_pool_resource",
+    "std::unordered_map unsynchronized_pool_resource" => "std::unordered_map unsynchronized_pool_resource",
+    "phmap::parallel_node_hash_map" => "phmap::parallel_node_hash_map",
+    "phmap::parallel_flat_hash_map" => "phmap::parallel_flat_hash_map",
 
     "Identity" => "libstdc++-v3",
 }
@@ -58,10 +60,10 @@ def median(values, invalid_value = 900)
 end
 
 def si_format(n)
-    fmt = ["", "m", "µ", "n", "p", "f", "a", "z", "y"]
+    fmt = ["", "m", "µ", "n"]
     factor = 1.0
     idx = 0
-    while n*factor < 1
+    while n*factor < 1 && idx < fmt.size-1
         factor *= 1000;
         idx += 1
     end
