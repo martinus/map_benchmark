@@ -40,6 +40,7 @@ NAME_REPLACEMENTS = {
     "boost::multi_index::hashed_unique" => "boost::multi_index::hashed_unique",
     "robin_hood::unordered_node_map" => "robin_hood::unordered_node_map",
     "robin_hood::unordered_flat_map" => "robin_hood::unordered_flat_map",
+    "boost::unordered_map PoolAllocator 1_80" => "boost::unordered_map & PoolAllocator",
     "boost::unordered_map 1_80" => "boost::unordered_map",
     "boost::unordered_map unsynchronized_pool_resource 1_80" => "boost::unordered_map & unsynchronized_pool_resource",
     "std::unordered_map unsynchronized_pool_resource" => "std::unordered_map unsynchronized_pool_resource",
@@ -103,12 +104,30 @@ end
 all_data.sort.each do |l|
     # "absl::flat_hash_map"; "FNV1a"; "InsertHugeInt"; sort_order, "insert 100M int"; 98841586; 11.8671; 1730.17
     hashmap_name, hash_name, benchmark_name, sort_order, measurement_name, validator, runtime, memory = l
+
+    # skip stuff
+    if hash_name == "Identity" || hash_name == "boost::hash" || hash_name == "std::hash"
+        hash_name = "std::hash / boost::hash / Identity"
+    end
+    if hash_name == "mumxmumxx1"
+        next
+    end
+
     all_measurements[benchmark_name].push(measurement_name) unless all_measurements[benchmark_name].include?(measurement_name)
 
     TEST_CONFIG[benchmark_name] = {} unless TEST_CONFIG[benchmark_name]
 
-    entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
-    
+    # don't split up like that, try something else
+    #entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
+    type = "Open Addressing"
+    if hashmap_name =~ /std::unordered_map/ || hashmap_name =~ /boost::unordered_map/ || hashmap_name =~ /boost::multi_index/
+        type = "Separate Chaining"
+    end
+    hashmap_name = NAME_REPLACEMENTS[hashmap_name] || hashmap_name
+    hashmap_name = "#{hashmap_name}<br>#{hash_name}"
+
+    entry = h[benchmark_name][type][hashmap_name][measurement_name]
+
     if l.size == 8
         entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name]["factor"] || 1.0)
         entry[1].push memory.to_f
