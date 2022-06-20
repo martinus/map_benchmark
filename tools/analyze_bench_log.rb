@@ -44,8 +44,10 @@ NAME_REPLACEMENTS = {
     "boost::unordered_map 1_80" => "boost::unordered_map",
     "boost::unordered_map unsynchronized_pool_resource 1_80" => "boost::unordered_map & unsynchronized_pool_resource",
     "std::unordered_map unsynchronized_pool_resource" => "std::unordered_map unsynchronized_pool_resource",
-    "phmap::parallel_node_hash_map" => "phmap::parallel_node_hash_map",
-    "phmap::parallel_flat_hash_map" => "phmap::parallel_flat_hash_map",
+    "phmap::parallel_node_hash_map" => "gtl::parallel_node_hash_map",
+    "phmap::parallel_flat_hash_map" => "gtl::parallel_flat_hash_map",
+    "phmap::node_hash_map" => "gtl::node_hash_map",
+    "phmap::flat_hash_map" => "gtl::flat_hash_map",
 
     "Identity" => "libstdc++-v3",
 }
