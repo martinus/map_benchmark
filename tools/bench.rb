@@ -83,6 +83,9 @@ bad_commands = [
     "bench_tessil_hopscotch_map__std_hash RandomInsertErase",
     "bench_tessil_sparse_map__IdentityHash RandomInsertErase",
     "bench_tessil_sparse_map__std_hash RandomInsertErase",
+    "bench_jiwan_dense_hash_map__std_hash RandomFind_2000",
+    "bench_jiwan_dense_hash_map__std_hash RandomFind_500000",
+    "bench_jiwan_dense_hash_map__std_hash RandomInsertErase",
 ]
 
 # convert to hash
