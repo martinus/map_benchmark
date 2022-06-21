@@ -121,6 +121,7 @@ all_data.sort.each do |l|
 
     # don't split up like that, try something else
     #entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
+    # TODO try separate chaining and all the rest
     type = "Open Addressing"
     if hashmap_name =~ /std::unordered_map/ || hashmap_name =~ /boost::unordered_map/ || hashmap_name =~ /boost::multi_index/
         type = "Separate Chaining"
@@ -191,6 +192,26 @@ def convert_benchmark(benchmark_name, hash, all_hashmaps, all_hashes, all_measur
 
     # finally we have the data exactly as we want, we can generate 
     data
+end
+
+#   benchmark => [hash, [runtime_sum, memory_max, [runtimes_median], hashmap_name]]
+def create_scatterplots(benchmark_name, hashname_hashmap_paretofront, data)
+    File.open("#{benchmark_name}.dat", "wt") do |f|
+        data.each do |hashname, d|
+            d.each do |runtime_sum, memory_max, runtimes_median, hashmap_name|
+                if (runtime_sum >= 1e10) 
+                    next
+                end
+                color = "0xffa0a0"
+                if hashname_hashmap_paretofront[hashname][hashmap_name]
+                    color = "0xa0d700"
+                    name = NAME_REPLACEMENTS[hashmap_name] || hashmap_name
+                    f.puts("#{memory_max} #{runtime_sum} #{color} #{name}")
+                end
+            end
+        end
+    end
+
 end
 
 h.sort.each do |benchmark_name, hash|  
@@ -350,4 +371,6 @@ END_PLOTLY_TEMPLATE
         f.write ERB.new(tpl, 0, "%<>").result(binding)
         puts "wrote #{fn}"
     end
+
+    create_scatterplots(benchmark_name, hashname_hashmap_paretofront, data)
 end
