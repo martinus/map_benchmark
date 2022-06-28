@@ -95,7 +95,8 @@ bad_commands.each do |cmd_key|
 end
 bad_commands = h 
 
-first_skip_to = "RandomInsertEraseStrings"
+#first_skip_to = "RandomFind_500000"
+first_skip_to = nil
 
 10.times do |iter|
     benchs.each do |bench|
