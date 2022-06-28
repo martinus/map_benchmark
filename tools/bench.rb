@@ -113,8 +113,8 @@ bad_commands.each do |cmd_key|
 end
 bad_commands = h 
 
-#first_skip_to = "RandomFind_500000"
-first_skip_to = nil
+first_skip_to = "InsertHugeInt"
+#first_skip_to = nil
 
 10.times do |iter|
     benchs.each do |bench|
@@ -139,8 +139,8 @@ first_skip_to = nil
                 next
             end
 
-            if app =~ /ankerl_unordered_dense_map/ && !(app =~ /ankerl_hash/)
-                puts "SKIPPING #{app} #{bench} ankerl only with ankerl_hash"
+            if !!(app =~ /ankerl_hash/) ^ !!(app =~ /ankerl_unordered_dense_map/)
+                puts "SKIPPING #{app} #{bench} only ankerl map with ankerl_hash"
                 next
             end
 

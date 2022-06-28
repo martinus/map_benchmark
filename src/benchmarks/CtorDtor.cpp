@@ -20,7 +20,7 @@ BENCHMARK(CtorDtorEmptyMap) {
 BENCHMARK(CtorDtorSingleEntryMap) {
     size_t result = 0;
     bench.beginMeasure("ctor & dtor map with 1 entry");
-    for (int n = 0; n < 50'000'00; ++n) {
+    for (int n = 0; n < 5'000'000; ++n) {
         using M = Map<int, int>;
 #ifdef USE_POOL_ALLOCATOR
         Resource<int, int> resource;
@@ -31,5 +31,5 @@ BENCHMARK(CtorDtorSingleEntryMap) {
         map[n];
         result += map.size();
     }
-    bench.endMeasure(50'000'000, result);
+    bench.endMeasure(5'000'000, result);
 }
