@@ -10,10 +10,13 @@ benchs = ARGV
 if benchs.empty?
     benchs = `./#{Dir["bench*"].first} l`.split("\n")
 end
+
 apps = Dir["bench*"].sort.uniq
-benchs.delete("CtorDtorEmptyMap")
-benchs.delete("CtorDtorSingleEntryMap")
-benchs.delete("ShowHash")
+apps = ["./bench_ankerl_unordered_dense_map__ankerl_hash"]
+
+#benchs.delete("CtorDtorEmptyMap")
+#benchs.delete("CtorDtorSingleEntryMap")
+#benchs.delete("ShowHash")
 
 # TODO:
 # skip boost_hash for non-std::string
