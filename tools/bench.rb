@@ -2,7 +2,20 @@
 
 require 'timeout'
 
-cmd_prefix = "taskset -c 5,11"
+CPUs = [5, 11]
+
+cmd_prefix = "taskset -c #{CPUs.join(',')}"
+
+def assert_frequency_scaling
+    CPUs.each do |cpu|
+        min_freq = File.read("/sys/devices/system/cpu/cpu#{cpu}/cpufreq/scaling_min_freq").strip
+        max_freq = File.read("/sys/devices/system/cpu/cpu#{cpu}/cpufreq/scaling_max_freq").strip
+
+        if (min_freq != max_freq)
+            raise "ERROR frequency scaling on cpu #{cpu} not locked! #{min_freq}-#{max_freq}"
+        end
+    end
+end
 
 timeout_sec = 15*60
 
@@ -12,11 +25,13 @@ if benchs.empty?
 end
 
 apps = Dir["bench*"].sort.uniq
-apps = ["./bench_ankerl_unordered_dense_map__ankerl_hash"]
+#apps = ["./bench_ska_flat_hash_map__std_hash", ]
 
 #benchs.delete("CtorDtorEmptyMap")
 #benchs.delete("CtorDtorSingleEntryMap")
-#benchs.delete("ShowHash")
+#benchs.delete("InsertHugeInt")
+#benchs.delete("IterateIntegers")
+#benchs.delete("RandomDistinct2")
 
 # TODO:
 # skip boost_hash for non-std::string
@@ -124,11 +139,17 @@ first_skip_to = nil
                 next
             end
 
+            if app =~ /ankerl_unordered_dense_map/ && !(app =~ /ankerl_hash/)
+                puts "SKIPPING #{app} #{bench} ankerl only with ankerl_hash"
+                next
+            end
+
             cmd = "#{cmd_prefix} ./#{app} #{bench}"
             cmd_key = "#{app} #{bench}"
             if bad_commands.key?(cmd_key)
                 puts "SKIPPING '#{cmd_key}'"
             else
+                assert_frequency_scaling
                 pid = Process.spawn(cmd)
                 begin
                     Timeout.timeout(timeout_sec) do
@@ -143,6 +164,7 @@ first_skip_to = nil
                     puts "TIMEOUT: #{app} #{bench}"
                     bad_commands[cmd_key] = true
                 end
+                assert_frequency_scaling
             end
         end
     end
