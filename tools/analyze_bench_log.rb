@@ -358,7 +358,12 @@ END_PLOTLY_TEMPLATE
 
     # first hash, last entry
     best_hash_xrange = data.first[1].first[0]
-    worst_hash_xrange = data.last[1].find{ |x| x[0] < 1e10 }[0] || 0.0
+    found = data.last[1].find{ |x| x[0] < 1e10 }
+    worst_hash_xrange = 0.0
+    if found
+        worst_hash_xrange = found[0]
+    end
+    #worst_hash_xrange = data.last[1].find{ |x| x[0] < 1e10 }[0] || 0.0
     autozoom = TEST_CONFIG[benchmark_name]["autozoom"]
     xaxis_width = [1.5 * best_hash_xrange, 1.07 * worst_hash_xrange].min
 
