@@ -15515,4 +15515,20 @@ SKIPPING bench_greg7mdp_spp_sparse_hash_map__ankerl_hash RandomInsertEraseString
 "jg::dense_hash_map"; "absl::Hash"; "RandomInsertEraseStrings"; "04"; "100 bytes"; 5867228; 5.00808; 84.5234
 "jg::dense_hash_map"; "absl::Hash"; "RandomInsertEraseStrings"; "05"; "1000 bytes"; 2966452; 3.86169; 84.5234
 SKIPPING bench_jiwan_dense_hash_map__ankerl_hash RandomInsertEraseStrings only ankerl map with ankerl_hash
-"jg::dense_hash_map"; "boost::hash"; "RandomInsertEraseStrings"; "01"; "7 bytes"; 
+"jg::dense_hash_map"; "boost::hash"; "RandomInsertEraseStrings"; "01"; "7 bytes"; 9734165; 5.32663; 64.2969
+"jg::dense_hash_map"; "boost::hash"; "RandomInsertEraseStrings"; "02"; "8 bytes"; 9734165; 5.77162; 84.375
+"jg::dense_hash_map"; "boost::hash"; "RandomInsertEraseStrings"; "03"; "13 bytes"; 9734165; 6.67259; 84.5
+"jg::dense_hash_map"; "boost::hash"; "RandomInsertEraseStrings"; "04"; "100 bytes"; 5867228; 10.5281; 84.5
+"jg::dense_hash_map"; "boost::hash"; "RandomInsertEraseStrings"; "05"; "1000 bytes"; 2966452; 31.1926; 84.5
+"jg::dense_hash_map"; "mumx"; "RandomInsertEraseStrings"; "01"; "7 bytes"; 9734165; 4.45558; 64.2227
+"jg::dense_hash_map"; "mumx"; "RandomInsertEraseStrings"; "02"; "8 bytes"; 9734165; 5.78998; 84.3008
+"jg::dense_hash_map"; "mumx"; "RandomInsertEraseStrings"; "03"; "13 bytes"; 9734165; 4.42742; 84.4258
+"jg::dense_hash_map"; "mumx"; "RandomInsertEraseStrings"; "04"; "100 bytes"; 5867228; 5.42515; 84.4258
+"jg::dense_hash_map"; "mumx"; "RandomInsertEraseStrings"; "05"; "1000 bytes"; 2966452; 5.64398; 84.4258
+"jg::dense_hash_map"; "robin_hood::hash"; "RandomInsertEraseStrings"; "01"; "7 bytes"; 9734165; 4.3086; 64.2188
+"jg::dense_hash_map"; "robin_hood::hash"; "RandomInsertEraseStrings"; "02"; "8 bytes"; 9734165; 5.79903; 84.3125
+"jg::dense_hash_map"; "robin_hood::hash"; "RandomInsertEraseStrings"; "03"; "13 bytes"; 9734165; 4.56651; 84.4414
+"jg::dense_hash_map"; "robin_hood::hash"; "RandomInsertEraseStrings"; "04"; "100 bytes"; 5867228; 5.50072; 84.4414
+"jg::dense_hash_map"; "robin_hood::hash"; "RandomInsertEraseStrings"; "05"; "1000 bytes"; 2966452; 5.6044; 84.4414
+"jg::dense_hash_map"; "std::hash"; "RandomInsertEraseStrings"; "01"; "7 bytes"; 9734165; 4.53004; 64.2227
+"jg::dense_hash_map"; "std::hash"; "RandomInsertEraseStrings"; "02"; "8 bytes"; 
