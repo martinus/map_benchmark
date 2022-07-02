@@ -24674,4 +24674,32 @@ SKIPPING bench_tessil_robin_map__ankerl_hash RandomFindString_1000000 only anker
 "tsl::robin_map"; "robin_hood::hash"; "RandomFindString_1000000"; "05"; "100% 13 byte"; 199997474; 11.0831; 120.695
 "tsl::robin_map"; "std::hash"; "RandomFindString_1000000"; "01"; "0% 13 byte"; 26187; 10.8442; 120.621
 "tsl::robin_map"; "std::hash"; "RandomFindString_1000000"; "02"; "25% 13 byte"; 50017770; 12.5799; 120.895
-"tsl::robin_map"; "std::hash"; "RandomFindString_1000000"; "03"; "50% 13 byte"; 
+"tsl::robin_map"; "std::hash"; "RandomFindString_1000000"; "03"; "50% 13 byte"; 100012105; 13.0602; 120.895
+"tsl::robin_map"; "std::hash"; "RandomFindString_1000000"; "04"; "75% 13 byte"; 150003241; 12.6513; 120.895
+"tsl::robin_map"; "std::hash"; "RandomFindString_1000000"; "05"; "100% 13 byte"; 199997474; 12.066; 120.895
+"tsl::sparse_map"; "absl::Hash"; "RandomFindString_1000000"; "01"; "0% 13 byte"; 26187; 11.8671; 21.8516
+"tsl::sparse_map"; "absl::Hash"; "RandomFindString_1000000"; "02"; "25% 13 byte"; 50017770; 14.4134; 21.9883
+"tsl::sparse_map"; "absl::Hash"; "RandomFindString_1000000"; "03"; "50% 13 byte"; 100012105; 16.4384; 22.0039
+"tsl::sparse_map"; "absl::Hash"; "RandomFindString_1000000"; "04"; "75% 13 byte"; 150003241; 18.2337; 22.0039
+"tsl::sparse_map"; "absl::Hash"; "RandomFindString_1000000"; "05"; "100% 13 byte"; 199997474; 19.1225; 22.0195
+SKIPPING bench_tessil_sparse_map__ankerl_hash RandomFindString_1000000 only ankerl map with ankerl_hash
+"tsl::sparse_map"; "boost::hash"; "RandomFindString_1000000"; "01"; "0% 13 byte"; 26187; 13.0651; 22.0273
+"tsl::sparse_map"; "boost::hash"; "RandomFindString_1000000"; "02"; "25% 13 byte"; 50017770; 16.2407; 22.2734
+"tsl::sparse_map"; "boost::hash"; "RandomFindString_1000000"; "03"; "50% 13 byte"; 100012105; 18.3509; 22.3477
+"tsl::sparse_map"; "boost::hash"; "RandomFindString_1000000"; "04"; "75% 13 byte"; 150003241; 19.6225; 22.3594
+"tsl::sparse_map"; "boost::hash"; "RandomFindString_1000000"; "05"; "100% 13 byte"; 199997474; 20.2492; 22.3594
+"tsl::sparse_map"; "mumx"; "RandomFindString_1000000"; "01"; "0% 13 byte"; 26187; 8.6951; 21.7188
+"tsl::sparse_map"; "mumx"; "RandomFindString_1000000"; "02"; "25% 13 byte"; 50017770; 11.3173; 21.8086
+"tsl::sparse_map"; "mumx"; "RandomFindString_1000000"; "03"; "50% 13 byte"; 100012105; 12.1379; 21.9258
+"tsl::sparse_map"; "mumx"; "RandomFindString_1000000"; "04"; "75% 13 byte"; 150003241; 12.2219; 21.9258
+"tsl::sparse_map"; "mumx"; "RandomFindString_1000000"; "05"; "100% 13 byte"; 199997474; 11.7688; 21.9258
+"tsl::sparse_map"; "robin_hood::hash"; "RandomFindString_1000000"; "01"; "0% 13 byte"; 26187; 7.9345; 21.9609
+"tsl::sparse_map"; "robin_hood::hash"; "RandomFindString_1000000"; "02"; "25% 13 byte"; 50017770; 10.4359; 21.9609
+"tsl::sparse_map"; "robin_hood::hash"; "RandomFindString_1000000"; "03"; "50% 13 byte"; 100012105; 11.3814; 22.1797
+"tsl::sparse_map"; "robin_hood::hash"; "RandomFindString_1000000"; "04"; "75% 13 byte"; 150003241; 11.4059; 22.1797
+"tsl::sparse_map"; "robin_hood::hash"; "RandomFindString_1000000"; "05"; "100% 13 byte"; 199997474; 11.0905; 22.2344
+"tsl::sparse_map"; "std::hash"; "RandomFindString_1000000"; "01"; "0% 13 byte"; 26187; 8.532; 21.8984
+"tsl::sparse_map"; "std::hash"; "RandomFindString_1000000"; "02"; "25% 13 byte"; 50017770; 11.1293; 21.957
+"tsl::sparse_map"; "std::hash"; "RandomFindString_1000000"; "03"; "50% 13 byte"; 100012105; 12.0017; 22.0742
+"tsl::sparse_map"; "std::hash"; "RandomFindString_1000000"; "04"; "75% 13 byte"; 150003241; 11.9424; 22.0742
+"tsl::sparse_map"; "std::hash"; "RandomFindString_1000000"; "05"; "100% 13 byte"; 199997474; 11.6442; 22.0742
