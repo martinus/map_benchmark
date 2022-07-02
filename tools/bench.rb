@@ -27,8 +27,8 @@ end
 apps = Dir["bench*"].sort.uniq
 #apps = ["./bench_ska_flat_hash_map__std_hash", ]
 
-#benchs.delete("CtorDtorEmptyMap")
-#benchs.delete("CtorDtorSingleEntryMap")
+benchs.delete("CtorDtorEmptyMap")
+benchs.delete("CtorDtorSingleEntryMap")
 #benchs.delete("InsertHugeInt")
 #benchs.delete("IterateIntegers")
 #benchs.delete("RandomDistinct2")
@@ -139,7 +139,7 @@ first_skip_to = "InsertHugeInt"
                 next
             end
 
-            if !!(app =~ /ankerl_hash/) ^ !!(app =~ /ankerl_unordered_dense_map/)
+            if !!(app =~ /ankerl_hash/) ^ !!(app =~ /ankerl_unordered_dense/)
                 puts "SKIPPING #{app} #{bench} only ankerl map with ankerl_hash"
                 next
             end
