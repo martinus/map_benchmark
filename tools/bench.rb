@@ -25,7 +25,7 @@ if benchs.empty?
 end
 
 apps = Dir["bench*"].sort.uniq
-apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
+# apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
 
 benchs.delete("CtorDtorEmptyMap")
 benchs.delete("CtorDtorSingleEntryMap")
