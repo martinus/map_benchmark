@@ -25,10 +25,11 @@ if benchs.empty?
 end
 
 apps = Dir["bench*"].sort.uniq
-#apps = ["./bench_ska_flat_hash_map__std_hash", ]
+apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
 
 benchs.delete("CtorDtorEmptyMap")
 benchs.delete("CtorDtorSingleEntryMap")
+benchs.delete("ShowHash")
 #benchs.delete("InsertHugeInt")
 #benchs.delete("IterateIntegers")
 #benchs.delete("RandomDistinct2")
@@ -113,7 +114,7 @@ bad_commands.each do |cmd_key|
 end
 bad_commands = h 
 
-first_skip_to = "InsertHugeInt"
+first_skip_to = "RandomFind_200"
 #first_skip_to = nil
 
 10.times do |iter|
