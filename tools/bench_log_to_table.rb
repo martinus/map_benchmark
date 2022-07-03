@@ -4,12 +4,19 @@ require "pp"
 
 IGNORE_BENCHMARKS= ["CtorDtorEmptyMap", "CtorDtorSingleEntryMap"]
 
+RENAMES = {
+    "ankerl::unordered_dense_map" => "ankerl::unordered_dense::map",
+    "ankerl::hash" => "ankerl::unordered_dense::hash",
+}
+
 def parse_csv(filename)
     csv = []
     File.open(filename).each_line do |l|
         l = l.gsub("\"", "").split(";").map { |w| w.strip }
         next if (l.size < 5)
         next if IGNORE_BENCHMARKS.include?(l[2])
+
+        l = l.map { |entry| RENAMES[entry] || entry }
         csv.push(l)
     end
     csv
@@ -132,5 +139,5 @@ normalized_hash = normalize_time(summary_hash)
 scores = sorted_score(normalized_hash)
 
 scores.each do |t, mem, names|
-    printf("%5.2f %6.1f %s\n", t, mem, names)
+    printf("%5.2f\t%6.1f\t\"%s\"\n", t, mem, names.join(" "))
 end
