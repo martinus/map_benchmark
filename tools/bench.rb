@@ -25,11 +25,11 @@ if benchs.empty?
 end
 
 apps = Dir["bench*"].sort.uniq
-apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
+#apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
 
 benchs.delete("CtorDtorEmptyMap")
 benchs.delete("CtorDtorSingleEntryMap")
-benchs.delete("ShowHash")
+#benchs.delete("ShowHash")
 #benchs.delete("InsertHugeInt")
 #benchs.delete("IterateIntegers")
 #benchs.delete("RandomDistinct2")
@@ -114,8 +114,10 @@ bad_commands.each do |cmd_key|
 end
 bad_commands = h 
 
-first_skip_to = "RandomFind_200"
-#first_skip_to = nil
+first_skip_to = "RandomInsertErase"
+first_skip_to_app = /bench_std_unordered_map_pool/
+first_skip_to = nil
+first_skip_to_app = nil
 
 10.times do |iter|
     benchs.each do |bench|
@@ -127,6 +129,10 @@ first_skip_to = "RandomFind_200"
         STDERR.puts
         STDERR.puts "iteration #{iter}"
         apps.each do |app|
+            if first_skip_to_app && !(app =~ first_skip_to_app)
+                next
+            end
+            first_skip_to_app = nil
 
             # filter: benchmarks with 'String' run all hashes, benchmarks *without* don't run boost::hash, because std::hash and boost::hash is the same in that case.
             #if !(bench =~ /String/) && app =~ /boost_hash/
