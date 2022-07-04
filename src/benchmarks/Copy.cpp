@@ -16,7 +16,7 @@ BENCHMARK(Copy) {
     M mapSource;
 #endif
     uint64_t rememberKey = 0;
-    for (size_t i=0; i<1'000'000; ++i) {
+    for (size_t i = 0; i < 1'000'000; ++i) {
         auto key = rng();
         if (i == 500'000) {
             rememberKey = key;
