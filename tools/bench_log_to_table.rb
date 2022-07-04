@@ -4,7 +4,6 @@ require "pp"
 
 IGNORE_BENCHMARKS= ["CtorDtorEmptyMap", "CtorDtorSingleEntryMap"]
 
-
 RENAMES = {
     "ankerl::unordered_dense_map" => "ankerl::unordered_dense::map",
     "ankerl::hash" => "ankerl::unordered_dense::hash",
@@ -51,6 +50,8 @@ def convert_csv_to_hash(csv)
     end
 
     csv.sort.each do |l|
+        next if l.size != 8
+
         # "absl::flat_hash_map"; "FNV1a"; "InsertHugeInt"; sort_order, "insert 100M int"; 98841586; 11.8671; 1730.17
         hashmap_name, hash_name, benchmark_name, sort_order, measurement_name, validator, runtime, memory = l
 
