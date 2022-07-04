@@ -152,7 +152,7 @@ first_skip_to_app = nil
             #end
 
             if !(app =~ /ankerl_hash/) && !(app =~ /boost_hash/)
-                puts "SKIPPING #{app} #{bench}, only ankerl_hash and boost_hash
+                puts "SKIPPING #{app} #{bench}, only ankerl_hash and boost_hash"
                 next
             end
 
