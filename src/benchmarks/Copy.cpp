@@ -15,16 +15,20 @@ BENCHMARK(Copy) {
 #else
     M mapSource;
 #endif
-
+    uint64_t rememberKey = 0;
     for (size_t i=0; i<1'000'000; ++i) {
-        mapSource[i] = i;
+        auto key = rng();
+        if (i == 500'000) {
+            rememberKey = key;
+        }
+        mapSource[key] = i;
     }
 
     M mapForCopy = mapSource;
     bench.beginMeasure("copy ctor");
     for (size_t n = 0; n < 200; ++n) {
         M m = mapForCopy;
-        result += m.size() + m[static_cast<size_t>(500'000)];
+        result += m.size() + m[rememberKey];
         mapForCopy[rng()] = rng();
     }
     bench.endMeasure(300019900, result);
@@ -38,7 +42,7 @@ BENCHMARK(Copy) {
 #endif
     for (size_t n = 0; n < 200; ++n) {
         m = mapForCopy;
-        result += m.size() + m[static_cast<size_t>(500'000)];
+        result += m.size() + m[rememberKey];
         mapForCopy[rng()] = rng();
     }
     bench.endMeasure(600039800, result);
