@@ -29,7 +29,7 @@ apps = Dir["bench*"].sort.uniq
 
 benchs.delete("CtorDtorEmptyMap")
 benchs.delete("CtorDtorSingleEntryMap")
-#benchs.delete("ShowHash")
+benchs.delete("ShowHash")
 #benchs.delete("InsertHugeInt")
 #benchs.delete("IterateIntegers")
 #benchs.delete("RandomDistinct2")
@@ -114,8 +114,8 @@ bad_commands.each do |cmd_key|
 end
 bad_commands = h 
 
-first_skip_to = "RandomInsertErase"
-first_skip_to_app = /bench_std_unordered_map_pool/
+#first_skip_to = "RandomInsertErase"
+#first_skip_to_app = /bench_std_unordered_map_pool/
 first_skip_to = nil
 first_skip_to_app = nil
 
@@ -141,15 +141,20 @@ first_skip_to_app = nil
             #end
             
             # btree_map filter: only run std_hash, nothing else
-            if app =~ /btree_map/ && !(app =~ /std_hash/)
-                puts "SKIPPING #{app} #{bench} btree_map not std_hash"
-                next
-            end
+            #if app =~ /btree_map/ && !(app =~ /std_hash/)
+            #    puts "SKIPPING #{app} #{bench} btree_map not std_hash"
+            #    next
+            #end
 
             #if !!(app =~ /ankerl_hash/) ^ !!(app =~ /ankerl_unordered_dense/)
             #    puts "SKIPPING #{app} #{bench} only ankerl map with ankerl_hash"
             #    next
             #end
+
+            if !(app =~ /ankerl_hash/) && !(app =~ /boost_hash/)
+                puts "SKIPPING #{app} #{bench}, only ankerl_hash and boost_hash
+                next
+            end
 
             cmd = "#{cmd_prefix} ./#{app} #{bench}"
             cmd_key = "#{app} #{bench}"
