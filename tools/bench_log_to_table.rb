@@ -50,14 +50,20 @@ def convert_csv_to_hash(csv)
     end
 
     csv.sort.each do |l|
-        next if l.size != 8
+        next if l.size < 5
 
         # "absl::flat_hash_map"; "FNV1a"; "InsertHugeInt"; sort_order, "insert 100M int"; 98841586; 11.8671; 1730.17
         hashmap_name, hash_name, benchmark_name, sort_order, measurement_name, validator, runtime, memory = l
 
         entry = h[[hashmap_name, hash_name]][benchmark_name][[sort_order, measurement_name]]
-        entry[0].push(runtime.to_f)
-        entry[1].push(memory.to_f)
+        if l.size <= 6
+            # timeout
+            entry[0].push(1e10)
+            entry[1].push(1e10)
+        else
+            entry[0].push(runtime.to_f)
+            entry[1].push(memory.to_f)
+        end
     end
 
     h
@@ -175,7 +181,7 @@ def normalized_to_csv(normalized_hash)
     normalized_hash.each do |hashmap_hash, benchmark_hash|
         benchmark_names.each do |benchmark_name|
             result = benchmark_hash[benchmark_name]
-            if result.nil?
+            if result.nil? || result[0] >= 1e10
                 print("-; ")
             else
                 print("#{result[0]}; ")
