@@ -49,6 +49,7 @@
 [submodule "external/fph__dynamic_fph_map"]
 	path = external/fph__noseed_fph_map
 	url = https://github.com/renzibei/fph-table.git
+	branch = noseed
 [submodule "external/martinus__unordered_dense"]
 	path = external/martinus__unordered_dense
 	url = https://github.com/martinus/unordered_dense.git
