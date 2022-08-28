@@ -106,6 +106,25 @@ def summarize(full_hash)
     summary_hash
 end
 
+# input:
+#   [hashmap_name, hash_name] => benchmark_name => [sum_median(time), max(memory)]
+# output:
+#   bechmark is extended with "Memory"
+def add_memory_benchmark(summary_hash)
+    cpy = summary_hash.clone
+    cpy.each do |_, benchmark|
+        r1 = benchmark["InsertHugeInt"]
+        r2 = benchmark["RandomDistinct2"]
+        if r1.nil? || r2.nil?
+            benchmark["Memory"] = [1e99, 1e99]
+        else
+            mem = geomean([r1[1], r2[1]])
+            benchmark["Memory"] = [mem, mem]
+        end
+    end
+    cpy
+end
+
 # normalizes time to lowest time=100
 def normalize_time(summary_hash)
     # first find out the minimum per benchmark
@@ -191,12 +210,102 @@ def normalized_to_csv(normalized_hash)
     end
 end
 
+def geomean(data)
+    begin
+        r = 0.0
+        data.each do |x|
+            r += Math::log(x)
+        end
+        Math::exp(r / data.size)
+    rescue TypeError
+        "\"timeout\""
+    end
+end
+
+def val_or_timeout(benchmark, name)
+    r = benchmark[name]
+    if r.nil? || r[0] > 1e6
+        return "\"timeout\""
+    end
+    r[0]
+end
+
+def round_or_timeout(num)
+    begin
+        num.round
+    rescue NoMethodError
+        "\"timeout\""
+    end
+end
+
+# input:
+#   [hashmap_name, hash_name] => benchmark_name => [sum_median(time), max(memory)]
+# output:
+#   {id:1, hm:"fph::DynamicFphMap", h:"std::hash", cpy:3016, ihi:4774, it:3882, rd2:5560, rie:1227, rf200:103, rf2k:100, rf500k:119, ries:622, rfs:227, rfs1m:231, avgn:107, avgs:229, avg:1805},
+def normalized_to_tabular(normalized_hash)
+    # use the geomean of "InsertHugeInt" and "RandomDistinct2" as memory
+    min_mem = 1e99
+    normalized_hash.each do |_, benchmark|
+        r1 = benchmark["InsertHugeInt"]
+        r2 = benchmark["RandomDistinct2"]
+        next if r1.nil? || r2.nil?
+        mem = geomean([r1[1], r2[1]])
+        if (mem < min_mem)
+            min_mem = mem
+        end
+    end
+
+    id = 1
+    normalized_hash.each do |hashmap_hash, benchmark|
+        hashmap_name, hash_name = hashmap_hash
+        # find max
+        mem = val_or_timeout(benchmark, "Memory")
+        cpy = val_or_timeout(benchmark, "Copy")
+        ihi = val_or_timeout(benchmark, "InsertHugeInt")
+        it = val_or_timeout(benchmark, "IterateIntegers")
+        rd2 = val_or_timeout(benchmark, "RandomDistinct2")
+        rie = val_or_timeout(benchmark, "RandomInsertErase")
+        rf200 = val_or_timeout(benchmark, "RandomFind_200")
+        rf2k = val_or_timeout(benchmark, "RandomFind_2000")
+        rf500k = val_or_timeout(benchmark, "RandomFind_500000")
+        ries = val_or_timeout(benchmark, "RandomInsertEraseStrings")
+        rfs = val_or_timeout(benchmark, "RandomFindString")
+        rfs1m = val_or_timeout(benchmark, "RandomFindString_1000000")
+
+        avgn = geomean([rf200, rf2k, rf500k])
+        avgs = geomean([rfs, rfs1m])
+        avg = geomean([mem, cpy, ihi, it, rd2, rie, rf200, rf2k, rf500k, ries, rfs, rfs1m])
+        
+        print("{id:#{id}")
+        print(", hm:\"#{hashmap_name}\"")
+        print(", h:\"#{hash_name}\"")
+        print(", mem:#{round_or_timeout(mem)}")
+        print(", cpy:#{round_or_timeout(cpy)}")
+        print(", ihi:#{round_or_timeout(ihi)}")
+        print(", it:#{round_or_timeout(it)}")
+        print(", rd2:#{round_or_timeout(rd2)}")
+        print(", rie:#{round_or_timeout(rie)}")
+        print(", rf200:#{round_or_timeout(rf200)}")
+        print(", rf2k:#{round_or_timeout(rf2k)}")
+        print(", rf500k:#{round_or_timeout(rf500k)}")
+        print(", ries:#{round_or_timeout(ries)}")
+        print(", rfs:#{round_or_timeout(rfs)}")
+        print(", rfs1m:#{round_or_timeout(rfs1m)}")
+        print(", avgn:#{round_or_timeout(avgn)}")
+        print(", avgs:#{round_or_timeout(avgs)}")
+        print(", avg:#{round_or_timeout(avg)}")
+        print("},\n")
+        id += 1
+    end
+end
+
 csv = parse_csv(ARGV[0])
 full_hash = convert_csv_to_hash(csv)
 summary_hash = summarize(full_hash)
-normalized_hash = normalize_time(summary_hash)
+with_mem = add_memory_benchmark(summary_hash)
+normalized_hash = normalize_time(with_mem)
 #scores = sorted_score(normalized_hash)
 #scores.each do |t, mem, names|
 #    printf("%5.2f\t%6.1f\t\"%s\"\n", t, mem, names.join(" "))
 #end
-normalized_to_csv(normalized_hash)
+normalized_to_tabular(normalized_hash)

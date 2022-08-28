@@ -106,6 +106,7 @@ bad_commands = [
     "bench_jiwan_dense_hash_map__std_hash RandomFind_500000",
     "bench_jiwan_dense_hash_map__std_hash RandomInsertErase",
 ]
+bad_commands = []
 
 # convert to hash
 h = {}
@@ -134,6 +135,10 @@ first_skip_to_app = nil
             end
             first_skip_to_app = nil
 
+            if !(app =~ /ankerl_unordered_dense/)
+                puts "SKIPPING #{app}, only unordered_dense"
+                next
+            end
             # filter: benchmarks with 'String' run all hashes, benchmarks *without* don't run boost::hash, because std::hash and boost::hash is the same in that case.
             #if !(bench =~ /String/) && app =~ /boost_hash/
             #    puts "SKIPPING #{app} #{bench} non-String boost_hash"
@@ -151,7 +156,7 @@ first_skip_to_app = nil
             #    next
             #end
 
-            if !(app =~ /ankerl_hash/) && !(app =~ /boost_hash/)
+            if !(app =~ /std_hash/) && !(app =~ /boost_hash/)
                 puts "SKIPPING #{app} #{bench}, only ankerl_hash and boost_hash"
                 next
             end
