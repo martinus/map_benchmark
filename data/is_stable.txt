@@ -1,0 +1,31 @@
+# find . -maxdepth 1 -name "bench*" -exec \{\} ShowIsStableReference \; 2>&1 |sort |uniq                                                                                                                                                    
+
+0 absl::flat_hash_map
+0 ankerl::unordered_dense::map
+0 emhash7::HashMap
+0 emhash8::HashMap
+0 folly::F14ValueMap
+0 fph::DynamicFphMap
+0 gtl::btree_map
+0 gtl::flat_hash_map
+0 gtl::parallel_flat_hash_map
+0 jg::dense_hash_map
+0 robin_hood::unordered_flat_map
+0 ska::bytell_hash_map
+0 ska::flat_hash_map
+0 spp::sparse_hash_map
+0 tsl::hopscotch_map
+0 tsl::robin_map
+0 tsl::sparse_map
+1 absl::node_hash_map
+1 boost::multi_index::hashed_unique
+1 boost::unordered_map 1_80
+1 boost::unordered_map PoolAllocator 1_80
+1 boost::unordered_map unsynchronized_pool_resource 1_80
+1 folly::F14NodeMap
+1 gtl::node_hash_map
+1 gtl::parallel_node_hash_map
+1 robin_hood::unordered_node_map
+1 std::unordered_map
+1 std::unordered_map PoolAllocator
+1 std::unordered_map unsynchronized_pool_resource

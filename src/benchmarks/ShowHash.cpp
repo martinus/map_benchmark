@@ -1,6 +1,7 @@
 #include "Hash.h"
 #include "bench.h"
 #include "hex.h"
+#include "sfc64.h"
 
 #include <bitset>
 
@@ -56,4 +57,44 @@ BENCHMARK(ShowHashString) {
     showHashString("aaaaaaaaaac");
     showHashString("baaaaaaaaaa");
     showHashString("caaaaaaaaaa");
+}
+
+BENCHMARK(ShowIsStableReference) {
+    using M = Map<uint64_t, uint64_t>;
+#ifdef USE_POOL_ALLOCATOR
+    Resource<uint64_t, uint64_t> resource;
+    M map{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+    M map;
+#endif
+
+    auto keyToVal = std::unordered_map<uint64_t const*, uint64_t>();
+    auto mappedToVal = std::unordered_map<uint64_t const*, uint64_t>();
+
+    auto rng = sfc64(987654);
+    for (size_t i = 0; i < 10000; ++i) {
+        auto val = rng();
+        map[val] = val;
+
+        auto it = map.find(val);
+        keyToVal[&it->first] = it->first;
+        mappedToVal[&it->second] = it->second;
+    }
+
+    auto isStable = true;
+    for (auto const& kv : map) {
+        auto itKey = keyToVal.find(&kv.first);
+        if (itKey == keyToVal.end() || itKey->second != kv.first) {
+            isStable = false;
+            break;
+        }
+
+        auto itMapped = mappedToVal.find(&kv.second);
+        if (itMapped == mappedToVal.end() || itMapped->second != kv.second) {
+            isStable = false;
+            break;
+        }
+    }
+
+    std::cerr << isStable << " " << MapName << std::endl;
 }
