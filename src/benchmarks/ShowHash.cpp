@@ -38,3 +38,22 @@ BENCHMARK(ShowHash) {
     showHash<uint64_t>("uint64_t");
     showHash<int32_t>("int32_t");
 }
+
+void showHashString(std::string const& val) {
+    auto mh = Hash<std::string>{}(val);
+    auto showVal = '"' + val + '"';
+    std::cerr << std::setfill(' ') << std::setw(14) << showVal << " -> " << hex(mh) << " " << std::bitset<sizeof(size_t) * 8>(mh) << std::endl;
+}
+
+BENCHMARK(ShowHashString) {
+    showHashString("a");
+    showHashString("aa");
+    showHashString("aaa");
+    showHashString("b");
+    showHashString("c");
+    showHashString("aaaaaaaaaaa");
+    showHashString("aaaaaaaaaab");
+    showHashString("aaaaaaaaaac");
+    showHashString("baaaaaaaaaa");
+    showHashString("caaaaaaaaaa");
+}

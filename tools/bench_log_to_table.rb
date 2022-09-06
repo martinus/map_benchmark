@@ -175,6 +175,17 @@ def sorted_score(normalized_hash)
     scores.sort
 end
 
+def collect_all_benchmark_names(normalized_hash)
+    # collect all benchmark names
+    benchmark_names = {}
+    normalized_hash.each do |hashmap_hash, benchmark_hash|
+        benchmark_hash.each do |benchmark_name, _|
+            benchmark_names[benchmark_name] = true
+        end
+    end
+    benchmark_names.keys.sort
+end
+
 # input:
 #   [hashmap_name, hash_name] => benchmark_name => [sum_median(time), max(memory)]
 # output:
@@ -184,7 +195,7 @@ end
 #   ...
 def normalized_to_csv(normalized_hash)
     # collect all benchmark names
-    benchmark_names = {}
+    benchmark_names = collect_all_benchmark_names(normalized_hash)
     normalized_hash.each do |hashmap_hash, benchmark_hash|
         benchmark_hash.each do |benchmark_name, _|
             benchmark_names[benchmark_name] = true
@@ -224,8 +235,8 @@ end
 
 def val_or_timeout(benchmark, name)
     r = benchmark[name]
-    if r.nil? || r[0] > 1e6
-        return "\"timeout\""
+    if r.nil? || r[0] > 1e5
+        return "\"-\""
     end
     r[0]
 end
@@ -234,7 +245,59 @@ def round_or_timeout(num)
     begin
         num.round
     rescue NoMethodError
-        "\"timeout\""
+        "\"-\""
+    end
+end
+
+# input:
+#   [hashmap_name, hash_name] => benchmark_name => [sum_median(time), max(memory)]
+def print_percentiles(normalized_hash, medians)
+    benchmark_names = collect_all_benchmark_names(normalized_hash)
+    bench_to_values = Hash.new do |h,k|
+        h[k] = []
+    end
+    normalized_hash.each do |_, benchmarks|
+        benchmark_names.each do |bn|
+            val = 0
+            if benchmarks[bn].nil?
+                val = 1e10
+            else
+                val = benchmarks[bn][0]
+            end
+            bench_to_values[bn].push val
+        end
+    end
+
+    # add geomeans
+    bench_to_values["Copy"].size.times do |idx|
+        mem = bench_to_values["Memory"][idx]
+        cpy = bench_to_values["Copy"][idx]
+        ihi = bench_to_values["InsertHugeInt"][idx]
+        it = bench_to_values["IterateIntegers"][idx]
+        rd2 = bench_to_values["RandomDistinct2"][idx]
+        rie = bench_to_values["RandomInsertErase"][idx]
+        rf200 = bench_to_values["RandomFind_200"][idx]
+        rf2k = bench_to_values["RandomFind_2000"][idx]
+        rf500k = bench_to_values["RandomFind_500000"][idx]
+        ries = bench_to_values["RandomInsertEraseStrings"][idx]
+        rfs = bench_to_values["RandomFindString"][idx]
+        rfs1m = bench_to_values["RandomFindString_1000000"][idx]
+
+        bench_to_values["avgn"].push(geomean([rf200, rf2k, rf500k]))
+        bench_to_values["avgs"].push(geomean([rfs, rfs1m]))
+        bench_to_values["avg"].push(geomean([mem, cpy, ihi, it, rd2, rie, rf200, rf2k, rf500k, ries, rfs, rfs1m]))
+    end
+
+    bench_to_values.each do |benchmark_name, values|
+        values.sort!
+    end
+
+    bench_to_values.each do |benchmark_name, values|
+        print benchmark_name
+        medians.each do |m|
+            print ", #{values[values.size*m/100]}"
+        end
+        print "\n"
     end
 end
 
@@ -309,3 +372,5 @@ normalized_hash = normalize_time(with_mem)
 #    printf("%5.2f\t%6.1f\t\"%s\"\n", t, mem, names.join(" "))
 #end
 normalized_to_tabular(normalized_hash)
+
+print_percentiles(normalized_hash, [20, 80])
