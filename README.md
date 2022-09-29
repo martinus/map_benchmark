@@ -37,6 +37,7 @@ The implementation if the benchmark is open source, get it here: [martinus/map_b
 
 1. In `external`, add a submodule:
    ```
+   cd external
    git submodule add -b master https://github.com/rigtorp/HashMap.git rigtorp__HashMap
    ```
 2. Create a directory in `src/map/` with a file `Hash.h`. See the others for example.
