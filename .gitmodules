@@ -9,7 +9,7 @@
 [submodule "external/facebook__folly"]
 	path = external/facebook__folly
 	url = https://github.com/facebook/folly.git
-	branch = master
+	branch = main
 [submodule "external/martinus__robin-hood-hashing"]
 	path = external/martinus__robin-hood-hashing
 	url = https://github.com/martinus/robin-hood-hashing.git
