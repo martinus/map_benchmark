@@ -54,10 +54,6 @@
 	path = external/martinus__unordered_dense
 	url = https://github.com/martinus/unordered_dense.git
 	branch = main
-[submodule "external/boost__unordered_flat_map"]
-	path = external/boost__unordered_flat_map
-	url = https://github.com/boostorg/unordered.git
-	branch = feature/foa_rc
 [submodule "external/lhmouse__asteria"]
 	path = external/lhmouse__asteria
 	url = https://github.com/lhmouse/asteria.git
