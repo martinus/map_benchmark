@@ -24,8 +24,8 @@ if benchs.empty?
     benchs = `./#{Dir["bench*"].first} l`.split("\n")
 end
 
-apps = Dir["bench*"].sort.uniq
-#apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
+apps = Dir["bench_boost_unordered_flat_map*"].sort.uniq
+# apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
 
 benchs.delete("CtorDtorEmptyMap")
 benchs.delete("CtorDtorSingleEntryMap")
@@ -135,10 +135,10 @@ first_skip_to_app = nil
             end
             first_skip_to_app = nil
 
-            if !(app =~ /ankerl_unordered_dense/)
-                puts "SKIPPING #{app}, only unordered_dense"
-                next
-            end
+            #if !(app =~ /ankerl_unordered_dense/)
+            #    puts "SKIPPING #{app}, only unordered_dense"
+            #    next
+            #end
             # filter: benchmarks with 'String' run all hashes, benchmarks *without* don't run boost::hash, because std::hash and boost::hash is the same in that case.
             #if !(bench =~ /String/) && app =~ /boost_hash/
             #    puts "SKIPPING #{app} #{bench} non-String boost_hash"
@@ -156,10 +156,10 @@ first_skip_to_app = nil
             #    next
             #end
 
-            if !(app =~ /std_hash/) && !(app =~ /boost_hash/)
-                puts "SKIPPING #{app} #{bench}, only ankerl_hash and boost_hash"
-                next
-            end
+            #if !(app =~ /std_hash/) && !(app =~ /boost_hash/)
+            #    puts "SKIPPING #{app} #{bench}, only ankerl_hash and boost_hash"
+            #    next
+            #end
 
             cmd = "#{cmd_prefix} ./#{app} #{bench}"
             cmd_key = "#{app} #{bench}"
