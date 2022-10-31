@@ -61,3 +61,7 @@
 	path = external/boost__unordered_flat_map
 	url = https://github.com/boostorg/unordered
 	branch = develop
+[submodule "external/avaneev__komihash"]
+	path = external/avaneev__komihash
+	url = https://github.com/avaneev/komihash.git
+	branch = main
