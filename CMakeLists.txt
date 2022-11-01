@@ -26,7 +26,7 @@ file(GLOB INC_MAPS "src/maps/*")
 # external code #####################################################################
 
 # boost: use locally built boost version
-set(BOOST_ROOT "/home/martinus/Downloads/boost_1_81_0" CACHE PATH "Boost library path" )
+set(BOOST_ROOT "/home/martinus/dev/boost_1_82_0_install" CACHE PATH "Boost library path" )
 #list(APPEND CMAKE_PREFIX_PATH /home/martinus/Downloads/boost_1_81_0)
 find_package(Boost 1.81 COMPONENTS container REQUIRED) # for allocators
 

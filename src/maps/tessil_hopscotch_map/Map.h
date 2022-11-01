@@ -5,5 +5,5 @@
 
 static const char* MapName = "tsl::hopscotch_map";
 
-template <class Key, class Val>
-using Map = tsl::hopscotch_map<Key, Val, Hash<Key>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = tsl::hopscotch_map<Key, Val, H>;

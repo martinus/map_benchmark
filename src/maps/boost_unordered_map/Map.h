@@ -6,5 +6,5 @@
 
 static const char* MapName = "boost::unordered_map " BOOST_LIB_VERSION;
 
-template <class Key, class Val>
-using Map = boost::unordered_map<Key, Val, Hash<Key>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = boost::unordered_map<Key, Val, H>;

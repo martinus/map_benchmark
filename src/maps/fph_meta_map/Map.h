@@ -5,5 +5,5 @@
 
 static const char* MapName = "fph::MetaFphMap";
 
-template <class Key, class Val>
-using Map = fph::MetaFphMap<Key, Val, Hash<Key>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = fph::MetaFphMap<Key, Val, H>;

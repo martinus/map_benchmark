@@ -14,5 +14,5 @@
 
 static const char* MapName = "asteria::cow_hashmap";
 
-template<class Key, class Val>
-using Map = ::rocket::cow_hashmap<Key, Val, Hash<Key>>;
+template<class Key, class Val, class H = Hash<Key>>
+using Map = ::rocket::cow_hashmap<Key, Val, H>;

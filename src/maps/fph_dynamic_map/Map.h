@@ -5,5 +5,5 @@
 
 static const char* MapName = "fph::DynamicFphMap";
 
-template <class Key, class Val>
-using Map = fph::DynamicFphMap<Key, Val, Hash<Key>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = fph::DynamicFphMap<Key, Val, H>;

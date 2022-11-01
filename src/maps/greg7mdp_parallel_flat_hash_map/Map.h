@@ -5,5 +5,5 @@
 
 static const char* MapName = "gtl::parallel_flat_hash_map";
 
-template <class Key, class Val>
-using Map = gtl::parallel_flat_hash_map<Key, Val, Hash<Key>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = gtl::parallel_flat_hash_map<Key, Val, H>;

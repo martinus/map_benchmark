@@ -5,5 +5,5 @@
 
 static const char* MapName = "gtl::btree_map";
 
-template <class Key, class Val>
+template <class Key, class Val, class H = Hash<Key>>
 using Map = gtl::btree_map<Key, Val>;
