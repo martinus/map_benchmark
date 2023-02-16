@@ -26,8 +26,9 @@ file(GLOB INC_MAPS "src/maps/*")
 # external code #####################################################################
 
 # boost: use locally built boost version
-list(APPEND CMAKE_PREFIX_PATH /home/martinus/boost-develop-beta/boost-install)
-find_package(Boost 1.80 COMPONENTS container REQUIRED) # for allocators
+set(BOOST_ROOT "/home/martinus/Downloads/boost_1_81_0" CACHE PATH "Boost library path" )
+#list(APPEND CMAKE_PREFIX_PATH /home/martinus/Downloads/boost_1_81_0)
+find_package(Boost 1.81 COMPONENTS container REQUIRED) # for allocators
 
 
 # absl stuff: see https://github.com/abseil/abseil-cpp/tree/master/CMake
@@ -71,7 +72,9 @@ find_package(Threads REQUIRED)
 
 # make sure we get SSE and crc support!
 # see https://github.com/facebook/folly/blob/master/folly/container/detail/F14Table.cpp#L26
-add_subdirectory("external/facebook__folly")
+
+# NOPE, folly just doesn't work.
+#add_subdirectory("external/facebook__folly")
 #add_subdirectory("external/electronicarts__EASTL")
 
 # build stuff #####################################################################
