@@ -49,7 +49,7 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
-# folly 
+# folly
 # install dependencies, see https://github.com/facebook/folly
 # sudo apt-get install \
 #   g++ \
@@ -73,9 +73,14 @@ find_package(Threads REQUIRED)
 # make sure we get SSE and crc support!
 # see https://github.com/facebook/folly/blob/master/folly/container/detail/F14Table.cpp#L26
 
-# NOPE, folly just doesn't work.
-#add_subdirectory("external/facebook__folly")
-#add_subdirectory("external/electronicarts__EASTL")
+# folly is disabled by default
+option(ENABLE_FOLLY "dont't build facebook folly" FALSE)
+if (ENABLE_FOLLY)
+    add_subdirectory("external/facebook__folly")
+else ()
+    list(FILTER INC_MAPS EXCLUDE REGEX "maps[\\/]folly_")
+endif ()
+
 
 # build stuff #####################################################################
 
