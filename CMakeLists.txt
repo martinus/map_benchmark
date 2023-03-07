@@ -98,8 +98,15 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif ()
 
 # create targets for all map - hash pairs
+
+foreach(HASH_DIR ${INC_HASHES})
+    get_filename_component(HASH_NAME ${HASH_DIR} NAME_WE)
+    add_custom_target("${HASH_NAME}_all") # aggregate of map targets
+endforeach(HASH_DIR ${INC_HASHES})
+
 foreach(MAP_DIR ${INC_MAPS})
     get_filename_component(MAP_NAME ${MAP_DIR} NAME_WE)
+    add_custom_target("${MAP_NAME}_all") # aggregate of hash targets
     foreach(HASH_DIR ${INC_HASHES})
         # executable name: mapname_hashname
         get_filename_component(HASH_NAME ${HASH_DIR} NAME_WE)
@@ -111,7 +118,7 @@ foreach(MAP_DIR ${INC_MAPS})
 
         add_executable(${EXECUTABLE_NAME} ${SRC_APP} ${SRC_BENCHMARKS} ${SRC_MAP_DIR} ${SRC_HASH_DIR})
         target_include_directories(${EXECUTABLE_NAME} PRIVATE "src/app" "external" ${MAP_DIR} ${HASH_DIR} ${FOLLY_DIR})
-        
+
         if (EXISTS "${MAP_DIR}/dependencies.cmake")
             include("${MAP_DIR}/dependencies.cmake")
         endif ()
@@ -120,5 +127,7 @@ foreach(MAP_DIR ${INC_MAPS})
             include("${HASH_DIR}/dependencies.cmake")
         endif ()
 
+        add_dependencies("${HASH_NAME}_all" ${EXECUTABLE_NAME})
+        add_dependencies("${MAP_NAME}_all" ${EXECUTABLE_NAME})
     endforeach(HASH_DIR ${INC_HASHES})
 endforeach(MAP_DIR ${INC_MAPS})
