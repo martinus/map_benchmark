@@ -74,7 +74,7 @@ find_package(Threads REQUIRED)
 # see https://github.com/facebook/folly/blob/master/folly/container/detail/F14Table.cpp#L26
 
 # folly is disabled by default
-option(ENABLE_FOLLY "dont't build facebook folly" FALSE)
+option(ENABLE_FOLLY "enable facebook folly build" FALSE)
 if (ENABLE_FOLLY)
     add_subdirectory("external/facebook__folly")
 else ()
