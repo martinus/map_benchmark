@@ -65,3 +65,7 @@
 	path = external/avaneev__komihash
 	url = https://github.com/avaneev/komihash.git
 	branch = main
+[submodule "external/rigtorp__HashMap"]
+	path = external/rigtorp__HashMap
+	url = https://github.com/rigtorp/HashMap.git
+	branch = master
