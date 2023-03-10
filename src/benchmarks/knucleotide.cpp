@@ -25,7 +25,7 @@ static size_t count(const std::vector<char> &poly, const std::string &oligo) {
 
     using M = Map<uint64_t, uint32_t>;
 #ifdef USE_POOL_ALLOCATOR
-    Resource<uint64_t, uint64_t> resource;
+    Resource<uint64_t, uint32_t> resource;
     M map{0, M::hasher{}, M::key_equal{}, &resource};
 #else
     M map;
