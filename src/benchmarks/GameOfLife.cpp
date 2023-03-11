@@ -4,10 +4,10 @@
 #include <vector>
 
 struct Vec2 {
-    int16_t x, y;
-    Vec2(int16_t x, int16_t y) : x(x), y(y) {}
-    inline uint32_t pack() const { return (((uint32_t)x) << 16) | (uint16_t)y; };
-    static inline Vec2 unpack(uint32_t p) { return Vec2((int16_t)(p >> 16), (int16_t)p); }
+    uint16_t x, y;
+    Vec2(uint16_t x, uint16_t y) : x(x), y(y) {}
+    inline uint32_t pack() const { return (((uint32_t)x) << 16) | y; };
+    static inline Vec2 unpack(uint32_t p) { return Vec2(p >> 16, p); }
 };
 
 void game_of_life(
@@ -29,7 +29,9 @@ void game_of_life(
     M map2;
 #endif
 
-    for (auto const& v : state) {
+    for (Vec2 v : state) {
+        v.x += UINT16_MAX/2;
+        v.y += UINT16_MAX/2;
         map1[v.pack()] = true;
         for (it.x = v.x - 1; it.x <= v.x + 1; ++it.x)
             for (it.y = v.y - 1; it.y <= v.y + 1; ++it.y)
