@@ -9,8 +9,8 @@
 #include <cassert>
 #include <cstddef>
 #include <list>
-#include <new>
 #include <memory>
+#include <new>
 #include <type_traits>
 #include <utility>
 
@@ -61,7 +61,7 @@
  *        └───┘
  *
  * Here m_free_lists[1] holds the 2 blocks of size 8 bytes, and m_free_lists[2]
- * holds the3 blocks of size 16. The blocks came from the data stored in the
+ * holds the 3 blocks of size 16. The blocks came from the data stored in the
  * m_allocated_chunks list. Each chunk has bytes 262144. The last chunk has still
  * some memory available for the blocks, and when m_available_memory_it is at the
  * end, a new chunk will be allocated and added to the list.
@@ -102,7 +102,7 @@ class PoolResource final
 
     /**
      * Single linked lists of all data that came from deallocating.
-     * m_free_lists[n] will serve blocks of size n*BLOCK_ALIGNMENT_BYTES.
+     * m_free_lists[n] will serve blocks of size n*ELEM_ALIGN_BYTES.
      */
     std::array<ListNode*, MAX_BLOCK_SIZE_BYTES / ELEM_ALIGN_BYTES + 1> m_free_lists{};
 
@@ -114,7 +114,7 @@ class PoolResource final
     /**
      * Points to the end of available memory for carving out allocations.
      *
-     * That member variable is redundant, and is always equal to `m_allocated_chunks.back().get() + CHUNK_SIZE_BYTES`
+     * That member variable is redundant, and is always equal to `m_allocated_chunks.back() + m_chunk_size_bytes`
      * whenever it is accessed, but `m_untouched_memory_end` caches this for clarity and efficiency.
      */
     std::byte* m_available_memory_end = nullptr;
@@ -187,6 +187,14 @@ public:
     PoolResource() : PoolResource(262144) {}
 
     /**
+     * Disable copy & move semantics, these are not supported for the resource.
+     */
+    PoolResource(const PoolResource&) = delete;
+    PoolResource& operator=(const PoolResource&) = delete;
+    PoolResource(PoolResource&&) = delete;
+    PoolResource& operator=(PoolResource&&) = delete;
+
+    /**
      * Deallocates all memory allocated associated with the memory resource.
      */
     ~PoolResource()
@@ -205,8 +213,6 @@ public:
     {
         if (IsFreeListUsable(bytes, alignment)) {
             const std::size_t num_alignments = NumElemAlignBytes(bytes);
-
-            // If alignment is lower than BLOCK_ALIGNMENT_BYTES, we need to allocate a bit more.
             if (nullptr != m_free_lists[num_alignments]) {
                 // we've already got data in the pool's freelist, unlink one element and return the pointer
                 // to the unlinked memory. Since FreeList is trivially destructible we can just treat it as
@@ -215,8 +221,8 @@ public:
             }
 
             // freelist is empty: get one allocation from allocated chunk memory.
-            const size_t round_bytes = num_alignments * ELEM_ALIGN_BYTES;
-            if (m_available_memory_it + round_bytes > m_available_memory_end) {
+            const std::ptrdiff_t round_bytes = static_cast<std::ptrdiff_t>(num_alignments * ELEM_ALIGN_BYTES);
+            if (round_bytes > m_available_memory_end - m_available_memory_it) {
                 // slow path, only happens when a new chunk needs to be allocated
                 AllocateChunk();
             }
@@ -225,12 +231,12 @@ public:
             return std::exchange(m_available_memory_it, m_available_memory_it + round_bytes);
         }
 
-        // Can't use the pool => forward allocation to the upstream resource.
+        // Can't use the pool => use operator new()
         return ::operator new (bytes, std::align_val_t{alignment});
     }
 
     /**
-     * Returns a block to the freelists, or deletes the block when it did not come from the cunks.
+     * Returns a block to the freelists, or deletes the block when it did not come from the chunks.
      */
     void Deallocate(void* p, std::size_t bytes, std::size_t alignment) noexcept
     {
@@ -240,18 +246,9 @@ public:
             // into the memory since we can be sure the alignment is correct.
             PlacementAddToList(p, m_free_lists[num_alignments]);
         } else {
-            // Can't use the pool => forward deallocation to the upstream resource.
+            // Can't use the pool => forward deallocation to ::operator delete().
             ::operator delete (p, std::align_val_t{alignment});
         }
-    }
-
-    /**
-     * Memory allocated by one resource cannot be deallocated by another, so return
-     * true only for the same object.
-     */
-    bool IsEqual(const PoolResource& other) const noexcept
-    {
-        return this == &other;
     }
 
     /**
