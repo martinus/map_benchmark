@@ -24,7 +24,8 @@ if benchs.empty?
     benchs = `./#{Dir["bench*"].first} l`.split("\n")
 end
 
-apps = Dir["bench_boost_unordered_flat_map*"].sort.uniq
+apps = Dir["bench_*"].sort.uniq
+# apps = Dir["bench_boost_unordered_flat_map*"].sort.uniq
 # apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
 
 benchs.delete("CtorDtorEmptyMap")

@@ -5,67 +5,59 @@
 #include <cstdint>
 #include <vector>
 
-class Vec2 {
+class vec2 {
     uint32_t m_xy;
 
 public:
-    constexpr Vec2(uint16_t x, uint16_t y)
+    constexpr vec2(uint16_t x, uint16_t y)
         : m_xy{static_cast<uint32_t>(x) << 16U | y} {}
 
-    constexpr explicit Vec2(uint32_t xy)
+    constexpr explicit vec2(uint32_t xy)
         : m_xy(xy) {}
 
     [[nodiscard]] constexpr auto pack() const -> uint32_t {
         return m_xy;
     };
 
-    [[nodiscard]] constexpr auto add_x(uint16_t x) const -> Vec2 {
-        return Vec2{m_xy + (static_cast<uint32_t>(x) << 16U)};
+    [[nodiscard]] constexpr auto add_x(uint16_t x) const -> vec2 {
+        return vec2{m_xy + (static_cast<uint32_t>(x) << 16U)};
     }
 
-    [[nodiscard]] constexpr auto add_y(uint16_t y) const -> Vec2 {
-        return Vec2{(m_xy & 0xffff0000) | ((m_xy + y) & 0xffff)};
+    [[nodiscard]] constexpr auto add_y(uint16_t y) const -> vec2 {
+        return vec2{(m_xy & 0xffff0000) | ((m_xy + y) & 0xffff)};
     }
 
     template <typename Op>
     constexpr void for_each_surrounding(Op&& op) const {
         uint32_t v = m_xy;
 
-        uint32_t upper = (v & 0xffff0000U) - 0x10000;
+        uint32_t upper = (v & 0xffff0000U);
         uint32_t l1 = (v - 1) & 0xffffU;
         uint32_t l2 = v & 0xffffU;
         uint32_t l3 = (v + 1) & 0xffffU;
 
-        op(upper | l1);
-        op(upper | l2);
-        op(upper | l3);
+        op((upper - 0x10000) | l1);
+        op((upper - 0x10000) | l2);
+        op((upper - 0x10000) | l3);
 
-        upper += 0x10000;
         op(upper | l1);
         // op(upper | l2);
         op(upper | l3);
 
-        upper += 0x10000;
-        op(upper | l1);
-        op(upper | l2);
-        op(upper | l3);
+        op((upper + 0x10000) | l1);
+        op((upper + 0x10000) | l2);
+        op((upper + 0x10000) | l3);
     }
 };
 
-void game_of_life(Bench& bench, const char* name, size_t nsteps, size_t finalPopulation, std::vector<Vec2> state) {
+template <typename M>
+void game_of_life(Bench& bench, const char* name, size_t nsteps, size_t finalPopulation, M& map1, std::vector<vec2> state) {
     bench.beginMeasure(name);
 
-    using M = Map<uint32_t, bool>;
-#ifdef USE_POOL_ALLOCATOR
-    Resource<uint32_t, bool> resource;
-    M map1{0, M::hasher{}, M::key_equal{}, &resource};
-    M map2{0, M::hasher{}, M::key_equal{}, &resource};
-#else
-    M map1;
-    M map2;
-#endif
+    map1.clear();
+    auto map2 = map1;
 
-    for (Vec2& v : state) {
+    for (auto& v : state) {
         v = v.add_x(UINT16_MAX / 2).add_y(UINT16_MAX / 2);
         map1[v.pack()] = true;
         v.for_each_surrounding([&](uint32_t xy) { map1.emplace(xy, false); });
@@ -73,20 +65,19 @@ void game_of_life(Bench& bench, const char* name, size_t nsteps, size_t finalPop
 
     auto* m1 = &map1;
     auto* m2 = &map2;
-
     for (size_t i = 0; i < nsteps; ++i) {
         for (auto const kv : *m1) {
             auto const& pos = kv.first;
             auto alive = kv.second;
             int neighbors = 0;
-            Vec2{pos}.for_each_surrounding([&](uint32_t xy) {
+            vec2{pos}.for_each_surrounding([&](uint32_t xy) {
                 if (auto x = m1->find(xy); x != m1->end()) {
                     neighbors += x->second;
                 }
             });
             if ((alive && (neighbors == 2 || neighbors == 3)) || (!alive && neighbors == 3)) {
                 (*m2)[pos] = true;
-                Vec2{pos}.for_each_surrounding([&](uint32_t xy) { m2->emplace(xy, false); });
+                vec2{pos}.for_each_surrounding([&](uint32_t xy) { m2->emplace(xy, false); });
             }
         }
         m1->clear();
@@ -101,22 +92,38 @@ void game_of_life(Bench& bench, const char* name, size_t nsteps, size_t finalPop
 }
 
 BENCHMARK(GameOfLife_stabilizing) {
+    using M = Map<uint32_t, bool>;
+#ifdef USE_POOL_ALLOCATOR
+    Resource<uint32_t, bool> resource;
+    M map1{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+    M map1;
+#endif
+
     // https://conwaylife.com/wiki/R-pentomino
-    game_of_life(bench, "R-pentomino", 1103, 116, {{1, 0}, {2, 0}, {0, 1}, {1, 1}, {1, 2}});
+    game_of_life(bench, "R-pentomino", 1103, 116, map1, {{1, 0}, {2, 0}, {0, 1}, {1, 1}, {1, 2}});
 
     // https://conwaylife.com/wiki/Acorn
-    game_of_life(bench, "Acorn", 5206, 633, {{1, 0}, {3, 1}, {0, 2}, {1, 2}, {4, 2}, {5, 2}, {6, 2}});
+    game_of_life(bench, "Acorn", 5206, 633, map1, {{1, 0}, {3, 1}, {0, 2}, {1, 2}, {4, 2}, {5, 2}, {6, 2}});
 
     // https://conwaylife.com/wiki/Jaydot
-    game_of_life(bench, "Jaydot", 6929, 1124, {{1, 0}, {2, 0}, {0, 1}, {1, 1}, {2, 1}, {1, 3}, {1, 4}, {2, 4}, {0, 5}});
+    game_of_life(bench, "Jaydot", 6929, 1124, map1, {{1, 0}, {2, 0}, {0, 1}, {1, 1}, {2, 1}, {1, 3}, {1, 4}, {2, 4}, {0, 5}});
 
     // https://conwaylife.com/wiki/Bunnies
-    game_of_life(bench, "Bunnies", 17332, 1744, {{0, 0}, {6, 0}, {2, 1}, {6, 1}, {2, 2}, {5, 2}, {7, 2}, {1, 3}, {3, 3}});
+    game_of_life(bench, "Bunnies", 17332, 1744, map1, {{0, 0}, {6, 0}, {2, 1}, {6, 1}, {2, 2}, {5, 2}, {7, 2}, {1, 3}, {3, 3}});
 }
 
 BENCHMARK(GameOfLife_growing) {
+    using M = Map<uint32_t, bool>;
+#ifdef USE_POOL_ALLOCATOR
+    Resource<uint32_t, bool> resource;
+    M map1{0, M::hasher{}, M::key_equal{}, &resource};
+#else
+    M map1;
+#endif
+
     // https://conwaylife.com/wiki/Gotts_dots
-    game_of_life(bench, "Gotts dots", 2000, 4599,
+    game_of_life(bench, "Gotts dots", 2000, 4599, map1,
                  {
                      {0, 0},    {0, 1},    {0, 2},                                                                                 // 1
                      {4, 11},   {5, 12},   {6, 13},   {7, 12},   {8, 11},                                                          // 2
@@ -128,7 +135,7 @@ BENCHMARK(GameOfLife_growing) {
                  });
 
     // https://conwaylife.com/wiki/Puffer_2
-    game_of_life(bench, "Puffer 2", 2000, 7400,
+    game_of_life(bench, "Puffer 2", 2000, 7400, map1,
                  {
                      {1, 0}, {2, 0}, {3, 0},  {15, 0}, {16, 0}, {17, 0}, // line 0
                      {0, 1}, {3, 1}, {14, 1}, {17, 1},                   // line 1
