@@ -129,7 +129,7 @@ all_data.sort.each do |l|
     hashmap_name = NAME_REPLACEMENTS[hashmap_name] || hashmap_name
     hashmap_name = "#{hashmap_name}<br>#{hash_name}"
 
-    entry = h[benchmark_name][type][hashmap_name][measurement_name]
+    entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
 
     if l.size == 8
         entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name]["factor"] || 1.0)
