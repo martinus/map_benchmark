@@ -5,38 +5,50 @@
 #include <cstdint>
 #include <vector>
 
-struct Vec2 {
+class Vec2 {
     uint32_t m_xy;
 
+public:
     constexpr Vec2(uint16_t x, uint16_t y)
-        : m_xy{(static_cast<uint32_t>(x) << 16U) | y} {}
+        : m_xy{static_cast<uint32_t>(x) << 16U | y} {}
 
-    constexpr Vec2(uint32_t xy)
+    constexpr explicit Vec2(uint32_t xy)
         : m_xy(xy) {}
 
-    [[nodiscard]] constexpr uint32_t pack() const {
+    [[nodiscard]] constexpr auto pack() const -> uint32_t {
         return m_xy;
     };
 
-    constexpr void add_x(uint32_t x) {
-        m_xy += x << 16U;
+    [[nodiscard]] constexpr auto add_x(uint16_t x) const -> Vec2 {
+        return Vec2{m_xy + (static_cast<uint32_t>(x) << 16U)};
     }
 
-    constexpr void add_y(uint32_t y) {
-        m_xy += y;
+    [[nodiscard]] constexpr auto add_y(uint16_t y) const -> Vec2 {
+        return Vec2{(m_xy & 0xffff0000) | ((m_xy + y) & 0xffff)};
     }
 
     template <typename Op>
     constexpr void for_each_surrounding(Op&& op) const {
-        op(m_xy - 0x10000 - 1);
-        op(m_xy - 0x10000);
-        op(m_xy - 0x10000 + 1);
-        op(m_xy - 1);
-        // op(m_xy);
-        op(m_xy + 1);
-        op(m_xy + 0x10000 - 1);
-        op(m_xy + 0x10000);
-        op(m_xy + 0x10000 + 1);
+        uint32_t v = m_xy;
+
+        uint32_t upper = (v & 0xffff0000U) - 0x10000;
+        uint32_t l1 = (v - 1) & 0xffffU;
+        uint32_t l2 = v & 0xffffU;
+        uint32_t l3 = (v + 1) & 0xffffU;
+
+        op(upper | l1);
+        op(upper | l2);
+        op(upper | l3);
+
+        upper += 0x10000;
+        op(upper | l1);
+        // op(upper | l2);
+        op(upper | l3);
+
+        upper += 0x10000;
+        op(upper | l1);
+        op(upper | l2);
+        op(upper | l3);
     }
 };
 
@@ -53,9 +65,8 @@ void game_of_life(Bench& bench, const char* name, size_t nsteps, size_t finalPop
     M map2;
 #endif
 
-    for (Vec2 v : state) {
-        v.add_x(UINT16_MAX / 2);
-        v.add_y(UINT16_MAX / 2);
+    for (Vec2& v : state) {
+        v = v.add_x(UINT16_MAX / 2).add_y(UINT16_MAX / 2);
         map1[v.pack()] = true;
         v.for_each_surrounding([&](uint32_t xy) { map1.emplace(xy, false); });
     }
