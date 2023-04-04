@@ -6,8 +6,8 @@
 
 static const char* MapName = "rigtorp::HashMap";
 
-template <class Key, class Val>
-struct Map : public rigtorp::HashMap<Key, Val, Hash<Key> > {
+template <class Key, class Val, class H = Hash<Key>>
+struct Map : public rigtorp::HashMap<Key, Val, H> {
 	// This hash map requires a sentinel key, which can't be used with the
 	// map. Fortunately, using the maximum value of the Key type happens to
 	// work with the benchmark.
