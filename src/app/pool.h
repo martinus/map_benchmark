@@ -115,17 +115,17 @@ class PoolResource final
      * Points to the end of available memory for carving out allocations.
      *
      * That member variable is redundant, and is always equal to `m_allocated_chunks.back() + m_chunk_size_bytes`
-     * whenever it is accessed, but `m_untouched_memory_end` caches this for clarity and efficiency.
+     * whenever it is accessed, but `m_available_memory_end` caches this for clarity and efficiency.
      */
     std::byte* m_available_memory_end = nullptr;
 
     /**
      * How many multiple of ELEM_ALIGN_BYTES are necessary to fit bytes. We use that result directly as an index
-     * into m_free_lists.
+     * into m_free_lists. Round up for the special case when bytes==0.
      */
     [[nodiscard]] static constexpr std::size_t NumElemAlignBytes(std::size_t bytes)
     {
-        return (bytes + ELEM_ALIGN_BYTES - 1) / ELEM_ALIGN_BYTES;
+        return (bytes + ELEM_ALIGN_BYTES - 1) / ELEM_ALIGN_BYTES + (bytes == 0);
     }
 
     /**
@@ -152,7 +152,7 @@ class PoolResource final
      */
     void AllocateChunk()
     {
-        // if there is still any available memory is left, put it into the freelist.
+        // if there is still any available memory left, put it into the freelist.
         size_t remaining_available_bytes = std::distance(m_available_memory_it, m_available_memory_end);
         if (0 != remaining_available_bytes) {
             PlacementAddToList(m_available_memory_it, m_free_lists[remaining_available_bytes / ELEM_ALIGN_BYTES]);
