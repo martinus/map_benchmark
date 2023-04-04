@@ -69,3 +69,11 @@
 	path = external/rigtorp__HashMap
 	url = https://github.com/rigtorp/HashMap.git
 	branch = master
+[submodule "external/boost__container_hash"]
+	path = external/boost__container_hash
+	url = https://github.com/boostorg/container_hash.git
+	branch = develop
+[submodule "external/pdimov__mulpx_hash"]
+	path = external/pdimov__mulpx_hash
+	url = https://github.com/pdimov/mulxp_hash.git
+	branch = master

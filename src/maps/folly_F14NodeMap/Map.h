@@ -5,5 +5,5 @@
 
 static const char* MapName = "folly::F14NodeMap";
 
-template <class Key, class Val>
-using Map = folly::F14NodeMap<Key, Val, Hash<Key>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = folly::F14NodeMap<Key, Val, H>;

@@ -9,9 +9,9 @@ static const char* MapName = "std::unordered_map PoolAllocator";
 
 #define USE_POOL_ALLOCATOR 1
 
-template <class Key, class Val>
-using Map = std::unordered_map<Key, Val, Hash<Key>, std::equal_to<Key>,
+template <class Key, class Val, class H = Hash<Key>>
+using Map = std::unordered_map<Key, Val, H, std::equal_to<Key>,
                                PoolAllocator<std::pair<const Key, Val>, sizeof(std::pair<const Key, Val>) + sizeof(void*) * 4, alignof(void*)>>;
 
-template <class Key, class Val>
-using Resource = typename Map<Key, Val>::allocator_type::ResourceType;
+template <class Key, class Val, class H = Hash<Key>>
+using Resource = typename Map<Key, Val, H>::allocator_type::ResourceType;

@@ -28,3 +28,10 @@ struct Hash<std::string> {
         return std::hash<std::string>{}(key);
     }
 };
+
+template <>
+struct Hash<std::string_view> {
+    size_t operator()(std::string_view const& key) const {
+        return std::hash<std::string_view>{}(key);
+    }
+};

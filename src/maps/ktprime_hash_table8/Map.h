@@ -5,5 +5,5 @@
 
 static const char* MapName = "emhash8::HashMap";
 
-template <class Key, class Val>
-using Map = emhash8::HashMap<Key, Val, Hash<Key>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = emhash8::HashMap<Key, Val, H>;

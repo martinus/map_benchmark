@@ -17,7 +17,7 @@ def assert_frequency_scaling
     end
 end
 
-timeout_sec = 15*60
+timeout_sec = 2*60
 
 benchs = ARGV
 if benchs.empty?
@@ -143,10 +143,16 @@ first_skip_to_app = nil
             end
             first_skip_to_app = nil
 
-            #if !(app =~ /ankerl_unordered_dense/)
-            #    puts "SKIPPING #{app}, only unordered_dense"
+            if !(app =~ /boost_unordered_flat_map/)
+                puts "SKIPPING #{app}, not boost_unordered_flat_map"
+                next
+            end
+
+            #if !(app =~ /ankerl_unordered_dense/) && !(app =~/boost_unordered_flat_map/)
+            #    puts "SKIPPING #{app}, only ankerl::unordered_dense & boost::unordered_flat"
             #    next
             #end
+            
             # filter: benchmarks with 'String' run all hashes, benchmarks *without* don't run boost::hash, because std::hash and boost::hash is the same in that case.
             #if !(bench =~ /String/) && app =~ /boost_hash/
             #    puts "SKIPPING #{app} #{bench} non-String boost_hash"

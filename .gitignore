@@ -38,3 +38,5 @@
 *.json
 *.html
 *.dat
+
+/build_gcc

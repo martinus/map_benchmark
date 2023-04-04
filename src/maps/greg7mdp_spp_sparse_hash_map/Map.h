@@ -5,5 +5,5 @@
 
 static const char* MapName = "spp::sparse_hash_map";
 
-template <class Key, class Val>
-using Map = spp::sparse_hash_map<Key, Val, Hash<Key>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = spp::sparse_hash_map<Key, Val, H>;

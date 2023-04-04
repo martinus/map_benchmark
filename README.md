@@ -18,7 +18,7 @@ git clone --recurse-submodules https://github.com/martinus/map_benchmark.git
 # Updating Submodules
 
 ```sh
-git submodule update --remote                                                                                                                                                                                                                                    
+git submodule update --force --remote                                                                                                                                                                                                                                    
 ```
 
 # Sourcecode Layout

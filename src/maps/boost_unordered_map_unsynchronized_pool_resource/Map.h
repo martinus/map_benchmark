@@ -15,15 +15,15 @@ static const char* MapName = "boost::unordered_map unsynchronized_pool_resource 
 
 #define USE_POOL_ALLOCATOR 1
 
-template <class Key, class Val>
-using Map = boost::unordered_map<Key, Val, Hash<Key>, std::equal_to<Key>, boost::container::pmr::polymorphic_allocator<std::pair<const Key, Val>>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = boost::unordered_map<Key, Val, H, std::equal_to<Key>, boost::container::pmr::polymorphic_allocator<std::pair<const Key, Val>>>;
 
-template <class Key, class Val>
+template <class Key, class Val, class H = Hash<Key>>
 using Resource = boost::container::pmr::unsynchronized_pool_resource;
 
 
 #if 0
-template <class Key, class Val>
-using Map = boost::unordered_map<Key, Val, Hash<Key>, std::equal_to<Key>, boost::container::node_allocator<std::pair<const Key, Val>>>;
+template <class Key, class Val, class H = Hash<Key>>
+using Map = boost::unordered_map<Key, Val, H, std::equal_to<Key>, boost::container::node_allocator<std::pair<const Key, Val>>>;
 
 #endif

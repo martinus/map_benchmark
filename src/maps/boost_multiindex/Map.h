@@ -29,14 +29,14 @@ struct MapElement {
     mutable T2 second;
 };
 
-template <class Key, class Val>
-using MapBase = boost::multi_index_container<MapElement<Key, Val>,
-                                             boost::multi_index::indexed_by<boost::multi_index::hashed_unique<
-                                                 boost::multi_index::member<MapElement<Key, Val>, Key, &MapElement<Key, Val>::first>, Hash<Key>>>>;
+template <class Key, class Val, class H = Hash<Key>>
+using MapBase =
+    boost::multi_index_container<MapElement<Key, Val>, boost::multi_index::indexed_by<boost::multi_index::hashed_unique<
+                                                           boost::multi_index::member<MapElement<Key, Val>, Key, &MapElement<Key, Val>::first>, H>>>;
 
-template <class Key, class Val>
-struct Map : MapBase<Key, Val> {
-    using super = MapBase<Key, Val>;
+template <class Key, class Val, class H = Hash<Key>>
+struct Map : MapBase<Key, Val, H> {
+    using super = MapBase<Key, Val, H>;
     using super::super;
 
     template <class K>
