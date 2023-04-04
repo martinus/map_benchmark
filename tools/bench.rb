@@ -27,6 +27,13 @@ end
 apps = Dir["bench_*"].sort.uniq
 # apps = Dir["bench_boost_unordered_flat_map*"].sort.uniq
 # apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
+apps.delete("bench_asteria-cow_hashmap__absl_Hash")
+apps.delete("bench_asteria-cow_hashmap__boost_hash")
+apps.delete("bench_asteria-cow_hashmap__mumx_hash")
+apps.delete("bench_asteria-cow_hashmap__std_hash")
+apps.delete("bench_asteria-cow_hashmap__ankerl_hash")
+apps.delete("bench_asteria-cow_hashmap__komihash")
+apps.delete("bench_asteria-cow_hashmap__robin_hood_hash")
 
 benchs.delete("CtorDtorEmptyMap")
 benchs.delete("CtorDtorSingleEntryMap")

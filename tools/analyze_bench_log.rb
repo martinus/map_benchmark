@@ -48,6 +48,7 @@ NAME_REPLACEMENTS = {
     "phmap::parallel_flat_hash_map" => "gtl::parallel_flat_hash_map",
     "phmap::node_hash_map" => "gtl::node_hash_map",
     "phmap::flat_hash_map" => "gtl::flat_hash_map",
+    "boost::unordered_flat_map no SSE" => "boost::unordered_flat_map",
 
     "Identity" => "libstdc++-v3",
 }
@@ -108,10 +109,10 @@ all_data.sort.each do |l|
     hashmap_name, hash_name, benchmark_name, sort_order, measurement_name, validator, runtime, memory = l
 
     # skip stuff
-    if hash_name == "Identity" || hash_name == "boost::hash" || hash_name == "std::hash"
-        hash_name = "std::hash / boost::hash / Identity"
+    if hash_name == "Identity" || hash_name == "std::hash"
+        hash_name = "std::hash / Identity"
     end
-    if hash_name == "mumxmumxx1"
+    if hash_name == "mumxmumxx1" || hashmap_name == "asteria::cow_hashmap"
         next
     end
 
@@ -129,7 +130,7 @@ all_data.sort.each do |l|
     hashmap_name = NAME_REPLACEMENTS[hashmap_name] || hashmap_name
     hashmap_name = "#{hashmap_name}<br>#{hash_name}"
 
-    entry = h[benchmark_name][hash_name][hashmap_name][measurement_name]
+    entry = h[benchmark_name]["all"][hashmap_name][measurement_name]
 
     if l.size == 8
         entry[0].push runtime.to_f * (TEST_CONFIG[benchmark_name]["factor"] || 1.0)
@@ -367,7 +368,7 @@ END_PLOTLY_TEMPLATE
     autozoom = TEST_CONFIG[benchmark_name]["autozoom"]
     xaxis_width = [1.5 * best_hash_xrange, 1.07 * worst_hash_xrange].min
 
-    height_em = [20, (((all_hashmaps.size + 5) * all_hashes.size) * 2.0).to_i].max
+    height_em = [20, (all_hashmaps.size*3 + 5).to_i].max
     uid = "id_#{rand(2**32).to_s(16)}"
     measurement_names_str = measurement_names.map { |n| "\"#{n}\"" }.join(", ")
 

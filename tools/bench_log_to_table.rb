@@ -196,20 +196,23 @@ end
 def normalized_to_csv(normalized_hash)
     # collect all benchmark names
     benchmark_names = collect_all_benchmark_names(normalized_hash)
+    used_benchmark_names = {}
     normalized_hash.each do |hashmap_hash, benchmark_hash|
         benchmark_hash.each do |benchmark_name, _|
-            benchmark_names[benchmark_name] = true
+            used_benchmark_names[benchmark_name] = true
         end
     end
-    benchmark_names = benchmark_names.keys.sort
+    used_benchmark_names = used_benchmark_names.keys.sort
+
+
 
     # print header
-    header = benchmark_names + ["hashmap", "hash"]
+    header = used_benchmark_names + ["hashmap", "hash"]
     header = header.map {|name| "\"#{name}\"" }.join("; ")
     print("#{header}\n")
 
     normalized_hash.each do |hashmap_hash, benchmark_hash|
-        benchmark_names.each do |benchmark_name|
+        used_benchmark_names.each do |benchmark_name|
             result = benchmark_hash[benchmark_name]
             if result.nil? || result[0] >= 1e10
                 print("-; ")
@@ -282,6 +285,8 @@ def print_percentiles(normalized_hash, medians)
         ries = bench_to_values["RandomInsertEraseStrings"][idx]
         rfs = bench_to_values["RandomFindString"][idx]
         rfs1m = bench_to_values["RandomFindString_1000000"][idx]
+        golg = bench_to_values["GameOfLife_growing"][idx]
+        gols = bench_to_values["GameOfLife_stabilizing"][idx]
 
         bench_to_values["avgn"].push(geomean([rf200, rf2k, rf500k]))
         bench_to_values["avgs"].push(geomean([rfs, rfs1m]))
@@ -334,10 +339,12 @@ def normalized_to_tabular(normalized_hash)
         ries = val_or_timeout(benchmark, "RandomInsertEraseStrings")
         rfs = val_or_timeout(benchmark, "RandomFindString")
         rfs1m = val_or_timeout(benchmark, "RandomFindString_1000000")
+        golg = val_or_timeout(benchmark, "GameOfLife_growing")
+        gols = val_or_timeout(benchmark, "GameOfLife_stabilizing")
 
         avgn = geomean([rf200, rf2k, rf500k])
         avgs = geomean([rfs, rfs1m])
-        avg = geomean([mem, cpy, ihi, it, rd2, rie, rf200, rf2k, rf500k, ries, rfs, rfs1m])
+        avg = geomean([mem, cpy, ihi, it, rd2, rie, rf200, rf2k, rf500k, ries, rfs, rfs1m, golg, gols])
         
         print("{id:#{id}")
         print(", hm:\"#{hashmap_name}\"")
@@ -354,6 +361,8 @@ def normalized_to_tabular(normalized_hash)
         print(", ries:#{round_or_timeout(ries)}")
         print(", rfs:#{round_or_timeout(rfs)}")
         print(", rfs1m:#{round_or_timeout(rfs1m)}")
+        print(", golg:#{round_or_timeout(golg)}")
+        print(", gols:#{round_or_timeout(gols)}")
         print(", avgn:#{round_or_timeout(avgn)}")
         print(", avgs:#{round_or_timeout(avgs)}")
         print(", avg:#{round_or_timeout(avg)}")
@@ -367,10 +376,13 @@ full_hash = convert_csv_to_hash(csv)
 summary_hash = summarize(full_hash)
 with_mem = add_memory_benchmark(summary_hash)
 normalized_hash = normalize_time(with_mem)
-#scores = sorted_score(normalized_hash)
-#scores.each do |t, mem, names|
-#    printf("%5.2f\t%6.1f\t\"%s\"\n", t, mem, names.join(" "))
-#end
-normalized_to_tabular(normalized_hash)
 
-print_percentiles(normalized_hash, [20, 80])
+=begin
+scores = sorted_score(normalized_hash)
+scores.each do |t, mem, names|
+    printf("%5.2f\t%6.1f\t\"%s\"\n", t, mem, names.join(" "))
+end
+=end
+normalized_to_csv(normalized_hash)
+#normalized_to_tabular(normalized_hash)
+#print_percentiles(normalized_hash, [20, 80])
