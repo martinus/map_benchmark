@@ -24,7 +24,7 @@ if benchs.empty?
     benchs = `./#{Dir["bench*"].first} l`.split("\n")
 end
 
-apps = Dir["bench_boost_unordered_flat*"].sort.uniq
+apps = Dir["bench_boost_unordered_node*"].sort.uniq
 # apps = Dir["bench_boost_unordered_flat_map*"].sort.uniq
 # apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
 apps.delete("bench_asteria-cow_hashmap__absl_Hash")
@@ -143,10 +143,10 @@ first_skip_to_app = nil
             end
             first_skip_to_app = nil
 
-            if !(app =~ /boost_unordered_flat_map/)
-                puts "SKIPPING #{app}, not boost_unordered_flat_map"
-                next
-            end
+            #if !(app =~ /boost_unordered_flat_map/)
+            #    puts "SKIPPING #{app}, not boost_unordered_flat_map"
+            #    next
+            #end
 
             #if !(app =~ /ankerl_unordered_dense/) && !(app =~/boost_unordered_flat_map/)
             #    puts "SKIPPING #{app}, only ankerl::unordered_dense & boost::unordered_flat"
