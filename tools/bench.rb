@@ -24,7 +24,7 @@ if benchs.empty?
     benchs = `./#{Dir["bench*"].first} l`.split("\n")
 end
 
-apps = Dir["bench_boost_unordered_node*"].sort.uniq
+apps = Dir["bench_ankerl*"].sort.uniq
 # apps = Dir["bench_boost_unordered_flat_map*"].sort.uniq
 # apps = ["./bench_ankerl_unordered_dense__ankerl_hash", ]
 apps.delete("bench_asteria-cow_hashmap__absl_Hash")
