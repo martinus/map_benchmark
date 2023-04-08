@@ -57,6 +57,7 @@
 [submodule "external/lhmouse__asteria"]
 	path = external/lhmouse__asteria
 	url = https://github.com/lhmouse/asteria.git
+	branch = master
 [submodule "external/boost__unordered_flat_map"]
 	path = external/boost__unordered_flat_map
 	url = https://github.com/boostorg/unordered
