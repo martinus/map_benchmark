@@ -204,23 +204,50 @@ def normalized_to_csv(normalized_hash)
     end
     used_benchmark_names = used_benchmark_names.keys.sort
 
+    # reorder the names
+    ordered_benchmark_names = [
+        "Copy",
+        "AccidentallyQuadratic",
+        "InsertHugeInt",
+        "IterateIntegers",
+        "GameOfLife_growing",
+        "GameOfLife_stabilizing",
+        "knucleotide",
+        "RandomDistinct2",
+        "RandomInsertErase",
+        "RandomFind_200",
+        "RandomFind_2000",
+        "RandomFind_500000",
+        "RandomInsertEraseStrings",
+        "RandomFindString",
+        "RandomFindString_1000000",
+        "Memory",
+    ]
+    if used_benchmark_names.sort() != ordered_benchmark_names.sort()
+        raise "benchmark names do not match!\n" +
+            "    benchmarks defined here but not input file: [" + ordered_benchmark_names.difference(used_benchmark_names).join(", ") + "]\n" + 
+            "    benchmarks defined input file but not here: [" + used_benchmark_names.difference(ordered_benchmark_names).join(", ") + "]" 
+    end
+
 
 
     # print header
-    header = used_benchmark_names + ["hashmap", "hash"]
+    header = ["hashmap", "hash"] + ordered_benchmark_names
     header = header.map {|name| "\"#{name}\"" }.join("; ")
     print("#{header}\n")
 
     normalized_hash.each do |hashmap_hash, benchmark_hash|
-        used_benchmark_names.each do |benchmark_name|
+        print("\"#{hashmap_hash[0]}\"; \"#{hashmap_hash[1]}\"; ")
+        
+        ordered_benchmark_names.each do |benchmark_name|
             result = benchmark_hash[benchmark_name]
-            if result.nil? || result[0] >= 1e10
+            if result.nil? || result[0] >= 1e6
                 print("-; ")
             else
                 print("#{result[0]}; ")
             end
         end
-        print("\"#{hashmap_hash[0]}\"; \"#{hashmap_hash[1]}\"\n")
+        print("\n")
     end
 end
 
