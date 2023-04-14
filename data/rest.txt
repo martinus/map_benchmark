@@ -30696,4 +30696,1036 @@ SKIPPING 'bench_rigtorp_HashMap__std_hash GameOfLife_growing'
 "ska::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.52238; 0
 "ska::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.37; 0
 "ska::flat_hash_map"; "boost::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 1.73016; 0
-"ska::flat_hash_map"; "boost::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 
+"ska::flat_hash_map"; "boost::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 2.452; 0
+"ska::flat_hash_map"; "komihash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 3.02462; 0
+"ska::flat_hash_map"; "komihash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 4.04414; 0
+"ska::flat_hash_map"; "mumx"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.49182; 0
+"ska::flat_hash_map"; "mumx"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.31096; 0
+"ska::flat_hash_map"; "robin_hood::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.54325; 0
+"ska::flat_hash_map"; "robin_hood::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.38055; 0
+"ska::flat_hash_map"; "std::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 1.70761; 0
+"ska::flat_hash_map"; "std::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 2.42463; 0
+"std::unordered_map"; "absl::Hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 7.42338; 0
+"std::unordered_map"; "absl::Hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 9.13446; 0
+"std::unordered_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 7.32269; 0
+"std::unordered_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 9.05761; 0
+"std::unordered_map"; "boost::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.10571; 0
+"std::unordered_map"; "boost::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 5.73733; 0
+"std::unordered_map"; "komihash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 8.00145; 0
+"std::unordered_map"; "komihash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 9.90652; 0
+"std::unordered_map"; "mumx"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 7.41672; 0
+"std::unordered_map"; "mumx"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 9.1388; 0
+"std::unordered_map"; "robin_hood::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 7.22068; 0
+"std::unordered_map"; "robin_hood::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 8.91213; 0
+"std::unordered_map"; "std::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.23587; 0
+"std::unordered_map"; "std::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 6.1044; 0
+"std::unordered_map PoolAllocator"; "absl::Hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.35959; 0
+"std::unordered_map PoolAllocator"; "absl::Hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 7.93148; 0
+"std::unordered_map PoolAllocator"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.18301; 0
+"std::unordered_map PoolAllocator"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 7.84565; 0
+"std::unordered_map PoolAllocator"; "boost::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 5.2293; 0
+"std::unordered_map PoolAllocator"; "boost::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 4.84945; 0
+"std::unordered_map PoolAllocator"; "komihash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.87322; 0
+"std::unordered_map PoolAllocator"; "komihash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 8.74382; 0
+"std::unordered_map PoolAllocator"; "mumx"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.40624; 0
+"std::unordered_map PoolAllocator"; "mumx"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 7.99414; 0
+"std::unordered_map PoolAllocator"; "robin_hood::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.07673; 0
+"std::unordered_map PoolAllocator"; "robin_hood::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 7.72162; 0
+"std::unordered_map PoolAllocator"; "std::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 5.14884; 0
+"std::unordered_map PoolAllocator"; "std::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 5.06398; 0
+"std::unordered_map unsynchronized_pool_resource"; "absl::Hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 7.49763; 0
+"std::unordered_map unsynchronized_pool_resource"; "absl::Hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 9.29229; 0
+"std::unordered_map unsynchronized_pool_resource"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 7.42065; 0
+"std::unordered_map unsynchronized_pool_resource"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 9.2525; 0
+"std::unordered_map unsynchronized_pool_resource"; "boost::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.05637; 0
+"std::unordered_map unsynchronized_pool_resource"; "boost::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 6.12491; 0
+"std::unordered_map unsynchronized_pool_resource"; "komihash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 8.40755; 0
+"std::unordered_map unsynchronized_pool_resource"; "komihash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 10.4924; 0
+"std::unordered_map unsynchronized_pool_resource"; "mumx"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 7.54145; 0
+"std::unordered_map unsynchronized_pool_resource"; "mumx"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 9.33685; 0
+"std::unordered_map unsynchronized_pool_resource"; "robin_hood::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 7.3713; 0
+"std::unordered_map unsynchronized_pool_resource"; "robin_hood::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 9.17254; 0
+"std::unordered_map unsynchronized_pool_resource"; "std::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 6.16022; 0
+"std::unordered_map unsynchronized_pool_resource"; "std::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 6.41929; 0
+"tsl::hopscotch_map"; "absl::Hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 3.131; 0
+"tsl::hopscotch_map"; "absl::Hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 4.18946; 0
+"tsl::hopscotch_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.92282; 0
+"tsl::hopscotch_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.92584; 0
+SKIPPING 'bench_tessil_hopscotch_map__boost_hash GameOfLife_growing'
+"tsl::hopscotch_map"; "komihash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 3.78833; 0
+"tsl::hopscotch_map"; "komihash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 5.11016; 0
+"tsl::hopscotch_map"; "mumx"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 3.05908; 0
+"tsl::hopscotch_map"; "mumx"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 4.09699; 0
+"tsl::hopscotch_map"; "robin_hood::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.96505; 0
+"tsl::hopscotch_map"; "robin_hood::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 4.02808; 0
+SKIPPING 'bench_tessil_hopscotch_map__std_hash GameOfLife_growing'
+"tsl::robin_map"; "absl::Hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.50808; 0
+"tsl::robin_map"; "absl::Hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.28643; 0
+"tsl::robin_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.43433; 0
+"tsl::robin_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.1903; 0
+SKIPPING 'bench_tessil_robin_map__boost_hash GameOfLife_growing'
+"tsl::robin_map"; "komihash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 3.12019; 0
+"tsl::robin_map"; "komihash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 4.004; 0
+"tsl::robin_map"; "mumx"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.5296; 0
+"tsl::robin_map"; "mumx"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.24721; 0
+"tsl::robin_map"; "robin_hood::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.39464; 0
+"tsl::robin_map"; "robin_hood::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.20674; 0
+SKIPPING 'bench_tessil_robin_map__std_hash GameOfLife_growing'
+"tsl::sparse_map"; "absl::Hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.86655; 0
+"tsl::sparse_map"; "absl::Hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.69425; 0
+"tsl::sparse_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.76145; 0
+"tsl::sparse_map"; "ankerl::unordered_dense::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.53742; 0
+"tsl::sparse_map"; "boost::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 38.1993; 0
+"tsl::sparse_map"; "boost::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 57.2495; 0
+"tsl::sparse_map"; "komihash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 3.4684; 0
+"tsl::sparse_map"; "komihash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 4.51081; 0
+"tsl::sparse_map"; "mumx"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.87047; 0
+"tsl::sparse_map"; "mumx"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.64959; 0
+"tsl::sparse_map"; "robin_hood::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 2.78182; 0
+"tsl::sparse_map"; "robin_hood::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 3.6493; 0
+"tsl::sparse_map"; "std::hash"; "GameOfLife_growing"; "01"; "Gotts dots"; 4599; 38.2295; 0
+"tsl::sparse_map"; "std::hash"; "GameOfLife_growing"; "02"; "Puffer 2"; 7400; 57.5163; 0
+SKIPPING bench_abseil_flat_hash_map__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING 'bench_asteria-cow_hashmap__absl_Hash GameOfLife_stabilizing'
+SKIPPING 'bench_asteria-cow_hashmap__ankerl_hash GameOfLife_stabilizing'
+SKIPPING 'bench_asteria-cow_hashmap__boost_hash GameOfLife_stabilizing'
+SKIPPING 'bench_asteria-cow_hashmap__komihash GameOfLife_stabilizing'
+SKIPPING 'bench_asteria-cow_hashmap__mumx_hash GameOfLife_stabilizing'
+SKIPPING 'bench_asteria-cow_hashmap__robin_hood_hash GameOfLife_stabilizing'
+SKIPPING 'bench_asteria-cow_hashmap__std_hash GameOfLife_stabilizing'
+"boost::multi_index::hashed_unique"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.133667; 0
+"boost::multi_index::hashed_unique"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.2008; 0
+"boost::multi_index::hashed_unique"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.97933; 0
+"boost::multi_index::hashed_unique"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 19.0355; 0
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.135654; 0
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.17594; 0
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.90883; 0
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.8154; 0
+"boost::multi_index::hashed_unique"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.110011; 0
+"boost::multi_index::hashed_unique"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.70716; 0
+"boost::multi_index::hashed_unique"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.31008; 0
+"boost::multi_index::hashed_unique"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.3433; 0
+"boost::multi_index::hashed_unique"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.150426; 0
+"boost::multi_index::hashed_unique"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.45716; 0
+"boost::multi_index::hashed_unique"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.39677; 0
+"boost::multi_index::hashed_unique"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.9723; 0
+"boost::multi_index::hashed_unique"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.134777; 0
+"boost::multi_index::hashed_unique"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.20039; 0
+"boost::multi_index::hashed_unique"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.94274; 0
+"boost::multi_index::hashed_unique"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.6602; 0
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.135492; 0
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.21913; 0
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.97974; 0
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.9631; 0
+"boost::multi_index::hashed_unique"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.109202; 0
+"boost::multi_index::hashed_unique"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.6975; 0
+"boost::multi_index::hashed_unique"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.29133; 0
+"boost::multi_index::hashed_unique"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.2252; 0
+SKIPPING bench_boost_unordered_flat_map__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+"boost::unordered_map 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.141066; 0
+"boost::unordered_map 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.45429; 0
+"boost::unordered_map 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.63111; 0
+"boost::unordered_map 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 22.6418; 0
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.139432; 0
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.4316; 0
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.57339; 0
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 22.4426; 0
+"boost::unordered_map 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.110163; 0
+"boost::unordered_map 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.82919; 0
+"boost::unordered_map 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.65247; 0
+"boost::unordered_map 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 19.8599; 0
+"boost::unordered_map 1_82"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.152277; 0
+"boost::unordered_map 1_82"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.66701; 0
+"boost::unordered_map 1_82"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.98648; 0
+"boost::unordered_map 1_82"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 24.4831; 0
+"boost::unordered_map 1_82"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.141969; 0
+"boost::unordered_map 1_82"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.45156; 0
+"boost::unordered_map 1_82"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.60428; 0
+"boost::unordered_map 1_82"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 22.4714; 0
+"boost::unordered_map 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.137562; 0
+"boost::unordered_map 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.42613; 0
+"boost::unordered_map 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.56566; 0
+"boost::unordered_map 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 22.3642; 0
+"boost::unordered_map 1_82"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.110483; 0
+"boost::unordered_map 1_82"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.79694; 0
+"boost::unordered_map 1_82"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.62775; 0
+"boost::unordered_map 1_82"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 19.8794; 0
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.11998; 0
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.05578; 0
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.73785; 0
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.4836; 0
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.117793; 0
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.0196; 0
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.74904; 0
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.3883; 0
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0908536; 0
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.45626; 0
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.90701; 0
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 16.1994; 0
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.129717; 0
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.19298; 0
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.06237; 0
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.2039; 0
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.119344; 0
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.99696; 0
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.71284; 0
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.2167; 0
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.11602; 0
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.98624; 0
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.73241; 0
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.3745; 0
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0914074; 0
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.46277; 0
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.9122; 0
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 16.3076; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.132784; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.26305; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.25092; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.7783; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.135452; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.28489; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.269; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.8196; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.10641; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.70782; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.38613; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.4964; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.146393; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.49367; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.64246; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 22.7927; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.137525; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.29224; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.27027; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.8311; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.133018; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.27125; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.25552; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.926; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.106879; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.71931; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.4149; 0
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.6764; 0
+SKIPPING bench_boost_unordered_node_map__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_node_map__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_node_map__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_node_map__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_node_map__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_node_map__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_node_map__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+"fph::DynamicFphMap"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.084975; 0
+"fph::DynamicFphMap"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.395; 0
+"fph::DynamicFphMap"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.7121; 0
+"fph::DynamicFphMap"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.4606; 0
+"fph::DynamicFphMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0820781; 0
+"fph::DynamicFphMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.33624; 0
+"fph::DynamicFphMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.61418; 0
+"fph::DynamicFphMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.0738; 0
+"fph::DynamicFphMap"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0771252; 0
+"fph::DynamicFphMap"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.26773; 0
+"fph::DynamicFphMap"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.48172; 0
+"fph::DynamicFphMap"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.4947; 0
+"fph::DynamicFphMap"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.094261; 0
+"fph::DynamicFphMap"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.54477; 0
+"fph::DynamicFphMap"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.01092; 0
+"fph::DynamicFphMap"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.7981; 0
+"fph::DynamicFphMap"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0822693; 0
+"fph::DynamicFphMap"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.34239; 0
+"fph::DynamicFphMap"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.61688; 0
+"fph::DynamicFphMap"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.9318; 0
+"fph::DynamicFphMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0820678; 0
+"fph::DynamicFphMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.33974; 0
+"fph::DynamicFphMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.61079; 0
+"fph::DynamicFphMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12; 0
+"fph::DynamicFphMap"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0773255; 0
+"fph::DynamicFphMap"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.27582; 0
+"fph::DynamicFphMap"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.49245; 0
+"fph::DynamicFphMap"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.389; 0
+"fph::MetaFphMap"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0888062; 0
+"fph::MetaFphMap"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.45014; 0
+"fph::MetaFphMap"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.80481; 0
+"fph::MetaFphMap"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.6772; 0
+"fph::MetaFphMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0854031; 0
+"fph::MetaFphMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.39044; 0
+"fph::MetaFphMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.6974; 0
+"fph::MetaFphMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.3187; 0
+"fph::MetaFphMap"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0818192; 0
+"fph::MetaFphMap"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.35298; 0
+"fph::MetaFphMap"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.61178; 0
+"fph::MetaFphMap"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.9299; 0
+"fph::MetaFphMap"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0995513; 0
+"fph::MetaFphMap"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.62111; 0
+"fph::MetaFphMap"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.10645; 0
+"fph::MetaFphMap"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 14.2518; 0
+"fph::MetaFphMap"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.08514; 0
+"fph::MetaFphMap"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.40928; 0
+"fph::MetaFphMap"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.73075; 0
+"fph::MetaFphMap"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.4973; 0
+"fph::MetaFphMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0870267; 0
+"fph::MetaFphMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.41809; 0
+"fph::MetaFphMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.74124; 0
+"fph::MetaFphMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.4865; 0
+"fph::MetaFphMap"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0827953; 0
+"fph::MetaFphMap"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.37204; 0
+"fph::MetaFphMap"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.64504; 0
+"fph::MetaFphMap"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.142; 0
+SKIPPING bench_greg7mdp_btree_map__absl_Hash GameOfLife_stabilizing btree_map not std_hash
+SKIPPING bench_greg7mdp_btree_map__ankerl_hash GameOfLife_stabilizing btree_map not std_hash
+SKIPPING bench_greg7mdp_btree_map__boost_hash GameOfLife_stabilizing btree_map not std_hash
+SKIPPING bench_greg7mdp_btree_map__komihash GameOfLife_stabilizing btree_map not std_hash
+SKIPPING bench_greg7mdp_btree_map__mumx_hash GameOfLife_stabilizing btree_map not std_hash
+SKIPPING bench_greg7mdp_btree_map__robin_hood_hash GameOfLife_stabilizing btree_map not std_hash
+"gtl::btree_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.353143; 0
+"gtl::btree_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 6.09995; 0
+"gtl::btree_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 10.8855; 0
+"gtl::btree_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 48.9399; 0
+"gtl::flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0742529; 0
+"gtl::flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.21615; 0
+"gtl::flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.10408; 0
+"gtl::flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 9.7029; 0
+"gtl::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0713567; 0
+"gtl::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.1459; 0
+"gtl::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.99779; 0
+"gtl::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 9.3262; 0
+"gtl::flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0579918; 0
+"gtl::flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 0.980293; 0
+"gtl::flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.7076; 0
+"gtl::flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.09514; 0
+"gtl::flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0920218; 0
+"gtl::flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.49805; 0
+"gtl::flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.6142; 0
+"gtl::flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.1304; 0
+"gtl::flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0720031; 0
+"gtl::flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.15286; 0
+"gtl::flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.02137; 0
+"gtl::flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 9.3051; 0
+"gtl::flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0731444; 0
+"gtl::flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.20485; 0
+"gtl::flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.08657; 0
+"gtl::flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 9.75342; 0
+"gtl::flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0581439; 0
+"gtl::flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 0.991171; 0
+"gtl::flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.72068; 0
+"gtl::flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.13088; 0
+"gtl::node_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.125308; 0
+"gtl::node_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.01887; 0
+"gtl::node_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.68143; 0
+"gtl::node_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 17.4319; 0
+"gtl::node_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.118822; 0
+"gtl::node_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.90048; 0
+"gtl::node_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.435; 0
+"gtl::node_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 16.3084; 0
+"gtl::node_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.102893; 0
+"gtl::node_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.67071; 0
+"gtl::node_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.96872; 0
+"gtl::node_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 14.274; 0
+"gtl::node_hash_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.140798; 0
+"gtl::node_hash_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.29123; 0
+"gtl::node_hash_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.13503; 0
+"gtl::node_hash_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 19.5559; 0
+"gtl::node_hash_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.11942; 0
+"gtl::node_hash_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.9237; 0
+"gtl::node_hash_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.49479; 0
+"gtl::node_hash_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 16.5033; 0
+"gtl::node_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.119392; 0
+"gtl::node_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.94568; 0
+"gtl::node_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.51141; 0
+"gtl::node_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 16.6629; 0
+"gtl::node_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.103496; 0
+"gtl::node_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.68403; 0
+"gtl::node_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.98534; 0
+"gtl::node_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 14.3418; 0
+"gtl::parallel_flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0709099; 0
+"gtl::parallel_flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.37212; 0
+"gtl::parallel_flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.44822; 0
+"gtl::parallel_flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.5506; 0
+"gtl::parallel_flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0701005; 0
+"gtl::parallel_flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.35814; 0
+"gtl::parallel_flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.41382; 0
+"gtl::parallel_flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.2831; 0
+"gtl::parallel_flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0620928; 0
+"gtl::parallel_flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.18757; 0
+"gtl::parallel_flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.12905; 0
+"gtl::parallel_flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 9.95716; 0
+"gtl::parallel_flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.107968; 0
+"gtl::parallel_flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.9444; 0
+"gtl::parallel_flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.48692; 0
+"gtl::parallel_flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 16.2371; 0
+"gtl::parallel_flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0704525; 0
+"gtl::parallel_flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.3684; 0
+"gtl::parallel_flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.41842; 0
+"gtl::parallel_flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.4479; 0
+"gtl::parallel_flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0713564; 0
+"gtl::parallel_flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.35426; 0
+"gtl::parallel_flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.43316; 0
+"gtl::parallel_flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.3871; 0
+"gtl::parallel_flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0619386; 0
+"gtl::parallel_flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.18627; 0
+"gtl::parallel_flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.11071; 0
+"gtl::parallel_flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 9.8687; 0
+"gtl::parallel_node_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.109758; 0
+"gtl::parallel_node_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.29331; 0
+"gtl::parallel_node_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.33018; 0
+"gtl::parallel_node_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 21.2151; 0
+"gtl::parallel_node_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.107391; 0
+"gtl::parallel_node_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.25396; 0
+"gtl::parallel_node_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.26452; 0
+"gtl::parallel_node_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.7886; 0
+"gtl::parallel_node_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.100682; 0
+"gtl::parallel_node_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.08734; 0
+"gtl::parallel_node_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.9257; 0
+"gtl::parallel_node_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 19.0778; 0
+"gtl::parallel_node_hash_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.139457; 0
+"gtl::parallel_node_hash_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.78695; 0
+"gtl::parallel_node_hash_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.24231; 0
+"gtl::parallel_node_hash_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 25.4674; 0
+"gtl::parallel_node_hash_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.107802; 0
+"gtl::parallel_node_hash_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.28553; 0
+"gtl::parallel_node_hash_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.26793; 0
+"gtl::parallel_node_hash_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.9482; 0
+"gtl::parallel_node_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.109234; 0
+"gtl::parallel_node_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.27041; 0
+"gtl::parallel_node_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.28412; 0
+"gtl::parallel_node_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 20.9107; 0
+"gtl::parallel_node_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.102871; 0
+"gtl::parallel_node_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.08698; 0
+"gtl::parallel_node_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.9234; 0
+"gtl::parallel_node_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 19.0858; 0
+"spp::sparse_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.180387; 0
+"spp::sparse_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.93925; 0
+"spp::sparse_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.22664; 0
+"spp::sparse_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 24.1122; 0
+"spp::sparse_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.178505; 0
+"spp::sparse_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.90561; 0
+"spp::sparse_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.11791; 0
+"spp::sparse_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 23.5692; 0
+"spp::sparse_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.555264; 0
+"spp::sparse_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 13.0056; 0
+"spp::sparse_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 28.7359; 0
+"spp::sparse_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 142.852; 0
+"spp::sparse_hash_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.200377; 0
+"spp::sparse_hash_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.20387; 0
+"spp::sparse_hash_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.76147; 0
+"spp::sparse_hash_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 26.6691; 0
+"spp::sparse_hash_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.177656; 0
+"spp::sparse_hash_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.89144; 0
+"spp::sparse_hash_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.15962; 0
+"spp::sparse_hash_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 23.7862; 0
+"spp::sparse_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.196882; 0
+"spp::sparse_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.88596; 0
+"spp::sparse_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.12095; 0
+"spp::sparse_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 23.7761; 0
+"spp::sparse_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.596102; 0
+"spp::sparse_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 14.3265; 0
+"spp::sparse_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 31.8275; 0
+"spp::sparse_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 158.205; 0
+"jg::dense_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.072029; 0
+"jg::dense_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.25131; 0
+"jg::dense_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.27823; 0
+"jg::dense_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.0602; 0
+"jg::dense_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0753293; 0
+"jg::dense_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.26939; 0
+"jg::dense_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.27641; 0
+"jg::dense_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.1422; 0
+"jg::dense_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.217152; 0
+"jg::dense_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 4.14393; 0
+"jg::dense_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 9.1233; 0
+"jg::dense_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 38.4818; 0
+"jg::dense_hash_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.093322; 0
+"jg::dense_hash_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.5587; 0
+"jg::dense_hash_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.76226; 0
+"jg::dense_hash_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.3864; 0
+"jg::dense_hash_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0749933; 0
+"jg::dense_hash_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.28047; 0
+"jg::dense_hash_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.2986; 0
+"jg::dense_hash_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.242; 0
+"jg::dense_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0891647; 0
+"jg::dense_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.28044; 0
+"jg::dense_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.25642; 0
+"jg::dense_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.1566; 0
+"jg::dense_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.217072; 0
+"jg::dense_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 4.14383; 0
+"jg::dense_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 9.12515; 0
+"jg::dense_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 38.4712; 0
+"emhash7::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0655677; 0
+"emhash7::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.09711; 0
+"emhash7::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.91619; 0
+"emhash7::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.79909; 0
+"emhash7::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0683463; 0
+"emhash7::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.12359; 0
+"emhash7::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.94154; 0
+"emhash7::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.73083; 0
+"emhash7::HashMap"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.213962; 0
+"emhash7::HashMap"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 4.04494; 0
+"emhash7::HashMap"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 8.97373; 0
+"emhash7::HashMap"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 37.6673; 0
+"emhash7::HashMap"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0860834; 0
+"emhash7::HashMap"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.40661; 0
+"emhash7::HashMap"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.45273; 0
+"emhash7::HashMap"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.1628; 0
+"emhash7::HashMap"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0675179; 0
+"emhash7::HashMap"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.13972; 0
+"emhash7::HashMap"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.96945; 0
+"emhash7::HashMap"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.87197; 0
+"emhash7::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0769784; 0
+"emhash7::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.07357; 0
+"emhash7::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.85843; 0
+"emhash7::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.53768; 0
+"emhash7::HashMap"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.215152; 0
+"emhash7::HashMap"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 4.05892; 0
+"emhash7::HashMap"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 9.00227; 0
+"emhash7::HashMap"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 37.7976; 0
+"emhash8::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0706831; 0
+"emhash8::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.20624; 0
+"emhash8::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.06973; 0
+"emhash8::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 9.31401; 0
+"emhash8::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0697568; 0
+"emhash8::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.15258; 0
+"emhash8::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.97728; 0
+"emhash8::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.86944; 0
+"emhash8::HashMap"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.210081; 0
+"emhash8::HashMap"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.83751; 0
+"emhash8::HashMap"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 8.26564; 0
+"emhash8::HashMap"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 34.6403; 0
+"emhash8::HashMap"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0892978; 0
+"emhash8::HashMap"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.44713; 0
+"emhash8::HashMap"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.48837; 0
+"emhash8::HashMap"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.1287; 0
+"emhash8::HashMap"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.069827; 0
+"emhash8::HashMap"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.17353; 0
+"emhash8::HashMap"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.99811; 0
+"emhash8::HashMap"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.90292; 0
+"emhash8::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0800502; 0
+"emhash8::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.1439; 0
+"emhash8::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.95169; 0
+"emhash8::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.83724; 0
+"emhash8::HashMap"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.206; 0
+"emhash8::HashMap"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.76691; 0
+"emhash8::HashMap"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 8.13186; 0
+"emhash8::HashMap"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 33.9847; 0
+"rigtorp::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0759845; 0
+"rigtorp::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.34945; 0
+"rigtorp::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.37184; 0
+"rigtorp::HashMap"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.6051; 0
+"rigtorp::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0756972; 0
+"rigtorp::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.33486; 0
+"rigtorp::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.30361; 0
+"rigtorp::HashMap"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.2596; 0
+SKIPPING 'bench_rigtorp_HashMap__boost_hash GameOfLife_stabilizing'
+"rigtorp::HashMap"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0925913; 0
+"rigtorp::HashMap"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.59002; 0
+"rigtorp::HashMap"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.77925; 0
+"rigtorp::HashMap"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.5139; 0
+"rigtorp::HashMap"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.07808; 0
+"rigtorp::HashMap"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.35498; 0
+"rigtorp::HashMap"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.35738; 0
+"rigtorp::HashMap"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.5146; 0
+"rigtorp::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0826516; 0
+"rigtorp::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.30411; 0
+"rigtorp::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.27639; 0
+"rigtorp::HashMap"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.3435; 0
+SKIPPING 'bench_rigtorp_HashMap__std_hash GameOfLife_stabilizing'
+"robin_hood::unordered_flat_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0969518; 0
+"robin_hood::unordered_flat_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.54936; 0
+"robin_hood::unordered_flat_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.64749; 0
+"robin_hood::unordered_flat_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.3679; 0
+"robin_hood::unordered_flat_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0965104; 0
+"robin_hood::unordered_flat_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.51321; 0
+"robin_hood::unordered_flat_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.57605; 0
+"robin_hood::unordered_flat_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.065; 0
+"robin_hood::unordered_flat_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0875504; 0
+"robin_hood::unordered_flat_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.37045; 0
+"robin_hood::unordered_flat_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.38987; 0
+"robin_hood::unordered_flat_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.1156; 0
+"robin_hood::unordered_flat_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.123446; 0
+"robin_hood::unordered_flat_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.949; 0
+"robin_hood::unordered_flat_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.30165; 0
+"robin_hood::unordered_flat_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 14.028; 0
+"robin_hood::unordered_flat_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0947469; 0
+"robin_hood::unordered_flat_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.48966; 0
+"robin_hood::unordered_flat_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.55603; 0
+"robin_hood::unordered_flat_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.9027; 0
+"robin_hood::unordered_flat_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0966522; 0
+"robin_hood::unordered_flat_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.53109; 0
+"robin_hood::unordered_flat_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.64458; 0
+"robin_hood::unordered_flat_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.2329; 0
+"robin_hood::unordered_flat_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0877085; 0
+"robin_hood::unordered_flat_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.37398; 0
+"robin_hood::unordered_flat_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.3907; 0
+"robin_hood::unordered_flat_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.1323; 0
+"robin_hood::unordered_node_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.109852; 0
+"robin_hood::unordered_node_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.79922; 0
+"robin_hood::unordered_node_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.19039; 0
+"robin_hood::unordered_node_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 14.192; 0
+"robin_hood::unordered_node_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.107786; 0
+"robin_hood::unordered_node_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.72785; 0
+"robin_hood::unordered_node_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.10005; 0
+"robin_hood::unordered_node_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.6499; 0
+"robin_hood::unordered_node_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0988765; 0
+"robin_hood::unordered_node_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.57847; 0
+"robin_hood::unordered_node_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.85845; 0
+"robin_hood::unordered_node_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.582; 0
+"robin_hood::unordered_node_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.134895; 0
+"robin_hood::unordered_node_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.16203; 0
+"robin_hood::unordered_node_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.84531; 0
+"robin_hood::unordered_node_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 16.8774; 0
+"robin_hood::unordered_node_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.108148; 0
+"robin_hood::unordered_node_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.75116; 0
+"robin_hood::unordered_node_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.09151; 0
+"robin_hood::unordered_node_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.6996; 0
+"robin_hood::unordered_node_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.111069; 0
+"robin_hood::unordered_node_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.78317; 0
+"robin_hood::unordered_node_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.17765; 0
+"robin_hood::unordered_node_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.9771; 0
+"robin_hood::unordered_node_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0974447; 0
+"robin_hood::unordered_node_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.55754; 0
+"robin_hood::unordered_node_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.83275; 0
+"robin_hood::unordered_node_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.4697; 0
+"ska::bytell_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0978088; 0
+"ska::bytell_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.62337; 0
+"ska::bytell_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.98214; 0
+"ska::bytell_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.3509; 0
+"ska::bytell_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0958619; 0
+"ska::bytell_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.59802; 0
+"ska::bytell_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.91391; 0
+"ska::bytell_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.0379; 0
+"ska::bytell_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.074633; 0
+"ska::bytell_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.26006; 0
+"ska::bytell_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.21148; 0
+"ska::bytell_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 9.98745; 0
+"ska::bytell_hash_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.113617; 0
+"ska::bytell_hash_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.86304; 0
+"ska::bytell_hash_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.36699; 0
+"ska::bytell_hash_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 15.2476; 0
+"ska::bytell_hash_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0956199; 0
+"ska::bytell_hash_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.58592; 0
+"ska::bytell_hash_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.88002; 0
+"ska::bytell_hash_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.997; 0
+"ska::bytell_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0959259; 0
+"ska::bytell_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.60263; 0
+"ska::bytell_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.91503; 0
+"ska::bytell_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.1963; 0
+"ska::bytell_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0749633; 0
+"ska::bytell_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.26581; 0
+"ska::bytell_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.22625; 0
+"ska::bytell_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 10.0438; 0
+"ska::flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0855792; 0
+"ska::flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.46605; 0
+"ska::flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.63205; 0
+"ska::flat_hash_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.8846; 0
+"ska::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0832766; 0
+"ska::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.45274; 0
+"ska::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.58599; 0
+"ska::flat_hash_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.6321; 0
+"ska::flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0627995; 0
+"ska::flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.03993; 0
+"ska::flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.83451; 0
+"ska::flat_hash_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.28376; 0
+"ska::flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0987192; 0
+"ska::flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.69215; 0
+"ska::flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.02102; 0
+"ska::flat_hash_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.6636; 0
+"ska::flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.081392; 0
+"ska::flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.41164; 0
+"ska::flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.53437; 0
+"ska::flat_hash_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.4602; 0
+"ska::flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0824298; 0
+"ska::flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.42697; 0
+"ska::flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.58966; 0
+"ska::flat_hash_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.6971; 0
+"ska::flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0626541; 0
+"ska::flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.03708; 0
+"ska::flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 1.83055; 0
+"ska::flat_hash_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 8.25777; 0
+"std::unordered_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.202725; 0
+"std::unordered_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.57766; 0
+"std::unordered_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.38254; 0
+"std::unordered_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 31.3503; 0
+"std::unordered_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.20691; 0
+"std::unordered_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.59498; 0
+"std::unordered_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.39715; 0
+"std::unordered_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 31.2864; 0
+"std::unordered_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.123395; 0
+"std::unordered_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.08682; 0
+"std::unordered_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.52781; 0
+"std::unordered_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 17.1692; 0
+"std::unordered_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.224785; 0
+"std::unordered_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.89079; 0
+"std::unordered_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.94855; 0
+"std::unordered_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 34.243; 0
+"std::unordered_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.203695; 0
+"std::unordered_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.57633; 0
+"std::unordered_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.40608; 0
+"std::unordered_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 31.5164; 0
+"std::unordered_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.199601; 0
+"std::unordered_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.51809; 0
+"std::unordered_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.26795; 0
+"std::unordered_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 30.7027; 0
+"std::unordered_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.131892; 0
+"std::unordered_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.24178; 0
+"std::unordered_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.75971; 0
+"std::unordered_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.3999; 0
+"std::unordered_map PoolAllocator"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.171941; 0
+"std::unordered_map PoolAllocator"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.03167; 0
+"std::unordered_map PoolAllocator"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.40851; 0
+"std::unordered_map PoolAllocator"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 26.8185; 0
+"std::unordered_map PoolAllocator"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.176754; 0
+"std::unordered_map PoolAllocator"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.02446; 0
+"std::unordered_map PoolAllocator"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.30508; 0
+"std::unordered_map PoolAllocator"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 25.9801; 0
+"std::unordered_map PoolAllocator"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0963499; 0
+"std::unordered_map PoolAllocator"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.66406; 0
+"std::unordered_map PoolAllocator"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.76554; 0
+"std::unordered_map PoolAllocator"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.8033; 0
+"std::unordered_map PoolAllocator"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.197782; 0
+"std::unordered_map PoolAllocator"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.38504; 0
+"std::unordered_map PoolAllocator"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.8952; 0
+"std::unordered_map PoolAllocator"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 28.9633; 0
+"std::unordered_map PoolAllocator"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.175277; 0
+"std::unordered_map PoolAllocator"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.05099; 0
+"std::unordered_map PoolAllocator"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.48051; 0
+"std::unordered_map PoolAllocator"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 27.2774; 0
+"std::unordered_map PoolAllocator"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.17069; 0
+"std::unordered_map PoolAllocator"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.01416; 0
+"std::unordered_map PoolAllocator"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 5.2355; 0
+"std::unordered_map PoolAllocator"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 25.5554; 0
+"std::unordered_map PoolAllocator"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.101207; 0
+"std::unordered_map PoolAllocator"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.7545; 0
+"std::unordered_map PoolAllocator"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.85205; 0
+"std::unordered_map PoolAllocator"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 14.2408; 0
+"std::unordered_map unsynchronized_pool_resource"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.224475; 0
+"std::unordered_map unsynchronized_pool_resource"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.75775; 0
+"std::unordered_map unsynchronized_pool_resource"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.62622; 0
+"std::unordered_map unsynchronized_pool_resource"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 31.7263; 0
+"std::unordered_map unsynchronized_pool_resource"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.226925; 0
+"std::unordered_map unsynchronized_pool_resource"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.79846; 0
+"std::unordered_map unsynchronized_pool_resource"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.65823; 0
+"std::unordered_map unsynchronized_pool_resource"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 31.6632; 0
+"std::unordered_map unsynchronized_pool_resource"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.14721; 0
+"std::unordered_map unsynchronized_pool_resource"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.41772; 0
+"std::unordered_map unsynchronized_pool_resource"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.02105; 0
+"std::unordered_map unsynchronized_pool_resource"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 18.9877; 0
+"std::unordered_map unsynchronized_pool_resource"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.251819; 0
+"std::unordered_map unsynchronized_pool_resource"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 4.21888; 0
+"std::unordered_map unsynchronized_pool_resource"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 7.41833; 0
+"std::unordered_map unsynchronized_pool_resource"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 35.6112; 0
+"std::unordered_map unsynchronized_pool_resource"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.225565; 0
+"std::unordered_map unsynchronized_pool_resource"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.77073; 0
+"std::unordered_map unsynchronized_pool_resource"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.67583; 0
+"std::unordered_map unsynchronized_pool_resource"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 32.1814; 0
+"std::unordered_map unsynchronized_pool_resource"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.221762; 0
+"std::unordered_map unsynchronized_pool_resource"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 3.74202; 0
+"std::unordered_map unsynchronized_pool_resource"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 6.55289; 0
+"std::unordered_map unsynchronized_pool_resource"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 31.2991; 0
+"std::unordered_map unsynchronized_pool_resource"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.153561; 0
+"std::unordered_map unsynchronized_pool_resource"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.53307; 0
+"std::unordered_map unsynchronized_pool_resource"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 4.20529; 0
+"std::unordered_map unsynchronized_pool_resource"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 19.8815; 0
+"tsl::hopscotch_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0947394; 0
+"tsl::hopscotch_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.70404; 0
+"tsl::hopscotch_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.04174; 0
+"tsl::hopscotch_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.8367; 0
+"tsl::hopscotch_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0931693; 0
+"tsl::hopscotch_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.64354; 0
+"tsl::hopscotch_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.95328; 0
+"tsl::hopscotch_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.2694; 0
+SKIPPING 'bench_tessil_hopscotch_map__boost_hash GameOfLife_stabilizing'
+"tsl::hopscotch_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.117031; 0
+"tsl::hopscotch_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 2.0609; 0
+"tsl::hopscotch_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.71194; 0
+"tsl::hopscotch_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 17.017; 0
+"tsl::hopscotch_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0938641; 0
+"tsl::hopscotch_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.70281; 0
+"tsl::hopscotch_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.00892; 0
+"tsl::hopscotch_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.7205; 0
+"tsl::hopscotch_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.117381; 0
+"tsl::hopscotch_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.63834; 0
+"tsl::hopscotch_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.85999; 0
+"tsl::hopscotch_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 13.2137; 0
+SKIPPING 'bench_tessil_hopscotch_map__std_hash GameOfLife_stabilizing'
+"tsl::robin_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0801294; 0
+"tsl::robin_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.44128; 0
+"tsl::robin_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.53431; 0
+"tsl::robin_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.5576; 0
+"tsl::robin_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0804555; 0
+"tsl::robin_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.44061; 0
+"tsl::robin_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.50381; 0
+"tsl::robin_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.2807; 0
+SKIPPING 'bench_tessil_robin_map__boost_hash GameOfLife_stabilizing'
+"tsl::robin_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.1019; 0
+"tsl::robin_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.75678; 0
+"tsl::robin_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.13542; 0
+"tsl::robin_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 14.3414; 0
+"tsl::robin_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0826699; 0
+"tsl::robin_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.46258; 0
+"tsl::robin_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.56865; 0
+"tsl::robin_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.6436; 0
+"tsl::robin_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0865711; 0
+"tsl::robin_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.37284; 0
+"tsl::robin_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.40525; 0
+"tsl::robin_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 11.0576; 0
+SKIPPING 'bench_tessil_robin_map__std_hash GameOfLife_stabilizing'
+"tsl::sparse_map"; "absl::Hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0962091; 0
+"tsl::sparse_map"; "absl::Hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.66522; 0
+"tsl::sparse_map"; "absl::Hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.86267; 0
+"tsl::sparse_map"; "absl::Hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.5296; 0
+"tsl::sparse_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.093829; 0
+"tsl::sparse_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.65904; 0
+"tsl::sparse_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.82804; 0
+"tsl::sparse_map"; "ankerl::unordered_dense::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.2585; 0
+"tsl::sparse_map"; "boost::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.420368; 0
+"tsl::sparse_map"; "boost::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 10.4153; 0
+"tsl::sparse_map"; "boost::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 23.2551; 0
+"tsl::sparse_map"; "boost::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 116.739; 0
+"tsl::sparse_map"; "komihash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.113603; 0
+"tsl::sparse_map"; "komihash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.94599; 0
+"tsl::sparse_map"; "komihash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 3.39618; 0
+"tsl::sparse_map"; "komihash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 14.9074; 0
+"tsl::sparse_map"; "mumx"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.0963761; 0
+"tsl::sparse_map"; "mumx"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.68557; 0
+"tsl::sparse_map"; "mumx"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.89637; 0
+"tsl::sparse_map"; "mumx"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.622; 0
+"tsl::sparse_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.102908; 0
+"tsl::sparse_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 1.64485; 0
+"tsl::sparse_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 2.81984; 0
+"tsl::sparse_map"; "robin_hood::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 12.4026; 0
+"tsl::sparse_map"; "std::hash"; "GameOfLife_stabilizing"; "01"; "R-pentomino"; 116; 0.41894; 0
+"tsl::sparse_map"; "std::hash"; "GameOfLife_stabilizing"; "02"; "Acorn"; 633; 10.3843; 0
+"tsl::sparse_map"; "std::hash"; "GameOfLife_stabilizing"; "03"; "Jaydot"; 1124; 23.1969; 0
+"tsl::sparse_map"; "std::hash"; "GameOfLife_stabilizing"; "04"; "Bunnies"; 1744; 116.74; 0
+SKIPPING bench_abseil_flat_hash_map__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_flat_hash_map__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_abseil_node_hash_map__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_ankerl_unordered_dense_segmented__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+"asteria::cow_hashmap"; "absl::Hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 46.4212; 5604.15
+"asteria::cow_hashmap"; "absl::Hash"; "InsertHugeInt"; "02"; "clear 100M int"; 59115606; 5.20525; 5604.15; "ERROR: expected 0 but got 59115606"
+"asteria::cow_hashmap"; "absl::Hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 156597847; 38.2444; 8418.96; "ERROR: expected 98843646 but got 156597847"
+"asteria::cow_hashmap"; "absl::Hash"; "InsertHugeInt"; "04"; "remove 100M int"; 57754201; 31.7913; 8418.96; "ERROR: expected 0 but got 57754201"
+"asteria::cow_hashmap"; "absl::Hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 7.98907; 8418.96
+"asteria::cow_hashmap"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 46.7462; 5604.09
+"asteria::cow_hashmap"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 59114088; 5.19605; 5604.09; "ERROR: expected 0 but got 59114088"
+"asteria::cow_hashmap"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 156598384; 38.5202; 8418.93; "ERROR: expected 98843646 but got 156598384"
+"asteria::cow_hashmap"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 57754738; 31.6397; 8418.93; "ERROR: expected 0 but got 57754738"
+"asteria::cow_hashmap"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 8.00477; 8418.93
+"asteria::cow_hashmap"; "boost::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 45.5628; 5604.11
+"asteria::cow_hashmap"; "boost::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 59122781; 5.18545; 5604.11; "ERROR: expected 0 but got 59122781"
+"asteria::cow_hashmap"; "boost::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 156604122; 37.5335; 8418.92; "ERROR: expected 98843646 but got 156604122"
+"asteria::cow_hashmap"; "boost::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 57760476; 30.1061; 8418.92; "ERROR: expected 0 but got 57760476"
+"asteria::cow_hashmap"; "boost::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 8.00087; 8418.92
+"asteria::cow_hashmap"; "komihash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 49.393; 5604.12
+"asteria::cow_hashmap"; "komihash"; "InsertHugeInt"; "02"; "clear 100M int"; 59119910; 5.20486; 5604.12; "ERROR: expected 0 but got 59119910"
+"asteria::cow_hashmap"; "komihash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 156602968; 40.2465; 8419.05; "ERROR: expected 98843646 but got 156602968"
+"asteria::cow_hashmap"; "komihash"; "InsertHugeInt"; "04"; "remove 100M int"; 57759322; 32.5468; 8419.05; "ERROR: expected 0 but got 57759322"
+"asteria::cow_hashmap"; "komihash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 7.99591; 8419.05
+"asteria::cow_hashmap"; "mumx"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 46.2761; 5604.12
+"asteria::cow_hashmap"; "mumx"; "InsertHugeInt"; "02"; "clear 100M int"; 59127049; 5.19782; 5604.12; "ERROR: expected 0 but got 59127049"
+"asteria::cow_hashmap"; "mumx"; "InsertHugeInt"; "03"; "reinsert 100M int"; 156608704; 38.0981; 8418.89; "ERROR: expected 98843646 but got 156608704"
+"asteria::cow_hashmap"; "mumx"; "InsertHugeInt"; "04"; "remove 100M int"; 57765058; 31.1326; 8418.89; "ERROR: expected 0 but got 57765058"
+"asteria::cow_hashmap"; "mumx"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 8.01142; 8418.89
+"asteria::cow_hashmap"; "robin_hood::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 46.6783; 5604.14
+"asteria::cow_hashmap"; "robin_hood::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 59115899; 5.18734; 5604.14; "ERROR: expected 0 but got 59115899"
+"asteria::cow_hashmap"; "robin_hood::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 156598590; 38.845; 8418.87; "ERROR: expected 98843646 but got 156598590"
+"asteria::cow_hashmap"; "robin_hood::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 57754944; 31.7807; 8418.87; "ERROR: expected 0 but got 57754944"
+"asteria::cow_hashmap"; "robin_hood::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 7.99765; 8418.87
+"asteria::cow_hashmap"; "std::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 45.6193; 5604.15
+"asteria::cow_hashmap"; "std::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 59122781; 5.20845; 5604.15; "ERROR: expected 0 but got 59122781"
+"asteria::cow_hashmap"; "std::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 156604122; 37.5022; 8418.96; "ERROR: expected 98843646 but got 156604122"
+"asteria::cow_hashmap"; "std::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 57760476; 29.9798; 8418.96; "ERROR: expected 0 but got 57760476"
+"asteria::cow_hashmap"; "std::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 8.02684; 8418.96
+"boost::multi_index::hashed_unique"; "absl::Hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 39.542; 3759.34
+"boost::multi_index::hashed_unique"; "absl::Hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 6.32028; 3759.59
+"boost::multi_index::hashed_unique"; "absl::Hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 20.0557; 3759.59
+"boost::multi_index::hashed_unique"; "absl::Hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 25.7749; 3759.59
+"boost::multi_index::hashed_unique"; "absl::Hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0713443; 3759.59
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 39.3338; 3759.25
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 6.32008; 3759.5
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 20.219; 3759.5
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 25.7755; 3759.5
+"boost::multi_index::hashed_unique"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0712579; 3759.5
+"boost::multi_index::hashed_unique"; "boost::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 38.706; 3759.21
+"boost::multi_index::hashed_unique"; "boost::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 6.27743; 3759.46
+"boost::multi_index::hashed_unique"; "boost::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 20.2465; 3759.59
+"boost::multi_index::hashed_unique"; "boost::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 25.7261; 3759.59
+"boost::multi_index::hashed_unique"; "boost::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0711951; 3759.59
+"boost::multi_index::hashed_unique"; "komihash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 40.575; 3759.27
+"boost::multi_index::hashed_unique"; "komihash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 6.3513; 3759.52
+"boost::multi_index::hashed_unique"; "komihash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 20.3664; 3759.52
+"boost::multi_index::hashed_unique"; "komihash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 25.5854; 3759.52
+"boost::multi_index::hashed_unique"; "komihash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0710157; 3759.52
+"boost::multi_index::hashed_unique"; "mumx"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 39.4509; 3759.18
+"boost::multi_index::hashed_unique"; "mumx"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 6.31247; 3759.43
+"boost::multi_index::hashed_unique"; "mumx"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 20.575; 3759.55
+"boost::multi_index::hashed_unique"; "mumx"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 25.8425; 3759.55
+"boost::multi_index::hashed_unique"; "mumx"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0710766; 3759.55
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 39.7802; 3759.27
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 6.33346; 3759.52
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 20.6701; 3759.64
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 25.7824; 3759.64
+"boost::multi_index::hashed_unique"; "robin_hood::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0711184; 3759.64
+"boost::multi_index::hashed_unique"; "std::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 38.6483; 3759.17
+"boost::multi_index::hashed_unique"; "std::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 6.27663; 3759.42
+"boost::multi_index::hashed_unique"; "std::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 19.9971; 3759.54
+"boost::multi_index::hashed_unique"; "std::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 25.5955; 3759.54
+"boost::multi_index::hashed_unique"; "std::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0711402; 3759.54
+SKIPPING bench_boost_unordered_flat_map__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__absl_Hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__ankerl_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__boost_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__komihash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__mumx_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__robin_hood_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+SKIPPING bench_boost_unordered_flat_map_noSSE__std_hash, not boost_unordered_flat_map / ankerl_unordered_dense
+"boost::unordered_map 1_82"; "absl::Hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 31.4851; 3807.26
+"boost::unordered_map 1_82"; "absl::Hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 11.3978; 3807.51
+"boost::unordered_map 1_82"; "absl::Hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 21.9426; 3807.51
+"boost::unordered_map 1_82"; "absl::Hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 31.0445; 3807.51
+"boost::unordered_map 1_82"; "absl::Hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0755168; 3807.51
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 31.5181; 3807.35
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 11.4028; 3807.6
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 21.9869; 3807.6
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 30.9717; 3807.6
+"boost::unordered_map 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0754716; 3807.6
+"boost::unordered_map 1_82"; "boost::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 31.0701; 3807.33
+"boost::unordered_map 1_82"; "boost::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 11.4008; 3807.58
+"boost::unordered_map 1_82"; "boost::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 21.1396; 3807.58
+"boost::unordered_map 1_82"; "boost::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 30.5258; 3807.58
+"boost::unordered_map 1_82"; "boost::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0755499; 3807.58
+"boost::unordered_map 1_82"; "komihash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 32.1838; 3807.3
+"boost::unordered_map 1_82"; "komihash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 11.5906; 3807.55
+"boost::unordered_map 1_82"; "komihash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 21.995; 3807.55
+"boost::unordered_map 1_82"; "komihash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 30.8578; 3807.55
+"boost::unordered_map 1_82"; "komihash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.075531; 3807.55
+"boost::unordered_map 1_82"; "mumx"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 31.4389; 3807.22
+"boost::unordered_map 1_82"; "mumx"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 11.3688; 3807.47
+"boost::unordered_map 1_82"; "mumx"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 21.501; 3807.47
+"boost::unordered_map 1_82"; "mumx"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 30.8048; 3807.47
+"boost::unordered_map 1_82"; "mumx"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0755457; 3807.47
+"boost::unordered_map 1_82"; "robin_hood::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 31.6208; 3807.27
+"boost::unordered_map 1_82"; "robin_hood::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 11.3873; 3807.52
+"boost::unordered_map 1_82"; "robin_hood::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 22.508; 3807.52
+"boost::unordered_map 1_82"; "robin_hood::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 30.851; 3807.52
+"boost::unordered_map 1_82"; "robin_hood::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0754965; 3807.52
+"boost::unordered_map 1_82"; "std::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 31.4743; 3807.21
+"boost::unordered_map 1_82"; "std::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 11.3769; 3807.46
+"boost::unordered_map 1_82"; "std::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 21.2787; 3807.59
+"boost::unordered_map 1_82"; "std::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 30.5609; 3807.59
+"boost::unordered_map 1_82"; "std::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.0757256; 3807.59
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 21.4201; 2300.91
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 4.12938; 2301.16
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 11.6665; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 23.6841; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "absl::Hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.218823; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 21.5569; 2300.91
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 4.15008; 2301.16
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 11.8371; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 23.5147; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.218266; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 20.9088; 2300.91
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 4.10547; 2301.16
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 11.729; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 21.9715; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "boost::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.218027; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 22.6081; 2300.94
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 4.14416; 2301.19
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 11.7269; 2301.19
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 22.6799; 2301.19
+"boost::unordered_map PoolAllocator 1_82"; "komihash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.219775; 2301.19
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 21.3789; 2300.89
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 4.10601; 2301.14
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 11.6096; 2301.14
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 23.671; 2301.14
+"boost::unordered_map PoolAllocator 1_82"; "mumx"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.218503; 2301.14
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 21.9522; 2300.92
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 4.11492; 2301.17
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 11.63; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 23.7417; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "robin_hood::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.218558; 2301.29
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 21.0849; 2300.9
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 4.03728; 2301.15
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 12.0077; 2301.15
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 23.0522; 2301.15
+"boost::unordered_map PoolAllocator 1_82"; "std::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.218396; 2301.15
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 23.8162; 2393.28
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 5.26728; 2393.53
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 12.6753; 2393.65
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 21.9513; 2393.65
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "absl::Hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.192558; 2393.65
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 23.7993; 2393.27
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 5.26711; 2393.52
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 13.9837; 2393.52
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 0; 21.5345; 2393.52
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "ankerl::unordered_dense::hash"; "InsertHugeInt"; "05"; "destructor empty map"; 0; 0.192788; 2393.52
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "boost::hash"; "InsertHugeInt"; "01"; "insert 100M int"; 98841586; 23.3762; 2393.36
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "boost::hash"; "InsertHugeInt"; "02"; "clear 100M int"; 0; 5.24112; 2393.61
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "boost::hash"; "InsertHugeInt"; "03"; "reinsert 100M int"; 98843646; 12.7191; 2393.61
+"boost::unordered_map unsynchronized_pool_resource 1_82"; "boost::hash"; "InsertHugeInt"; "04"; "remove 100M int"; 
